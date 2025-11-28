@@ -1,0 +1,266 @@
+@import "../colors.css";
+/* src/app/user/user-auth.css
+   Single CSS for all user auth pages (safe prefix .u-auth-*)
+*/
+
+/* --------------------------------------------- */
+/* LAYOUT */
+/* --------------------------------------------- */
+.u-auth-shell {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  background: #fff;
+}
+.u-auth-row {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+.u-auth-left {
+  padding: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+}
+.u-auth-left img {
+  max-width: 520px;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+/* --------------------------------------------- */
+/* RIGHT PANEL */
+/* --------------------------------------------- */
+.u-auth-right {
+  padding: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.u-auth-card {
+  width: 100%;
+  max-width: 460px;
+}
+
+/* --------------------------------------------- */
+/* TITLES */
+/* --------------------------------------------- */
+.u-auth-title {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  text-align: center;
+  color: var(--tx-title);
+}
+.u-auth-sub {
+  font-size: 14px;
+  color: var(--tx-sub-title);
+  margin-bottom: 26px;
+  text-align: center;
+  margin-top: 15px;
+}
+
+/* --------------------------------------------- */
+/* INPUTS */
+/* --------------------------------------------- */
+.u-auth-input {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid #e6e6e9;
+  margin-bottom: 18px;
+  box-sizing: border-box;
+  font-size: 14px;
+  background: var(--bg-input);
+  margin-top: 12px;
+}
+.u-auth-input:focus {
+  outline: none;
+  border-color: #9a33ff;
+}
+
+/* Password wrapper */
+.u-auth-pass-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.u-auth-pass-wrap .u-auth-input {
+  padding-right: 48px;
+}
+.u-auth-pass-toggle {
+  position: absolute;
+  right: 12px;
+  top: 47%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  opacity: 0.9;
+}
+.u-auth-pass-toggle svg {
+  width: 22px;
+  height: 22px;
+  opacity: 0.85;
+}
+
+/* --------------------------------------------- */
+/* BUTTONS */
+/* --------------------------------------------- */
+.u-auth-btn-primary {
+  width: 100%;
+  padding: 14px 18px;
+  border-radius: 50px;
+  background: linear-gradient(90deg, #7b2cff, #9a33ff);
+  color: #fff;
+  font-weight: 700;
+  border: 0;
+  box-shadow: 0 8px 20px rgba(122, 33, 224, 0.14);
+  margin: 10px 0 13px;
+}
+.u-auth-btn-primary-contine {
+  width: 60%;
+  padding:15px 11px 17px;
+  border-radius: 50px;
+  background: linear-gradient(90deg, #7b2cff, #9a33ff);
+  color: #fff;
+  font-weight: 700;
+  border: 0;
+  box-shadow: 0 8px 20px rgba(122, 33, 224, 0.14);
+}
+.u-auth-btn-ghost {
+  width: 100%;
+  padding: 12px;
+  border-radius: 50px;
+  background: #fff;
+  border: 1px solid #eee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 18px;
+  margin-top: 30px;
+}
+
+/* --------------------------------------------- */
+/* SMALL TEXT */
+/* --------------------------------------------- */
+.u-auth-muted {
+  color: var(--tx-title);
+  font-size: 14px;
+  font-weight: 600;
+}
+.u-auth-link {
+  color: var(--tx-link);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+/* --------------------------------------------- */
+/* OTP BOXES */
+/* --------------------------------------------- */
+.u-auth-otp-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 18px;
+  justify-content: center;
+  padding-top: 60px;
+}
+
+.u-auth-otp {
+  width: 72px;
+  height: 72px;
+  border-radius: 12px;
+  border: 1px solid #e8e8ee;
+  background: var(--bg-input);
+  text-align: center;
+  font-size: 28px;
+  font-weight: 600;
+  outline: none;
+}
+
+.u-auth-otp::-webkit-inner-spin-button,
+.u-auth-otp::-webkit-outer-spin-button {
+  display: none;
+}
+
+.u-auth-otp:focus {
+  border-color: #9a33ff;
+}
+
+/* --------------------------------------------- */
+/* PAGINATION DOTS (1–4) */
+/* --------------------------------------------- */
+.u-auth-pager {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 25%;
+}
+
+.u-auth-dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #444;
+  font-size: 14px;
+}
+.u-auth-dot.active {
+  background: #7b2cff;
+  color: #fff;
+  border-color: #7b2cff;
+  box-shadow: 0 4px 12px rgba(123, 44, 255, 0.25);
+}
+
+/* --------------------------------------------- */
+/* SUCCESS PAGE */
+/* --------------------------------------------- */
+.u-auth-success {
+  text-align: center;
+  padding-top: 60px;
+}
+
+/* --------------------------------------------- */
+/* RESPONSIVE */
+/* --------------------------------------------- */
+@media (max-width: 991.98px) {
+  .u-auth-left {
+    display: none;
+  }
+  .u-auth-right {
+    padding: 28px;
+  }
+  .u-auth-card {
+    width: 100%;
+  }
+  .u-auth-title {
+    font-size: 26px;
+  }
+}
+
+@media (max-width: 480px) {
+  .u-auth-otp {
+    width: 54px;
+    height: 54px;
+    font-size: 22px;
+    line-height: 54px;
+  }
+  .u-auth-pager {
+    margin-top: 18%;
+  }
+}
+
+/* --------------------------------------------- */
+/* HELPERS */
+/* --------------------------------------------- */
+.u-auth-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 30px;
+}

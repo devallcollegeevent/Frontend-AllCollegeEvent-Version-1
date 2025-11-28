@@ -1,0 +1,53 @@
+:root {
+  --primary-color: #4A3AFF;
+  --secondary-color: #FF7A00;
+  --text-dark: #222222;
+  --text-light: #666666;
+  --white: #ffffff;
+  --black: #000000;
+
+  /* text-colors */
+  --tx-title :#1C1C1C;
+  --tx-sub-title : #3D3D3D;
+  --tx-placeholder:#8B8B8B;
+  --tx-link:#7F00FF;
+
+
+  /* Backgrounds */
+  --bg-light: #F5F5F5;
+  --bg-dark: #1A1A1A;
+  --bg-input:#FAFAFA;
+
+  /* Button colors */
+  --btn-primary: #4A3AFF;
+  --btn-primary-hover: #3a2fd6;
+  --btn-ghost: #f1f1f1;
+
+   /* 🔥 FONT FAMILY */
+  --font-main: 'Poppins', sans-serif;
+  --font-heading: 'Poppins', sans-serif;
+  --font-alt: 'Inter', sans-serif;
+
+  /* 🔥 FONT SIZES */
+  --fs-xs: 12px;
+  --fs-sm: 14px;
+  --fs-md: 16px;
+  --fs-lg: 20px;
+  --fs-xl: 24px;
+  --fs-xxl: 32px;
+
+  /* 🔥 FONT WEIGHTS */
+  --fw-light: 300;
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+  --fw-extrabold: 800;
+
+  /* 🔥 SPACING (OPTIONAL) */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 12px;
+  --space-lg: 20px;
+  --space-xl: 32px;
+}

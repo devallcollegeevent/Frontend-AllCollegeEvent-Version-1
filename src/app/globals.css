@@ -1,0 +1,22 @@
+
+
+:root{
+  --brand:#7b2cff;
+  --brand-2:#9a33ff;
+  --muted:#6b7280;
+  --radius:14px;
+}
+
+body{
+  margin:0;
+  font-family: 'Inter', sans-serif;
+  background:white;
+}
+/* Hide Next.js Dev Overlay button */
+#__next-build-watcher,
+.nextjs-container-build-error,
+.nextjs-container-error {
+  display: none !important;
+}
+
+
