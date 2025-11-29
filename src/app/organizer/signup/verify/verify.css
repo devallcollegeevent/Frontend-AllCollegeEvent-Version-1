@@ -1,0 +1,66 @@
+/* full background dim */
+.verify-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+/* modal card */
+.verify-modal {
+  width: 75%;
+  max-width: 780px;
+  background: white;
+  border-radius: 30px;
+  padding: 60px 40px;
+  position: relative;
+  text-align: center;
+  overflow: hidden;
+}
+
+/* gradient blobs */
+.verify-modal::before,
+.verify-modal::after {
+  content: "";
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  filter: blur(90px);
+  z-index: -1;
+}
+
+.verify-modal::before {
+  background: rgba(132, 168, 255, 0.4);
+  top: -80px;
+  left: -80px;
+}
+
+.verify-modal::after {
+  background: rgba(203, 171, 255, 0.45);
+  bottom: -90px;
+  right: -90px;
+}
+
+/* logo */
+.verify-logo {
+  width: 140px;
+  margin-bottom: 20px;
+}
+
+/* title */
+.verify-title {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 18px;
+}
+
+/* description text */
+.verify-text {
+  font-size: 15px;
+  color: #555;
+  line-height: 1.6;
+}

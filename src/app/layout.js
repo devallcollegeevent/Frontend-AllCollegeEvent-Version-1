@@ -1,16 +1,18 @@
-// src/app/layout.js
+import "./globals.css";
+import "./colors.css";
+import Providers from "@/components/Providers";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export const metadata = {
-  title: 'AllCollegeEvent',
-  description: 'College events platform'
+  title: "AllCollegeEvent",
+  description: "All college events — user & organizer platform",
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

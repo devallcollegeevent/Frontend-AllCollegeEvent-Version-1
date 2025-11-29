@@ -3,15 +3,33 @@
 import "../user-auth.css";
 import { useState } from "react";
 import { ViewIcon, HideIcon } from "@/components/icons/Icons";
+import { saveToken } from "@/lib/auth";
+import { useRouter } from "next/navigation";
+import { loginApi } from "@/lib/apiClient";
 
 export default function Page() {
+  const router = useRouter();
   const [showPass, setShowPass] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
-  function onSubmit(e) {
-    e.preventDefault();
-    alert("Demo signup");
+ async function onSubmit(e) {
+  e.preventDefault();
+  try {
+    const payload = {
+      email,
+      password,
+    };
+
+    const res = await loginApi(payload);
+
+    saveToken(res.data.token);
+    toast.success("Login successful");
+    router.push("/dashboard/user");
+  } catch (err) {
+    console.log("Login failed", err);
+    toast.error("Invalid ");
   }
+}
 
   return (
     <div className="u-auth-shell container-fluid">

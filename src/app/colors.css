@@ -1,5 +1,5 @@
 :root {
-  --primary-color: #4A3AFF;
+  --primary-color: #7F00FF;
   --secondary-color: #FF7A00;
   --text-dark: #222222;
   --text-light: #666666;
@@ -17,6 +17,7 @@
   --bg-light: #F5F5F5;
   --bg-dark: #1A1A1A;
   --bg-input:#FAFAFA;
+  --bg-card:#EFEFEF;
 
   /* Button colors */
   --btn-primary: #4A3AFF;
