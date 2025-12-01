@@ -64,3 +64,12 @@ export const organizerSignupApi = async (data) => {
   return await handleApi(api.post("/auth/signup", data));
 };
 
+export const verifyEmailApi = async (token) => {
+  console.log("00000",token)
+  return await handleApi(
+    api.get(`/auth/org/verify?token=${encodeURIComponent(token)}`)
+  );
+};
+
+
+
