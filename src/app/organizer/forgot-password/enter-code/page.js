@@ -1,14 +1,16 @@
 "use client";
 
+import { organizerResetPasswordPage } from "@/app/routes";
 import "../../organizer-auth.css";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useRef, useState } from "react";
+import { verifyOtpApi } from "@/lib/apiClient";
+import { toast } from "react-hot-toast";
+import { getEmail } from "@/lib/auth";
 
 export default function Page() {
   const router = useRouter();
-  const params = useSearchParams();
-  const email = params?.get("email") || "";
-
+  const email = getEmail();
   const [otp, setOtp] = useState(["", "", "", ""]);
   const refs = [useRef(), useRef(), useRef(), useRef()];
 
@@ -20,24 +22,41 @@ export default function Page() {
     if (v && i < 3) refs[i + 1].current?.focus();
   }
 
-  function onSubmit(e) {
+  async function onSubmit(e) {
     e.preventDefault();
+
     const code = otp.join("");
-    if (code.length !== 4) return alert("Enter 4 digit code");
-    // verify code with API if exists
-    router.push(`/organizer/reset-password/${code}`);
+    if (code.length !== 4) return toast.error("Enter 4 digit code");
+
+    // API CALL
+    const res = await verifyOtpApi({ email, otp: code });
+
+    if (res.success) {
+      toast.success("Code verified");
+
+      router.push(organizerResetPasswordPage);
+      setOtp(["", "", "", ""]);
+    } else {
+      toast.error(res.message || "Invalid code");
+    }
   }
 
   return (
     <div className="org-shell">
       <aside className="org-left">
-        <img className="org-left-img" src="/images/organizer-forgot-left.png" alt="left" />
+        <img
+          className="org-left-img"
+          src="/images/or_forgotpassword.png"
+          alt="left"
+        />
       </aside>
 
       <main className="org-right">
         <div className="org-card">
           <h2 className="org-title">Enter Code</h2>
-          <div className="org-sub">Enter the 4-digit code sent to {email || "your email"}</div>
+          <div className="org-sub">
+            Enter the 4-digit code sent to {email || "your email"}
+          </div>
 
           <form className="org-form" onSubmit={onSubmit}>
             <div className="otp-row">
@@ -55,7 +74,9 @@ export default function Page() {
             </div>
 
             <div className="form-actions">
-              <button className="btn-primary-ghost" type="submit">Continue</button>
+              <button className="btn-primary-ghost" type="submit">
+                Continue
+              </button>
             </div>
 
             <div className="org-foot">

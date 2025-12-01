@@ -3,22 +3,32 @@
 import "../organizer-auth.css";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { saveEmail } from "@/lib/auth";
+import { organizerEnterCodePage } from "@/app/routes";
+import { forgotApi } from "@/lib/apiClient";
+import {toast} from "react-hot-toast";
 
 export default function Page() {
   const router = useRouter();
   const [email, setEmail] = useState("");
 
-  async function onSubmit(e) {
-    e.preventDefault();
-    // call API if exists
-    // await forgotApi({ email });
-    router.push(`/organizer/forgot-password/enter-code?email=${encodeURIComponent(email)}`);
-  }
+  async function onSubmit(e){
+     e.preventDefault();
+ 
+     try {
+       await forgotApi({ email });
+        saveEmail(email)
+       toast.success("Code sent to your email");
+       router.push(organizerEnterCodePage);
+     } catch (err) {
+       toast.error(err.response?.data?.message || "Email not found");
+     }
+   }
 
   return (
     <div className="org-shell">
       <aside className="org-left">
-        <img className="org-left-img" src="/images/organizer-forgot-left.png" alt="left" />
+        <img className="org-left-img" src="/images/or_forgotpassword.png" alt="left" />
       </aside>
 
       <main className="org-right">

@@ -37,7 +37,7 @@ export default function Page() {
       <aside className="org-left">
         <img
           className="org-left-img"
-          src="/images/organizer-login-left.png"
+          src="/images/or_login.png"
           alt="left"
         />
       </aside>

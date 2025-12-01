@@ -8,7 +8,7 @@ export default function Page() {
   return (
     <div className="org-shell">
       <aside className="org-left">
-        <img className="org-left-img" src="/images/organizer-rocket.png" alt="left" />
+        <img className="org-left-img" src="/images/or_passwordsuccess.png" alt="left" />
       </aside>
 
       <main className="org-right">

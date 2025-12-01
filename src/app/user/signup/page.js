@@ -36,7 +36,7 @@ export default function Page() {
         name: form.name,
         email: form.email,
         password: form.password,
-        type: form.role
+        type: form.type
       };
 
       const res = await signupApi(payload);

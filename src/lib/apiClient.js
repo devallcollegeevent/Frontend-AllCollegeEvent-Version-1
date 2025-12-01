@@ -3,6 +3,7 @@ import api from "./axios";
 // Standard API Handler
 async function handleApi(promise) {
   try {
+    console.log("======lplp",promise)
     const res = await promise;
 
     console.log("=====api paylod",res)
@@ -25,6 +26,7 @@ async function handleApi(promise) {
 
 // SIGNUP
 export const signupApi = async (data) => {
+  console.log("0000",data)
   return await handleApi(api.post("/auth/signup", data));
 };
 

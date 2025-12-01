@@ -1,17 +1,17 @@
 "use client";
 
-import "../../user-auth.css";
+import "../user-auth.css";
 import { useRouter, useParams } from "next/navigation";
 import { useState } from "react";
 import { ViewIcon, HideIcon } from "@/components/icons/Icons";
 import { resetPasswordApi } from "@/lib/apiClient";
 import { toast } from "react-hot-toast";
 import { resetPasswordSuccessPage } from "@/app/routes";
+import { clearEmail, getEmail } from "@/lib/auth";
 
 export default function Page() {
   const router = useRouter();
-  const { token } = useParams(); 
-
+  const email = getEmail();
   const [pass, setPass] = useState("");
   const [confirm, setConfirm] = useState("");
   const [show1, setShow1] = useState(false);
@@ -25,10 +25,11 @@ export default function Page() {
     }
 
     try {
-      await resetPasswordApi({ token, password: pass });
+      await resetPasswordApi({ email, password: pass });
 
       toast.success("Password updated");
       router.push(resetPasswordSuccessPage);
+      clearEmail()
     } catch (err) {
       toast.error(err.response?.data?.message || "Failed");
     }

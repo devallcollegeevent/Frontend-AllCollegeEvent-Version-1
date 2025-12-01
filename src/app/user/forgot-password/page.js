@@ -5,7 +5,8 @@ import { useRouter } from 'next/navigation';
 import { forgotApi } from "@/lib/apiClient";
 import { toast } from "react-hot-toast";
 import { useState } from 'react';
-import { forgotPasswordPage } from '@/app/routes';
+import { enterCodePage } from '@/app/routes';
+import { saveEmail } from '@/lib/auth';
 
 export default function Page() {
   const router = useRouter();
@@ -16,8 +17,9 @@ export default function Page() {
 
     try {
       await forgotApi({ email });
+       saveEmail(email)
       toast.success("Code sent to your email");
-      router.push(forgotPasswordPage);
+      router.push(enterCodePage);
     } catch (err) {
       toast.error(err.response?.data?.message || "Email not found");
     }
@@ -42,7 +44,6 @@ export default function Page() {
               placeholder="Enter your mail id"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              required
             />
 
             <button className="u-auth-btn-primary" type="submit">Send Code</button>

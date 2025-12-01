@@ -1,16 +1,16 @@
 "use client";
 
-import '../../user-auth.css';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useState, useRef } from 'react';
-import { toast } from 'react-hot-toast';
-import { verifyCodeApi } from '@/lib/apiClient'; // optional: if exists
-import {  resetPasswordPage } from '@/app/routes';
+import "../../user-auth.css";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useState, useRef } from "react";
+import { toast } from "react-hot-toast";
+import { verifyOtpApi } from "@/lib/apiClient"; // optional: if exists
+import { resetPasswordPage } from "@/app/routes";
+import { getEmail } from "@/lib/auth";
 
 export default function Page() {
   const router = useRouter();
-  const params = useSearchParams();
-  const email = params?.get('email') || "";
+  const email = getEmail();
   const [otp, setOtp] = useState(["", "", "", ""]);
   const inputs = [useRef(null), useRef(null), useRef(null), useRef(null)];
 
@@ -24,16 +24,20 @@ export default function Page() {
 
   async function onSubmit(e) {
     e.preventDefault();
+
     const code = otp.join("");
     if (code.length !== 4) return toast.error("Enter 4 digit code");
 
-    try {
-      // if you have API to verify:
-      // await verifyCodeApi({ email, code });
+    // API CALL
+    const res = await verifyOtpApi({ email, otp: code });
+
+    if (res.success) {
       toast.success("Code verified");
-      router.push(resetPasswordPage(token));
-    } catch (err) {
-      toast.error(err.response?.data?.message || "Invalid code");
+
+      router.push(resetPasswordPage);
+      setOtp(["", "", "", ""])
+    } else {
+      toast.error(res.message || "Invalid code");
     }
   }
 
@@ -46,7 +50,9 @@ export default function Page() {
       <div className="u-auth-right">
         <div className="u-auth-card">
           <h1 className="u-auth-title">Enter Code</h1>
-          <div className="u-auth-sub">Enter the 4-digit code sent to {email || "your email"}</div>
+          <div className="u-auth-sub">
+            Enter the 4-digit code sent to {email || "your email"}
+          </div>
 
           <form onSubmit={onSubmit}>
             <div className="u-auth-otp-row">
@@ -63,9 +69,11 @@ export default function Page() {
               ))}
             </div>
 
-            <button className="u-auth-btn-primary" type="submit">Continue</button>
+            <button className="u-auth-btn-primary" type="submit">
+              Continue
+            </button>
 
-            <div style={{marginTop:16}}>
+            <div style={{ marginTop: 16 }}>
               <div className="u-auth-pager">
                 <div className="u-auth-dot">1</div>
                 <div className="u-auth-dot active">2</div>
