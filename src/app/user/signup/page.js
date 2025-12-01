@@ -5,121 +5,138 @@ import { useState } from "react";
 import { ViewIcon, HideIcon } from "@/components/icons/Icons";
 import { saveToken } from "@/lib/auth";
 import { useRouter } from "next/navigation";
-import { loginApi } from "@/lib/apiClient";
+import { toast } from "react-hot-toast";
+import { signupApi } from "@/lib/apiClient";
+import { loginPage } from "@/app/routes";
+import { userRole } from "@/const-value/page";
 
 export default function Page() {
   const router = useRouter();
+
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    type:userRole
+  });
+
   const [showPass, setShowPass] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
- async function onSubmit(e) {
-  e.preventDefault();
-  try {
-    const payload = {
-      email,
-      password,
-    };
+  async function onSubmit(e) {
+    e.preventDefault();
 
-    const res = await loginApi(payload);
+    if (form.password !== form.confirmPassword) {
+      return toast.error("Passwords do not match");
+    }
 
-    saveToken(res.data.token);
-    toast.success("Login successful");
-    router.push("/dashboard/user");
-  } catch (err) {
-    console.log("Login failed", err);
-    toast.error("Invalid ");
+    try {
+      const payload = {
+        name: form.name,
+        email: form.email,
+        password: form.password,
+        type: form.role
+      };
+
+      const res = await signupApi(payload);
+
+      saveToken(res.data.token);
+      toast.success("Signup successful!");
+
+      router.push(loginPage);
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Signup failed");
+    }
   }
-}
 
   return (
-    <div className="u-auth-shell container-fluid">
-      <div className="row u-auth-row g-0">
-        {/* LEFT IMAGE */}
-        <div className="col-lg-6 u-auth-left">
-          <img src="/images/auth-signup.png" alt="signup" />
-        </div>
+    <div className="u-auth-shell">
+      <div className="u-auth-left">
+        <img src="/images/auth-signup.png" alt="signup" />
+      </div>
 
-        {/* RIGHT FORM */}
-        <div className="col-lg-6 u-auth-right">
-          <div className="u-auth-card">
-            <h1 className="u-auth-title">Join us Now!!</h1>
-            <div className="u-auth-sub">Let's Create your account</div>
+      <div className="u-auth-right">
+        <div className="u-auth-card">
+          <h1 className="u-auth-title">Join us Now!!</h1>
+          <div className="u-auth-sub">Let's Create your account</div>
 
-            <form onSubmit={onSubmit}>
-              {/* NAME */}
-              <label className="u-auth-muted">Name</label>
+          <form onSubmit={onSubmit}>
+            <label className="u-auth-muted">Name</label>
+            <input
+              className="u-auth-input"
+              type="text"
+              placeholder="Enter your name"
+              value={form.name}
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
+              required
+            />
+
+            <label className="u-auth-muted">Email</label>
+            <input
+              className="u-auth-input"
+              type="email"
+              placeholder="Enter your mail id"
+              value={form.email}
+              onChange={(e) => setForm({ ...form, email: e.target.value })}
+              required
+            />
+
+            <label className="u-auth-muted">Password</label>
+            <div className="u-auth-pass-wrap">
               <input
                 className="u-auth-input"
-                type="text"
-                placeholder="Enter your name"
+                type={showPass ? "text" : "password"}
+                placeholder="Enter your password"
+                value={form.password}
+                onChange={(e) => setForm({ ...form, password: e.target.value })}
                 required
               />
-
-              {/* EMAIL */}
-              <label className="u-auth-muted">Email</label>
-              <input
-                className="u-auth-input"
-                type="email"
-                placeholder="Enter your mail id"
-                required
-              />
-
-              {/* PASSWORD */}
-              <label className="u-auth-muted">Password</label>
-              <div className="u-auth-pass-wrap">
-                <input
-                  className="u-auth-input"
-                  type={showPass ? "text" : "password"}
-                  placeholder="Enter your password"
-                  required
-                />
-
-                <span
-                  className="u-auth-pass-toggle"
-                  onClick={() => setShowPass(!showPass)}
-                >
-                  {showPass ? <ViewIcon /> : <HideIcon />}
-                </span>
-              </div>
-
-              {/* CONFIRM PASSWORD */}
-              <label className="u-auth-muted">Confirm Password</label>
-              <div className="u-auth-pass-wrap">
-                <input
-                  className="u-auth-input"
-                  type={showConfirm ? "text" : "password"}
-                  placeholder="Enter your password again"
-                  required
-                />
-
-                <span
-                  className="u-auth-pass-toggle"
-                  onClick={() => setShowConfirm(!showConfirm)}
-                >
-                  {showConfirm ? <ViewIcon /> : <HideIcon />}
-                </span>
-              </div>
-
-              {/* SUBMIT */}
-              <button className="u-auth-btn-primary" type="submit">
-                Sign Up
-              </button>
-
-              {/* OR */}
-              <div className="u-auth-center u-auth-muted">— Or —</div>
-
-              {/* LOGIN LINK */}
-              <div
-                className="text-center u-auth-muted"
-                style={{ marginTop: 10 }}
+              <span
+                className="u-auth-pass-toggle"
+                onClick={() => setShowPass(!showPass)}
+                role="button"
+                aria-label="toggle password"
               >
-                Already have an Account!?{" "}
-                <a className="u-auth-link" href="/user/login">
-                  Sign In
-                </a>
-              </div>
-            </form>
-          </div>
+                {showPass ? <HideIcon /> : <ViewIcon />}
+              </span>
+            </div>
+
+            <label className="u-auth-muted">Confirm Password</label>
+            <div className="u-auth-pass-wrap">
+              <input
+                className="u-auth-input"
+                type={showConfirm ? "text" : "password"}
+                placeholder="Enter your password again"
+                value={form.confirmPassword}
+                onChange={(e) =>
+                  setForm({ ...form, confirmPassword: e.target.value })
+                }
+                required
+              />
+              <span
+                className="u-auth-pass-toggle"
+                onClick={() => setShowConfirm(!showConfirm)}
+                role="button"
+                aria-label="toggle confirm password"
+              >
+                {showConfirm ? <HideIcon /> : <ViewIcon />}
+              </span>
+            </div>
+
+            <button className="u-auth-btn-primary" type="submit">
+              Sign Up
+            </button>
+
+            <div className="u-auth-center u-auth-muted">— Or —</div>
+
+            <div className="u-auth-foot">
+              Already have an Account!?{" "}
+              <a className="u-auth-link" href={loginPage}>
+                Sign In
+              </a>
+            </div>
+          </form>
         </div>
       </div>
     </div>

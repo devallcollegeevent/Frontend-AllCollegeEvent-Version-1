@@ -1,71 +1,73 @@
 @import "../colors.css";
-/* src/app/user/user-auth.css
-   Single CSS for all user auth pages (safe prefix .u-auth-*)
-*/
 
 /* --------------------------------------------- */
-/* LAYOUT */
+/* GLOBAL LAYOUT - PURE CSS (NO BOOTSTRAP) */
 /* --------------------------------------------- */
 .u-auth-shell {
   min-height: 100vh;
-  display: flex;
-  align-items: center;
-  background: #fff;
-}
-.u-auth-row {
   width: 100%;
-  margin: 0;
-  padding: 0;
+  display: flex;
+  align-items: stretch;
+  background: var(--white);
+  font-family: var(--font-main);
+  color: var(--tx-title);
+  overflow: hidden;
 }
-.u-auth-left {
-  padding: 40px;
+
+/* left illustration & right form - equal split on desktop */
+.u-auth-left,
+.u-auth-right {
+  flex: 1 1 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 80vh;
+  padding: 40px;
+  box-sizing: border-box;
 }
+
+.u-auth-left {
+  background: transparent;
+}
+
 .u-auth-left img {
   max-width: 520px;
   width: 100%;
   height: auto;
   object-fit: contain;
+  display: block;
 }
 
-/* --------------------------------------------- */
-/* RIGHT PANEL */
-/* --------------------------------------------- */
+/* right card */
 .u-auth-right {
-  padding: 35px;
-  display: flex;
+  padding: 40px;
   align-items: center;
   justify-content: center;
 }
+
 .u-auth-card {
   width: 100%;
   max-width: 460px;
+  box-sizing: border-box;
 }
 
-/* --------------------------------------------- */
-/* TITLES */
-/* --------------------------------------------- */
+/* Titles */
 .u-auth-title {
-  font-size: 32px;
-  font-weight: 700;
+  font-size: var(--fs-xxl);
+  font-weight: var(--fw-bold);
   margin-bottom: 8px;
   text-align: center;
   color: var(--tx-title);
 }
+
 .u-auth-sub {
   font-size: 14px;
   color: var(--tx-sub-title);
   margin-bottom: 26px;
   text-align: center;
-  margin-top: 15px;
+  margin-top: 8px;
 }
 
-/* --------------------------------------------- */
-/* INPUTS */
-/* --------------------------------------------- */
+/* Inputs */
 .u-auth-input {
   width: 100%;
   padding: 12px 16px;
@@ -76,10 +78,17 @@
   font-size: 14px;
   background: var(--bg-input);
   margin-top: 12px;
+  color: var(--text-dark);
 }
+
+.u-auth-input::placeholder {
+  color: var(--tx-placeholder);
+}
+
 .u-auth-input:focus {
   outline: none;
   border-color: #9a33ff;
+  box-shadow: 0 4px 16px rgba(154,51,255,0.08);
 }
 
 /* Password wrapper */
@@ -88,84 +97,81 @@
   display: flex;
   align-items: center;
 }
+
 .u-auth-pass-wrap .u-auth-input {
   padding-right: 48px;
 }
+
 .u-auth-pass-toggle {
   position: absolute;
   right: 12px;
-  top: 47%;
+  top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
   opacity: 0.9;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
+
 .u-auth-pass-toggle svg {
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   opacity: 0.85;
 }
 
-/* --------------------------------------------- */
-/* BUTTONS */
-/* --------------------------------------------- */
+/* Buttons */
 .u-auth-btn-primary {
   width: 100%;
   padding: 14px 18px;
   border-radius: 50px;
-  background: linear-gradient(90deg, #7b2cff, #9a33ff);
-  color: #fff;
-  font-weight: 700;
+  background: linear-gradient(90deg, var(--btn-primary), #7F00FF);
+  color: var(--white);
+  font-weight: var(--fw-bold);
   border: 0;
   box-shadow: 0 8px 20px rgba(122, 33, 224, 0.14);
   margin: 10px 0 13px;
+  cursor: pointer;
+  font-size: 15px;
 }
-.u-auth-btn-primary-contine {
-  width: 60%;
-  padding:15px 11px 17px;
-  border-radius: 50px;
-  background: linear-gradient(90deg, #7b2cff, #9a33ff);
-  color: #fff;
-  font-weight: 700;
-  border: 0;
-  box-shadow: 0 8px 20px rgba(122, 33, 224, 0.14);
-}
+
+.u-auth-btn-primary:active { transform: translateY(1px); }
+
 .u-auth-btn-ghost {
   width: 100%;
   padding: 12px;
   border-radius: 50px;
-  background: #fff;
+  background: var(--white);
   border: 1px solid #eee;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
   margin-bottom: 18px;
-  margin-top: 30px;
+  margin-top: 10px;
+  cursor: pointer;
 }
 
-/* --------------------------------------------- */
-/* SMALL TEXT */
-/* --------------------------------------------- */
+/* small text & links */
 .u-auth-muted {
-  color: var(--tx-title);
+  color: var(--tx-sub-title);
   font-size: 14px;
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
 }
+
 .u-auth-link {
   color: var(--tx-link);
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
   text-decoration: none;
 }
 
-/* --------------------------------------------- */
-/* OTP BOXES */
-/* --------------------------------------------- */
+/* OTP boxes */
 .u-auth-otp-row {
   display: flex;
   gap: 12px;
   margin-bottom: 18px;
   justify-content: center;
-  padding-top: 60px;
+  padding-top: 10px;
 }
 
 .u-auth-otp {
@@ -180,18 +186,12 @@
   outline: none;
 }
 
-.u-auth-otp::-webkit-inner-spin-button,
-.u-auth-otp::-webkit-outer-spin-button {
-  display: none;
-}
-
 .u-auth-otp:focus {
   border-color: #9a33ff;
+  box-shadow: 0 6px 18px rgba(154,51,255,0.08);
 }
 
-/* --------------------------------------------- */
-/* PAGINATION DOTS (1–4) */
-/* --------------------------------------------- */
+/* pager dots */
 .u-auth-pager {
   display: flex;
   gap: 10px;
@@ -210,57 +210,91 @@
   color: #444;
   font-size: 14px;
 }
+
 .u-auth-dot.active {
   background: #7b2cff;
-  color: #fff;
+  color: var(--white);
   border-color: #7b2cff;
   box-shadow: 0 4px 12px rgba(123, 44, 255, 0.25);
 }
 
-/* --------------------------------------------- */
-/* SUCCESS PAGE */
-/* --------------------------------------------- */
+/* success page */
 .u-auth-success {
   text-align: center;
-  padding-top: 60px;
+  padding-top: 20px;
+}
+
+/* footer small helper */
+.u-auth-foot {
+  margin-top: 12px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--tx-sub-title);
 }
 
 /* --------------------------------------------- */
 /* RESPONSIVE */
 /* --------------------------------------------- */
+
+/* Tablet and below: stack, image below form (image smaller) */
 @media (max-width: 991.98px) {
+  .u-auth-shell {
+    flex-direction: column;
+  }
+
   .u-auth-left {
-    display: none;
+    order: 2;
+    padding: 28px 20px;
   }
+
   .u-auth-right {
-    padding: 28px;
+    order: 1;
+    padding: 24px 18px;
   }
+
+  .u-auth-left img {
+    max-width: 420px;
+  }
+
+  .u-auth-pager {
+    margin-top: 18%;
+  }
+
   .u-auth-card {
-    width: 100%;
-  }
-  .u-auth-title {
-    font-size: 26px;
+    max-width: 100%;
   }
 }
 
+/* Small phones */
 @media (max-width: 480px) {
+  .u-auth-left {
+    display: none; /* hide image on very small screens to match your screenshots */
+  }
+
+  .u-auth-right {
+    padding: 18px;
+  }
+
+  .u-auth-title {
+    font-size: 22px;
+  }
+
   .u-auth-otp {
     width: 54px;
     height: 54px;
     font-size: 22px;
     line-height: 54px;
   }
+
   .u-auth-pager {
-    margin-top: 18%;
+    margin-top: 14%;
   }
 }
 
-/* --------------------------------------------- */
-/* HELPERS */
-/* --------------------------------------------- */
+/* helpers */
 .u-auth-center {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-top: 30px;
+  padding-top: 14px;
 }

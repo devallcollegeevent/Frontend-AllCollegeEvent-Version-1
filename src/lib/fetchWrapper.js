@@ -5,7 +5,7 @@ export async function serverFetch(url, options = {}) {
 
   const res = await fetch(base + url, {
     ...options,
-    cache: "no-store",         // full SSR re-render
+    cache: "no-store",       
     headers: {
       "Content-Type": "application/json",
       ...(options.headers || {}),

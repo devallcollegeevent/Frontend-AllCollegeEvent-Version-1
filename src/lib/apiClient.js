@@ -1,10 +1,66 @@
 import api from "./axios";
 
-// USER + ORGANIZER
-export const signupApi = (data) => api.post("/auth/signup", data);
-export const loginApi = (data) => api.post("/auth/login", data);
-export const forgotApi = (data) => api.post("/auth/forgot-password", data);
-export const verifyOtpApi = (data) => api.post("/auth/verify-otp", data);
-export const resetPasswordApi = (data) => api.post("/auth/reset-password", data);
+// Standard API Handler
+async function handleApi(promise) {
+  try {
+    const res = await promise;
 
-export const profileApi = () => api.get("/auth/profile");
+    console.log("=====api paylod",res)
+    return {
+      success: true,
+      data: res.data,
+    };
+  } catch (err) {
+    return {
+      success: false,
+      message: err.response?.data?.message || "Something went wrong",
+      status: err.response?.status || 500,
+    };
+  }
+}
+
+/* ================================
+   AUTH APIs (User )
+================================ */
+
+// SIGNUP
+export const signupApi = async (data) => {
+  return await handleApi(api.post("/auth/signup", data));
+};
+
+// LOGIN
+export const loginApi = async (data) => {
+  return await handleApi(api.post("/auth/login", data));
+};
+
+// FORGOT PASSWORD
+export const forgotApi = async (data) => {
+  return await handleApi(api.post("/auth/forgot-password", data));
+};
+
+// VERIFY OTP
+export const verifyOtpApi = async (data) => {
+  return await handleApi(api.post("/auth/verify-otp", data));
+};
+
+// RESET PASSWORD
+export const resetPasswordApi = async (data) => {
+  return await handleApi(api.post("/auth/reset-password", data));
+};
+
+// PROFILE
+export const profileApi = async () => {
+  return await handleApi(api.get("/auth/profile"));
+};
+
+
+/* ================================
+   AUTH APIs (organizer )
+================================ */
+
+// SIGNUP
+export const organizerSignupApi = async (data) => {
+  // change endpoint if your backend uses different path
+  return await handleApi(api.post("/auth/signup", data));
+};
+

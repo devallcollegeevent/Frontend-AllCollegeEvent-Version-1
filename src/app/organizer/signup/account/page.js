@@ -2,155 +2,181 @@
 
 import "../../organizer-auth.css";
 import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { organizerSignupApi } from "@/lib/apiClient";
+import { toast } from "react-hot-toast";
+import { organizerRole } from "@/const-value/page";
+import { organizerLoginPage } from "@/app/routes";
 
 export default function Page() {
+  const router = useRouter();
+  const params = useSearchParams();
+
+  // read values passed in query string
+  const queryData = {
+    category: params.get("cat") || "",
+    country: params.get("country") || "",
+    state: params.get("state") || "",
+    city: params.get("city") || "",
+    orgName: params.get("orgName") || "",
+  };
+
+  // account fields
   const [domain, setDomain] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
-  const [show1, setShow1] = useState(false);
-  const [show2, setShow2] = useState(false);
-  const [showModal, setShowModal] = useState(false); // 👈 modal state
+  const [showModal, setShowModal] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  function onContinue(e) {
+  async function onContinue(e) {
     e.preventDefault();
-    // if(!domain) return alert('Enter domain mail id');
-    // if(password.length < 6) return alert('Password must be at least 6 chars');
-    // if(password !== confirm) return alert('Passwords do not match');
 
-    setShowModal(true); // 👈 show popup
+    // basic validations
+    if (!domain || !password || !confirm) return toast.error("Fill all fields");
+    if (password !== confirm) return toast.error("Passwords do not match");
+    if (!queryData.category)
+      return toast.error("Category missing. Start again.");
+
+    // build payload — this is what will be sent to backend
+    const payload = {
+      org_cat: queryData.category,
+      country: queryData.country,
+      state: queryData.state,
+      city: queryData.city,
+      org_name: queryData.orgName,
+      email: domain,
+      password: password,
+      type: organizerRole,
+    };
+
+    console.log("======payload", payload);
+
+    try {
+      setLoading(true);
+      const res = await organizerSignupApi(payload);
+
+      if (!res.success) {
+        toast.error(res.message || "Signup failed");
+        return;
+      }
+
+      // success -> show verify modal
+      setShowModal(true);
+    } catch (err) {
+      console.error(err);
+      toast.error("Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function closeModal() {
+    setShowModal(false);
+    router.push(organizerLoginPage);
   }
 
   return (
     <>
-      <div className="container-fluid organizer-shell">
-        <div className="row g-0">
-          <div
-            className="col-lg-6 col-md-6 col-12 organizer-left"
-            style={{
-              backgroundImage: "url('/images/organizer-bg-circles.png')",
-            }}
-          >
-            <img
-              className="organizer-left-img"
-              src="/images/organizer-rocket.png"
-              alt="rocket"
-            />
-          </div>
+      <div className="org-shell">
+        <aside
+          className="org-left"
+          style={{ backgroundImage: "url('/images/organizer-bg-circles.png')" }}
+        >
+          <img
+            className="org-left-img"
+            src="/images/organizer-rocket.png"
+            alt="rocket"
+          />
+        </aside>
 
-          <div className="col-lg-6 col-md-6 col-12 organizer-right">
-            <div className="organizer-card">
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  gap: 10,
-                  marginBottom: 10,
-                }}
-              >
-                <div className="organizer-step active">
-                  <div className="dot">1</div>
-                  <div style={{ fontSize: 12, marginTop: 8 }}>
-                    Organization Category
-                  </div>
-                </div>
-                <div style={{ flex: 1, height: 3, background: "#eee" }}></div>
-                <div className="organizer-step active">
-                  <div className="dot">2</div>
-                  <div style={{ fontSize: 12, marginTop: 8 }}>
-                    Organization Details
-                  </div>
-                </div>
-                <div style={{ flex: 1, height: 3, background: "#eee" }}></div>
-                <div className="organizer-step active">
-                  <div className="dot">3</div>
-                  <div style={{ fontSize: 12, marginTop: 8 }}>
-                    Account Creation
-                  </div>
-                </div>
+        <main className="org-right">
+          <div className="org-card">
+            <div className="org-stepper">
+              <div className="org-step active">
+                <div className="dot">1</div>
+                <div className="label">Organization Category</div>
               </div>
 
-              <h2 className="organizer-title">Account Creation</h2>
-              <div className="organizer-sub">
-                Add your domain mail id and set a password
+              <div className="line active" />
+
+              <div className="org-step active">
+                <div className="dot">2</div>
+                <div className="label">Organization Details</div>
               </div>
 
-              <form onSubmit={onContinue} style={{ padding: "0px 102px" }}>
-                <div className="form-group">
-                  <label className="form-label">Domain Mail ID</label>
-                  <input
-                    className="form-control"
-                    value={domain}
-                    onChange={(e) => setDomain(e.target.value)}
-                    placeholder="Enter your domain"
-                  />
-                </div>
+              <div className="line active" />
 
-                <div className="form-group">
-                  <label className="form-label">Password</label>
-                  <div className="pass-wrap">
-                    <input
-                      className="form-control"
-                      type={show1 ? "text" : "password"}
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      placeholder="Enter your password"
-                    />
-                    <span
-                      className="pass-toggle"
-                      onClick={() => setShow1(!show1)}
-                    >
-                      {show1 ? "Hide" : "Show"}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="form-group">
-                  <label className="form-label">Confirm Password</label>
-                  <div className="pass-wrap">
-                    <input
-                      className="form-control"
-                      type={show2 ? "text" : "password"}
-                      value={confirm}
-                      onChange={(e) => setConfirm(e.target.value)}
-                      placeholder="Re-enter password"
-                    />
-                    <span
-                      className="pass-toggle"
-                      onClick={() => setShow2(!show2)}
-                    >
-                      {show2 ? "Hide" : "Show"}
-                    </span>
-                  </div>
-                </div>
-
-                <div style={{ marginTop: 8, padding: "10px 91px" }}>
-                  <button className="btn-primary-ghost" type="submit">
-                    Verify Your Domain
-                  </button>
-                </div>
-              </form>
-
-              <div className="small-note">
-                Already have an Account!?{" "}
-                <a href="/organizer/login" className="u-organizer-link">
-                  Sign In
-                </a>
+              <div className="org-step active">
+                <div className="dot">3</div>
+                <div className="label">Account Creation</div>
               </div>
             </div>
+
+            <h2 className="org-title">Account Creation</h2>
+            <div className="org-sub">
+              Add your domain mail id and set a password
+            </div>
+
+            <form className="org-form" onSubmit={onContinue}>
+              <div className="form-group full">
+                <label className="form-label">Domain Mail ID</label>
+                <input
+                  className="form-control"
+                  value={domain}
+                  onChange={(e) => setDomain(e.target.value)}
+                  placeholder="admin@yourdomain.com"
+                />
+              </div>
+
+              <div className="form-group full">
+                <label className="form-label">Password</label>
+                <div className="pass-wrap">
+                  <input
+                    className="form-control"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Enter your password"
+                  />
+                </div>
+              </div>
+
+              <div className="form-group full">
+                <label className="form-label">Confirm Password</label>
+                <div className="pass-wrap">
+                  <input
+                    className="form-control"
+                    type="password"
+                    value={confirm}
+                    onChange={(e) => setConfirm(e.target.value)}
+                    placeholder="Re-enter password"
+                  />
+                </div>
+              </div>
+
+              <div className="form-actions">
+                <button
+                  className="btn-primary-ghost"
+                  type="submit"
+                  disabled={loading}
+                >
+                  {loading ? "Saving..." : "Verify Your Domain"}
+                </button>
+              </div>
+
+              <div className="org-foot">
+                Already have an Account!? <a href="/organizer/login">Sign In</a>
+              </div>
+            </form>
           </div>
-        </div>
+        </main>
       </div>
 
-      {/* MODAL POPUP */}
       {showModal && (
         <div className="verify-overlay">
-          <div className="verify-modal">
-            <img
-              src="/images/logo.png"
-              alt="logo"
-              className="verify-logo"
-            />
+          <div onClick={closeModal}>close</div>
+          <div className="verify-modal gradient-bg">
+            <img src="/images/logo.png" alt="logo" className="verify-logo" />
 
             <h2 className="verify-title">Verify your Account</h2>
 

@@ -4,94 +4,106 @@ import { ViewIcon, HideIcon } from '@/components/icons/Icons';
 import '../user-auth.css';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { toast } from 'react-hot-toast';
+import { loginApi } from '@/lib/apiClient';
+import { saveToken } from '@/lib/auth';
+import { loginPage, signupPage } from '@/app/routes';
+import { userRole } from '@/const-value/page';
 
 export default function Page() {
   const router = useRouter();
   const [showPass, setShowPass] = useState(false);
 
-  function onSubmit(e) {
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+    type:userRole
+  });
+
+  async function onSubmit(e) {
     e.preventDefault();
-    alert('Demo login');
+
+    try {
+      const res = await loginApi(form);
+      saveToken(res.data.token);
+      toast.success("Login successful!");
+
+      router.push(loginPage);
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Invalid email or password");
+    }
   }
 
   return (
-    <div className="u-auth-shell container-fluid">
-      <div className="row u-auth-row g-0">
+    <div className="u-auth-shell">
+      <div className="u-auth-left">
+        <img src="/images/auth-login.png" alt="login" />
+      </div>
 
-        {/* LEFT IMAGE */}
-        <div className="col-lg-6 u-auth-left">
-          <img src="/images/auth-login.png" alt="login" />
-        </div>
+      <div className="u-auth-right">
+        <div className="u-auth-card">
+          <h1 className="u-auth-title">Welcome Back</h1>
+          <div className="u-auth-sub">Please login your account</div>
 
-        {/* RIGHT FORM */}
-        <div className="col-lg-6 u-auth-right">
-          <div className="u-auth-card">
-            <h1 className="u-auth-title">Welcome Back</h1>
-            <div className="u-auth-sub">Please login your account</div>
+          <form onSubmit={onSubmit}>
+            <label className="u-auth-muted">Email</label>
+            <input
+              className="u-auth-input"
+              type="email"
+              placeholder="Enter your mail id"
+              value={form.email}
+              onChange={(e)=>setForm({...form, email:e.target.value})}
+              required
+            />
 
-            <form onSubmit={onSubmit}>
-              {/* EMAIL FIELD */}
-              <label className="u-auth-muted">Email</label>
+            <label className="u-auth-muted">Password</label>
+            <div className="u-auth-pass-wrap">
               <input
                 className="u-auth-input"
-                type="email"
-                placeholder="Enter your mail id"
+                type={showPass ? 'text' : 'password'}
+                placeholder="Enter your password"
+                value={form.password}
+                onChange={(e)=>setForm({...form, password:e.target.value})}
                 required
               />
 
-              {/* PASSWORD FIELD */}
-              <label className="u-auth-muted">Password</label>
-              <div className="u-auth-pass-wrap">
-                <input
-                  className="u-auth-input"
-                  type={showPass ? 'text' : 'password'}
-                  placeholder="Enter your password"
-                  required
-                />
+              <span
+                className="u-auth-pass-toggle"
+                onClick={() => setShowPass(!showPass)}
+                role="button"
+                aria-label="toggle password"
+              >
+                {showPass ? <HideIcon /> : <ViewIcon />}
+              </span>
+            </div>
 
-                <span
-                  className="u-auth-pass-toggle"
-                  onClick={() => setShowPass(!showPass)}
-                >
-                  {showPass ? <HideIcon /> : <ViewIcon />}
-                </span>
-              </div>
+            <div className="text-end" style={{ marginBottom: '15px' }}>
+              <a className="u-auth-link" href="/user/forgot-password">
+                Forgot Password!
+              </a>
+            </div>
 
-              {/* FORGOT PASSWORD */}
-              <div className="text-end" style={{ marginBottom: '15px' }}>
-                <a className="u-auth-link" href="/user/forgot-password">
-                  Forgot Password!
-                </a>
-              </div>
+            <button className="u-auth-btn-primary" type="submit">
+              Sign In
+            </button>
 
-              {/* SIGN IN BUTTON */}
-              <button className="u-auth-btn-primary" type="submit">
-                Sign In
-              </button>
+            <div className="u-auth-center u-auth-muted" style={{ margin: '15px 0' }}>
+              — Or —
+            </div>
 
-              {/* OR DIVIDER */}
-              <div className="u-auth-center u-auth-muted" style={{ margin: '15px 0' }}>
-                — Or —
-              </div>
+            <button type="button" className="u-auth-btn-ghost">
+              <img src="/images/google.png" alt="google" style={{ width: 20, marginRight: 8 }} />
+              Continue with Google
+            </button>
 
-              {/* GOOGLE SIGNIN */}
-              <button type="button" className="u-auth-btn-ghost">
-                <img src="/images/google.png" style={{ width: 20, marginRight: 8 }} />
-                Continue with Google
-              </button>
-
-              {/* SIGN UP LINK */}
-              <div className="text-center u-auth-muted" style={{ marginTop: 25 }}>
-                Didn’t have an Account!?{' '}
-                <a className="u-auth-link" href="/user/signup">
-                  Sign Up
-                </a>
-              </div>
-
-            </form>
-          </div>
+            <div className="u-auth-foot" style={{ marginTop: 20 }}>
+              Didn't have an Account!?{' '}
+              <a className="u-auth-link" href={signupPage}>
+                Sign Up
+              </a>
+            </div>
+          </form>
         </div>
-
       </div>
     </div>
   );
