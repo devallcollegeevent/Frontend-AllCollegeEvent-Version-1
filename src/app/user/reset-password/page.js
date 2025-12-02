@@ -61,7 +61,7 @@ export default function Page() {
                 className="u-auth-pass-toggle"
                 onClick={() => setShow1(!show1)}
               >
-                {show1 ? <HideIcon /> : <ViewIcon />}
+                {show1 ? <ViewIcon /> : <HideIcon />}
               </span>
             </div>
 
@@ -79,7 +79,7 @@ export default function Page() {
                 className="u-auth-pass-toggle"
                 onClick={() => setShow2(!show2)}
               >
-                {show2 ? <HideIcon /> : <ViewIcon />}
+                {show2 ? <ViewIcon /> : <HideIcon />}
               </span>
             </div>
 

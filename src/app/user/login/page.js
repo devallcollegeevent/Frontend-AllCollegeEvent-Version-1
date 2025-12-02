@@ -73,7 +73,7 @@ export default function Page() {
                 role="button"
                 aria-label="toggle password"
               >
-                {showPass ? <HideIcon /> : <ViewIcon />}
+                {showPass ?  <ViewIcon /> : <HideIcon />}
               </span>
             </div>
 

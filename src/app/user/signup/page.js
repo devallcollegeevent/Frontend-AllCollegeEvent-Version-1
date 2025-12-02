@@ -98,7 +98,7 @@ export default function Page() {
                 role="button"
                 aria-label="toggle password"
               >
-                {showPass ? <HideIcon /> : <ViewIcon />}
+                {showPass ? <ViewIcon /> : <HideIcon />}
               </span>
             </div>
 
@@ -120,7 +120,7 @@ export default function Page() {
                 role="button"
                 aria-label="toggle confirm password"
               >
-                {showConfirm ? <HideIcon /> : <ViewIcon />}
+                {showConfirm ? <ViewIcon /> : <HideIcon />}
               </span>
             </div>
 

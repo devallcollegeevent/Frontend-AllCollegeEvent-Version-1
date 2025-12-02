@@ -34,11 +34,7 @@ export default function Page() {
   return (
     <div className="org-shell">
       <aside className="org-left">
-        <img
-          className="org-left-img"
-          src="/images/or_login.png"
-          alt="left"
-        />
+        <img className="org-left-img" src="/images/or_login.png" alt="left" />
       </aside>
 
       <main className="org-right">
@@ -68,7 +64,7 @@ export default function Page() {
                   placeholder="Enter your password"
                 />
                 <span className="pass-toggle" onClick={() => setShow1(!show1)}>
-                  {show1 ? <HideIcon /> : <ViewIcon />}
+                  {show1 ? <ViewIcon /> : <HideIcon />}
                 </span>
               </div>
             </div>

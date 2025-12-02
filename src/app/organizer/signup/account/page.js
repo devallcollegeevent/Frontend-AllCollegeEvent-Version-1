@@ -7,6 +7,7 @@ import { organizerSignupApi } from "@/lib/apiClient";
 import { toast } from "react-hot-toast";
 import { organizerRole } from "@/const-value/page";
 import { organizerLoginPage } from "@/app/routes";
+import { ViewIcon, HideIcon } from "@/components/icons/Icons";
 
 export default function Page() {
   const router = useRouter();
@@ -23,14 +24,20 @@ export default function Page() {
   const [domain, setDomain] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
+
+  const [showPass1, setShowPass1] = useState(false);
+  const [showPass2, setShowPass2] = useState(false);
+
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
 
   async function onContinue(e) {
     e.preventDefault();
 
-    if (!domain || !password || !confirm) return toast.error("Fill all fields");
-    if (password !== confirm) return toast.error("Passwords do not match");
+    if (!domain || !password || !confirm)
+      return toast.error("Fill all fields");
+    if (password !== confirm)
+      return toast.error("Passwords do not match");
     if (!queryData.category)
       return toast.error("Category missing. Start again.");
 
@@ -44,8 +51,6 @@ export default function Page() {
       password: password,
       type: organizerRole,
     };
-
-    console.log("======payload", payload);
 
     try {
       setLoading(true);
@@ -128,11 +133,18 @@ export default function Page() {
                 <div className="pass-wrap">
                   <input
                     className="form-control"
-                    type="password"
+                    type={showPass1 ? "text" : "password"}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter your password"
                   />
+                  <span
+                    className="pass-toggle"
+                    onClick={() => setShowPass1(!showPass1)}
+                    role="button"
+                  >
+                    {showPass1 ? <ViewIcon /> : <HideIcon />}
+                  </span>
                 </div>
               </div>
 
@@ -141,11 +153,18 @@ export default function Page() {
                 <div className="pass-wrap">
                   <input
                     className="form-control"
-                    type="password"
+                    type={showPass2 ? "text" : "password"}
                     value={confirm}
                     onChange={(e) => setConfirm(e.target.value)}
-                    placeholder="Re-enter password"
+                    placeholder="Re-enter your password"
                   />
+                  <span
+                    className="pass-toggle"
+                    onClick={() => setShowPass2(!showPass2)}
+                    role="button"
+                  >
+                    {showPass2 ? <ViewIcon /> : <HideIcon /> }
+                  </span>
                 </div>
               </div>
 
@@ -160,7 +179,8 @@ export default function Page() {
               </div>
 
               <div className="org-foot">
-                Already have an Account!? <a href="/organizer/login">Sign In</a>
+                Already have an Account!?{" "}
+                <a href="/organizer/login">Sign In</a>
               </div>
             </form>
           </div>
