@@ -28,7 +28,6 @@ export default function Page() {
     const code = otp.join("");
     if (code.length !== 4) return toast.error("Enter 4 digit code");
 
-    // API CALL
     const res = await verifyOtpApi({ email, otp: code });
 
     if (res.success) {

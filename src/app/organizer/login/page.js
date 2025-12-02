@@ -18,7 +18,6 @@ export default function Page() {
   async function onSubmit(e) {
     e.preventDefault();
     try {
-      // optional: call API
       const res = await loginApi({
         email: domain,
         password,

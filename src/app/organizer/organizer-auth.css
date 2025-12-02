@@ -1,6 +1,5 @@
 @import "../colors.css";
 
-/* ---------- Shell ---------- */
 .org-shell {
   min-height: 100vh;
   display: flex;
@@ -12,7 +11,6 @@
   color: var(--tx-title);
 }
 
-/* Left image (illustration) */
 .org-left {
   flex: 1 1 50%;
   display: flex;
@@ -33,7 +31,6 @@
   display: block;
 }
 
-/* Right content */
 .org-right {
   flex: 1 1 50%;
   display: flex;
@@ -50,7 +47,6 @@
   padding: 0 12px;
 }
 
-/* Stepper */
 .org-stepper {
   display: flex;
   align-items: center;
@@ -108,7 +104,6 @@
   );
 }
 
-/* Titles */
 .org-title {
   font-size: 32px;
   font-weight: var(--fw-bold);
@@ -123,7 +118,6 @@
   text-align: center;
 }
 
-/* Category grid */
 .category-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -175,7 +169,6 @@
   padding: 10px 65px;
 }
 
-/* forms */
 .org-form {
   width: 100%;
 }
@@ -208,14 +201,12 @@
   box-shadow: 0 6px 18px rgba(127, 0, 255, 0.06);
 }
 
-/* two column group */
 .two-col {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
 }
 
-/* pass */
 .pass-wrap {
   position: relative;
   display: flex;
@@ -230,7 +221,6 @@
   color: var(--tx-sub-title);
 }
 
-/* OTP */
 .otp-row {
   display: flex;
   gap: 12px;
@@ -252,7 +242,6 @@
   box-shadow: 0 6px 18px rgba(127, 0, 255, 0.06);
 }
 
-/* Buttons */
 .btn-primary-ghost {
   width: 100%;
   padding: 14px;
@@ -281,7 +270,6 @@
   padding: 10px 65px;
 }
 
-/* footer */
 .org-foot {
   margin-top: 12px;
   text-align: center;
@@ -294,13 +282,10 @@
   text-decoration: none;
 }
 
-/* success card */
 .org-success {
   text-align: center;
 }
 
-/* modal verify */
-/* OVERLAY */
 .verify-overlay {
   position: fixed;
   inset: 0;
@@ -311,10 +296,8 @@
   z-index: 9999;
 }
 
-/* POPUP CARD */
 .verify-modal {
   width: 40%;
-  /* max-width: 900px; */
   padding: 80px 60px;
   border-radius: 40px;
   background: #ffffff;
@@ -335,7 +318,6 @@
   border-radius: 50%;
 }
 
-/* 🔵 Top-left Blue Blob */
 .verify-modal::before {
   top: -120px;
   left: -120px;
@@ -347,7 +329,6 @@
   );
 }
 
-/* 🟣 Bottom-right Purple/Pink Blob */
 .verify-modal::after {
   bottom: -140px;
   right: -140px;
@@ -359,13 +340,11 @@
   );
 }
 
-/* LOGO */
 .verify-logo {
   width: 130px;
   margin-bottom: 20px;
 }
 
-/* TITLE */
 .verify-title {
   font-size: 30px;
   font-weight: 700;
@@ -373,7 +352,6 @@
   color: #111;
 }
 
-/* TEXT */
 .verify-text {
   font-size: 16px;
   color: #555;
@@ -382,7 +360,6 @@
   margin: 0 auto;
 }
 
-/* responsive */
 @media (max-width: 991.98px) {
   .org-shell {
     flex-direction: column;

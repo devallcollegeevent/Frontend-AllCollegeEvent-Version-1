@@ -52,7 +52,6 @@ export default function Page() {
     if (!selected) {
       return alert("Please pick a category");
     }
-    // push to details page with category as query param
    router.push(`${organizerSignupDetailsPage}?cat=${selected}`);
   }
 
@@ -89,7 +88,6 @@ export default function Page() {
             </div>
           </div>
 
-          {/* stepper and headings omitted for brevity */}
           <h2 className="org-title">Organization Category</h2>
           <div className="org-sub">
             Select which category best describes your organization

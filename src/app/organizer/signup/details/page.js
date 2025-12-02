@@ -8,7 +8,7 @@ import {
   getStates,
   getCities,
   getColleges,
-} from "@/lib/locationApi"; // you already have
+} from "@/lib/locationApi"; 
 import { organizerSignupAccountPage } from "@/app/routes";
 import { toast } from "react-hot-toast";
 
@@ -26,7 +26,7 @@ export default function Page() {
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
 
-  const [collegeList, setCollegeList] = useState([]); // 👈 NEW
+  const [collegeList, setCollegeList] = useState([]);
   const [loadingColleges, setLoadingColleges] = useState(false);
 
   const [loadingCountries, setLoadingCountries] = useState(false);
@@ -239,7 +239,6 @@ export default function Page() {
               <div className="form-group full">
                 <label className="form-label">Organization Name</label>
 
-                {/* CATEGORY = COLLEGE → DROPDOWN */}
                 {selectedCat === "college" || selectedCat === "training" ? (
                   <select
                     className="form-control"

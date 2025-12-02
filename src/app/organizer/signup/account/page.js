@@ -12,7 +12,6 @@ export default function Page() {
   const router = useRouter();
   const params = useSearchParams();
 
-  // read values passed in query string
   const queryData = {
     category: params.get("cat") || "",
     country: params.get("country") || "",
@@ -21,7 +20,6 @@ export default function Page() {
     orgName: params.get("orgName") || "",
   };
 
-  // account fields
   const [domain, setDomain] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
@@ -31,13 +29,11 @@ export default function Page() {
   async function onContinue(e) {
     e.preventDefault();
 
-    // basic validations
     if (!domain || !password || !confirm) return toast.error("Fill all fields");
     if (password !== confirm) return toast.error("Passwords do not match");
     if (!queryData.category)
       return toast.error("Category missing. Start again.");
 
-    // build payload — this is what will be sent to backend
     const payload = {
       org_cat: queryData.category,
       country: queryData.country,
@@ -60,7 +56,6 @@ export default function Page() {
         return;
       }
 
-      // success -> show verify modal
       setShowModal(true);
     } catch (err) {
       console.error(err);

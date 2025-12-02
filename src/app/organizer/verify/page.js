@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
 import { verifyEmailApi } from "@/lib/apiClient";
-import "../user-auth.css"; // optional
+import "../verify/verify.css"; 
 
 export default function VerifyPage() {
   const router = useRouter();
@@ -14,7 +14,6 @@ export default function VerifyPage() {
   console.log("check",token)
 
   const [status, setStatus] = useState("loading");
-  // loading | success | error
 
   useEffect(() => {
     async function verify() {
