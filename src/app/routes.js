@@ -23,3 +23,6 @@ export const organizerForgotPasswordPage = "/organizer/forgot-password";
 export const organizerEnterCodePage = "/organizer/forgot-password/enter-code";
 export const organizerResetPasswordPage = "/organizer/reset-password";
 export const organizerResetPasswordSuccessPage = "/organizer/reset-password/success";
+
+export const landingPage = "/dashboard";
+export const organizerEventCreatePage = "/organizer/event/create";

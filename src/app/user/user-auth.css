@@ -81,7 +81,7 @@
 .u-auth-input:focus {
   outline: none;
   border-color: #9a33ff;
-  box-shadow: 0 4px 16px rgba(154,51,255,0.08);
+  box-shadow: 0 4px 16px rgba(154, 51, 255, 0.08);
 }
 
 .u-auth-pass-wrap {
@@ -116,7 +116,7 @@
   width: 100%;
   padding: 14px 18px;
   border-radius: 50px;
-  background: linear-gradient(90deg, var(--btn-primary), #7F00FF);
+  background: linear-gradient(90deg, var(--btn-primary), #7f00ff);
   color: var(--white);
   font-weight: var(--fw-bold);
   border: 0;
@@ -126,7 +126,9 @@
   font-size: 15px;
 }
 
-.u-auth-btn-primary:active { transform: translateY(1px); }
+.u-auth-btn-primary:active {
+  transform: translateY(1px);
+}
 
 .u-auth-btn-ghost {
   width: 100%;
@@ -177,7 +179,7 @@
 
 .u-auth-otp:focus {
   border-color: #9a33ff;
-  box-shadow: 0 6px 18px rgba(154,51,255,0.08);
+  box-shadow: 0 6px 18px rgba(154, 51, 255, 0.08);
 }
 
 .u-auth-pager {
@@ -217,7 +219,17 @@
   font-size: 14px;
   color: var(--tx-sub-title);
 }
-
+.org-foot {
+  margin-top: 12px;
+  text-align: center;
+  color: var(--tx-sub-title);
+  font-size: 14px;
+}
+.org-foot a {
+  color: var(--tx-link);
+  font-weight: 600;
+  text-decoration: none;
+}
 /* --------------------------------------------- */
 /* RESPONSIVE */
 /* --------------------------------------------- */
@@ -251,7 +263,7 @@
 
 @media (max-width: 480px) {
   .u-auth-left {
-    display: none; 
+    display: none;
   }
 
   .u-auth-right {

@@ -5,10 +5,11 @@ import '../user-auth.css';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
-import { loginApi } from '@/lib/apiClient';
+import { googleAthuLoginApi, loginApi } from '@/lib/apiClient';
 import { saveToken } from '@/lib/auth';
-import { loginPage, signupPage } from '@/app/routes';
+import { landingPage, loginPage, signupPage } from '@/app/routes';
 import { userRole } from '@/const-value/page';
+import { GoogleLogin } from '@react-oauth/google';
 
 export default function Page() {
   const router = useRouter();
@@ -28,9 +29,31 @@ export default function Page() {
       saveToken(res.data.token);
       toast.success("Login successful!");
 
-      router.push(loginPage);
+      router.push(landingPage);
     } catch (err) {
       toast.error(err.response?.data?.message || "Invalid email or password");
+    }
+  }
+
+  // GOOGLE LOGIN HANDLER
+  async function handleGoogleSuccess(response) {
+    try {
+      const googleToken = response.credential;
+      console.log("google token :",googleToken)
+
+      const res = await googleAthuLoginApi({
+        google: true,
+        googleToken,
+        type: userRole
+      });
+
+      saveToken(res.data.token);
+
+      toast.success("Google Login Successful!");
+      router.push(landingPage);
+    } catch (err) {
+      toast.error("Google Login Failed");
+      console.log(err);
     }
   }
 
@@ -91,10 +114,13 @@ export default function Page() {
               — Or —
             </div>
 
-            <button type="button" className="u-auth-btn-ghost">
-              <img src="/images/google.png" alt="google" style={{ width: 20, marginRight: 8 }} />
-              Continue with Google
-            </button>
+            {/* GOOGLE LOGIN BUTTON */}
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <GoogleLogin
+                onSuccess={handleGoogleSuccess}
+                onError={() => toast.error("Google Authentication Failed")}
+              />
+            </div>
 
             <div className="u-auth-foot" style={{ marginTop: 20 }}>
               Didn't have an Account!?{' '}

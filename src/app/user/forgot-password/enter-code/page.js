@@ -4,7 +4,7 @@ import "../../user-auth.css";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useRef } from "react";
 import { toast } from "react-hot-toast";
-import { verifyOtpApi } from "@/lib/apiClient"; // optional: if exists
+import { verifyOtpApi, resendOtpApi } from "@/lib/apiClient";
 import { resetPasswordPage } from "@/app/routes";
 import { getEmail } from "@/lib/auth";
 
@@ -12,6 +12,9 @@ export default function Page() {
   const router = useRouter();
   const email = getEmail();
   const [otp, setOtp] = useState(["", "", "", ""]);
+  const [loading, setLoading] = useState(false);
+  const [resendLoading, setResendLoading] = useState(false);
+
   const inputs = [useRef(null), useRef(null), useRef(null), useRef(null)];
 
   function onChange(index, value) {
@@ -26,18 +29,38 @@ export default function Page() {
     e.preventDefault();
 
     const code = otp.join("");
-    if (code.length !== 4) return toast.error("Enter 4 digit code");
 
-    // API CALL
+    if (code.length !== 4) {
+      return toast.error("Enter 4-digit code");
+    }
+
+    setLoading(true);
+
     const res = await verifyOtpApi({ email, otp: code });
+
+    setLoading(false);
 
     if (res.success) {
       toast.success("Code verified");
-
       router.push(resetPasswordPage);
-      setOtp(["", "", "", ""])
     } else {
       toast.error(res.message || "Invalid code");
+    }
+  }
+
+  async function resendCode() {
+    if (!email) return toast.error("Email missing");
+
+    setResendLoading(true);
+
+    const res = await resendOtpApi({ email });
+
+    setResendLoading(false);
+
+    if (res.success) {
+      toast.success("New code sent to your email");
+    } else {
+      toast.error(res.message || "Failed to resend");
     }
   }
 
@@ -69,9 +92,28 @@ export default function Page() {
               ))}
             </div>
 
-            <button className="u-auth-btn-primary" type="submit">
-              Continue
+            <button className="u-auth-btn-primary" type="submit" disabled={loading}>
+              {loading ? "Verifying..." : "Continue"}
             </button>
+
+            {/* RESEND CODE */}
+            <div className="org-foot" style={{ marginTop: 10 }}>
+              Didn't receive the code?{" "}
+              <button
+                type="button"
+                onClick={resendCode}
+                disabled={resendLoading}
+                style={{
+                  border: "none",
+                  background: "none",
+                  color: "#6C2BD9",
+                  cursor: "pointer",
+                  fontWeight: 600,
+                }}
+              >
+                {resendLoading ? "Sending..." : "Resend Code"}
+              </button>
+            </div>
 
             <div style={{ marginTop: 16 }}>
               <div className="u-auth-pager">

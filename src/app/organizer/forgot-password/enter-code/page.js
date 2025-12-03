@@ -2,23 +2,29 @@
 
 import { organizerResetPasswordPage } from "@/app/routes";
 import "../../organizer-auth.css";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
-import { verifyOtpApi } from "@/lib/apiClient";
+import { verifyOtpApi, resendOtpApi } from "@/lib/apiClient";
 import { toast } from "react-hot-toast";
 import { getEmail } from "@/lib/auth";
 
 export default function Page() {
   const router = useRouter();
   const email = getEmail();
+
   const [otp, setOtp] = useState(["", "", "", ""]);
   const refs = [useRef(), useRef(), useRef(), useRef()];
 
+  const [loading, setLoading] = useState(false);
+  const [resendLoading, setResendLoading] = useState(false);
+
   function onChange(i, v) {
     if (!/^\d*$/.test(v)) return;
+
     const next = [...otp];
     next[i] = v.slice(-1);
     setOtp(next);
+
     if (v && i < 3) refs[i + 1].current?.focus();
   }
 
@@ -28,15 +34,33 @@ export default function Page() {
     const code = otp.join("");
     if (code.length !== 4) return toast.error("Enter 4 digit code");
 
+    setLoading(true);
+
     const res = await verifyOtpApi({ email, otp: code });
+
+    setLoading(false);
 
     if (res.success) {
       toast.success("Code verified");
-
       router.push(organizerResetPasswordPage);
-      setOtp(["", "", "", ""]);
     } else {
       toast.error(res.message || "Invalid code");
+    }
+  }
+
+  async function resendCode() {
+    if (!email) return toast.error("Email missing");
+
+    setResendLoading(true);
+
+    const res = await resendOtpApi({ email });
+
+    setResendLoading(false);
+
+    if (res.success) {
+      toast.success("New code sent!");
+    } else {
+      toast.error(res.message || "Could not resend code");
     }
   }
 
@@ -73,13 +97,27 @@ export default function Page() {
             </div>
 
             <div className="form-actions">
-              <button className="btn-primary-ghost" type="submit">
-                Continue
+              <button className="btn-primary-ghost" type="submit" disabled={loading}>
+                {loading ? "Verifying..." : "Continue"}
               </button>
             </div>
 
-            <div className="org-foot">
-              Didn't receive the code? <a href="#">Resend Code</a>
+            <div className="org-foot" style={{ marginTop: 10 }}>
+              Didn't receive the code?{" "}
+              <button
+                type="button"
+                onClick={resendCode}
+                disabled={resendLoading}
+                style={{
+                  border: "none",
+                  background: "none",
+                  color: "#6C2BD9",
+                  cursor: "pointer",
+                  fontWeight: 600,
+                }}
+              >
+                {resendLoading ? "Sending..." : "Resend Code"}
+              </button>
             </div>
           </form>
         </div>

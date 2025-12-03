@@ -1,0 +1,138 @@
+/* -------------------------------------------------- */
+/* CREATE EVENT WRAPPER */
+/* -------------------------------------------------- */
+.create-event-wrapper {
+  min-height: 100vh;
+  padding: 40px;
+  background: #fafafa;
+  font-family: var(--font-main);
+}
+
+.create-event-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--tx-title);
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.create-event-sub {
+  font-size: 15px;
+  color: var(--tx-sub-title);
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+/* -------------------------------------------------- */
+/* FORM CARD */
+/* -------------------------------------------------- */
+.create-event-card {
+  width: 100%;
+  max-width: 750px;
+  margin: 0 auto;
+  padding: 32px;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+  border: 1px solid #eee;
+}
+
+/* -------------------------------------------------- */
+/* INPUTS */
+/* -------------------------------------------------- */
+.ce-field {
+  margin-bottom: 20px;
+}
+
+.ce-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--tx-title);
+  margin-bottom: 8px;
+  display: block;
+}
+
+.ce-input,
+.ce-textarea,
+.ce-select {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid #e6e6e9;
+  background: var(--bg-input);
+  font-size: 14px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.ce-input:focus,
+.ce-textarea:focus,
+.ce-select:focus {
+  border-color: var(--primary-color);
+}
+
+.ce-textarea {
+  min-height: 130px;
+  resize: vertical;
+}
+
+/* -------------------------------------------------- */
+/* FILE UPLOAD */
+/* -------------------------------------------------- */
+.ce-file {
+  padding: 10px 12px;
+  background: #f6f6f6;
+  border-radius: 10px;
+  border: 1px dashed #bbb;
+  cursor: pointer;
+}
+
+.ce-file:hover {
+  border-color: var(--primary-color);
+}
+
+/* -------------------------------------------------- */
+/* TWO COL LAYOUT */
+/* -------------------------------------------------- */
+.ce-row {
+  display: flex;
+  gap: 20px;
+}
+
+.ce-col {
+  flex: 1;
+}
+
+/* -------------------------------------------------- */
+/* SUBMIT BUTTON */
+/* -------------------------------------------------- */
+.ce-btn-submit {
+  width: 100%;
+  padding: 15px;
+  border-radius: 40px;
+  background: linear-gradient(90deg, var(--primary-color), #7f00ff);
+  border: none;
+  color: white;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 25px;
+  box-shadow: 0 8px 20px rgba(127, 0, 255, 0.18);
+}
+
+.ce-btn-submit:hover {
+  opacity: 0.9;
+}
+
+/* -------------------------------------------------- */
+/* RESPONSIVE */
+/* -------------------------------------------------- */
+@media (max-width: 768px) {
+  .create-event-card {
+    padding: 24px;
+  }
+
+  .ce-row {
+    flex-direction: column;
+  }
+}

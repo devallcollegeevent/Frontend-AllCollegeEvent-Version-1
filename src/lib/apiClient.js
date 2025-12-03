@@ -24,33 +24,34 @@ async function handleApi(promise) {
    AUTH APIs (User )
 ================================ */
 
-// SIGNUP
 export const signupApi = async (data) => {
   console.log("0000",data)
   return await handleApi(api.post("/auth/signup", data));
 };
 
-// LOGIN
 export const loginApi = async (data) => {
   return await handleApi(api.post("/auth/login", data));
 };
+export const googleAthuLoginApi = async (data) => {
+  return await handleApi(api.post("/auth/google-login", data));
+};
 
-// FORGOT PASSWORD
 export const forgotApi = async (data) => {
   return await handleApi(api.post("/auth/forgot-password", data));
 };
 
-// VERIFY OTP
 export const verifyOtpApi = async (data) => {
   return await handleApi(api.post("/auth/verify-otp", data));
 };
 
-// RESET PASSWORD
+export const resendOtpApi = async (data) => {
+  return await handleApi(api.post("/auth/resend-otp", data));
+};
+
 export const resetPasswordApi = async (data) => {
   return await handleApi(api.post("/auth/reset-password", data));
 };
 
-// PROFILE
 export const profileApi = async () => {
   return await handleApi(api.get("/auth/profile"));
 };
@@ -60,18 +61,58 @@ export const profileApi = async () => {
    AUTH APIs (organizer )
 ================================ */
 
-// SIGNUP
 export const organizerSignupApi = async (data) => {
-  // change endpoint if your backend uses different path
   return await handleApi(api.post("/auth/signup", data));
 };
 
 export const verifyEmailApi = async (token) => {
-  console.log("00000",token)
   return await handleApi(
     api.get(`/auth/org/verify?token=${encodeURIComponent(token)}`)
   );
 };
+
+
+/* ================================
+   EVENT APIs
+================================ */
+
+export const createEventApi = async (data) => {
+  return await handleApi(
+    api.post("/event/create", data, {
+      headers: { "Content-Type": "multipart/form-data" }
+    })
+  );
+};
+
+export const organizerEventsApi = async () => {
+  return await handleApi(api.get("/event/organizer-events"));
+};
+
+export const userEventsApi = async () => {
+  return await handleApi(api.get("/event/user-events"));
+};
+
+export const getAllEventsApi = async () => {
+  return await handleApi(api.get("/event/all"));
+};
+
+export const getEventByIdApi = async (id) => {
+  return await handleApi(api.get(`/event/${id}`));
+};
+
+export const updateEventApi = async (id, data) => {
+  return await handleApi(
+    api.put(`/event/update/${id}`, data, {
+      headers: { "Content-Type": "multipart/form-data" }
+    })
+  );
+};
+
+export const deleteEventApi = async (id) => {
+  return await handleApi(api.delete(`/event/delete/${id}`));
+};
+
+
 
 
 
