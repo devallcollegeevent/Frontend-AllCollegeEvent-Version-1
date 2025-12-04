@@ -39,7 +39,12 @@
   padding: 0px 40px;
   box-sizing: border-box;
 }
-
+.u-auth-foot {
+  margin-top: 12px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--tx-sub-title);
+}
 .org-card {
   width: 100%;
   max-width: 560px;

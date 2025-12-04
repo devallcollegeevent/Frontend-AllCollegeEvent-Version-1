@@ -5,9 +5,6 @@ export function middleware(req) {
 
   console.log("🔥 Middleware running for:", path);
 
-  const token = req.cookies.get("token")?.value;
-  const role = req.cookies.get("role")?.value;
-
 
   const publicRoutes = [
     "/",
@@ -37,10 +34,7 @@ export function middleware(req) {
   // =====================================
   // BLOCK IF NOT LOGGED IN
   // =====================================
-  if (!token) {
-    console.log("No token → redirect to /user/login");
-    return NextResponse.redirect(new URL("/user/login", req.url));
-  }
+
 
   // =====================================
   // USER PROTECTION

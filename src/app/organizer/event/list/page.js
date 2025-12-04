@@ -108,16 +108,16 @@ export default function OrganizerEventListPage() {
         }}
       >
         {events.map((ev) => {
-          const id = ev._id || ev.id;
-          const title = ev.event_title || "Untitled Event";
-          const city = ev.city || ev.venue || "Unknown";
-          const date = ev.event_date || "N/A";
+          const id = ev.identity || ev.identity;
+          const title = ev.title || "Untitled Event";
+          const city = ev.venue || ev.venue || "Unknown";
+          const date = ev.eventDate || "N/A";
           const mode = ev.mode || "N/A";
-          const price = ev.price || 0;
+          const price = ev.price || 500;
 
-          const image = ev.image?.startsWith("http")
-            ? ev.image
-            : ev.image
+          const image = ev.bannerImage?.startsWith("http")
+            ? ev.bannerImage
+            : ev.bannerImage
             ? `/uploads/${ev.image}`
             : "/images/default-event.jpg";
 

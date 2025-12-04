@@ -14,7 +14,7 @@ import {
   TrainingIcon,
   UniversityIcon,
 } from "@/components/icons/Icons";
-import { organizerSignupDetailsPage } from "@/app/routes";
+import { organizerLoginPage, organizerSignupDetailsPage } from "@/app/routes";
 
 const CATEGORIES = [
   { id: "college", title: "College / University", icon: <UniversityIcon /> },
@@ -52,7 +52,7 @@ export default function Page() {
     if (!selected) {
       return alert("Please pick a category");
     }
-   router.push(`${organizerSignupDetailsPage}?cat=${selected}`);
+    router.push(`${organizerSignupDetailsPage}?cat=${selected}`);
   }
 
   return (
@@ -113,6 +113,12 @@ export default function Page() {
             <button className="btn-primary-ghost" onClick={onContinue}>
               Continue
             </button>
+          </div>
+          <div className="u-auth-foot">
+            Already have an Account!?{" "}
+            <a className="u-auth-link" href={organizerLoginPage}>
+              Sign In
+            </a>
           </div>
         </div>
       </main>
