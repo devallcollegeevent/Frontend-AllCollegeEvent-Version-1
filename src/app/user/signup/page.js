@@ -3,7 +3,6 @@
 import "../user-auth.css";
 import { useState } from "react";
 import { ViewIcon, HideIcon } from "@/components/icons/Icons";
-import { saveToken } from "@/lib/auth";
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
 import { signupApi } from "@/lib/apiClient";
@@ -40,8 +39,6 @@ export default function Page() {
       };
 
       const res = await signupApi(payload);
-
-      saveToken(res.data.token);
       toast.success("Signup successful!");
 
       router.push(loginPage);

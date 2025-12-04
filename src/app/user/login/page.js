@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { ViewIcon, HideIcon } from '@/components/icons/Icons';
 import '../user-auth.css';
@@ -7,39 +7,47 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
 import { googleAthuLoginApi, loginApi } from '@/lib/apiClient';
 import { saveToken } from '@/lib/auth';
-import { landingPage, loginPage, signupPage } from '@/app/routes';
+import { landingPage, signupPage } from '@/app/routes';
 import { userRole } from '@/const-value/page';
 import { GoogleLogin } from '@react-oauth/google';
+import { useDispatch } from "react-redux";
+import { loginSuccess } from "@/store/authSlice";
 
 export default function Page() {
   const router = useRouter();
+  const dispatch = useDispatch();
   const [showPass, setShowPass] = useState(false);
 
   const [form, setForm] = useState({
     email: "",
     password: "",
-    type:userRole
+    type: userRole
   });
 
-  async function onSubmit(e) {
+  // NORMAL LOGIN
+  const onSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      const res = await loginApi(form);
-      saveToken(res.data.token);
-      toast.success("Login successful!");
+    const res = await loginApi(form);
 
-      router.push(landingPage);
-    } catch (err) {
-      toast.error(err.response?.data?.message || "Invalid email or password");
+    if (!res.success) {
+      toast.error(res.message || "Login Failed");
+      return;
     }
-  }
 
-  // GOOGLE LOGIN HANDLER
-  async function handleGoogleSuccess(response) {
+    dispatch(loginSuccess(res.data.data)); 
+    saveToken(res.data.token);
+    document.cookie = `token=${res.data.token}; path=/; max-age=${60 * 60 * 24 * 7}`;
+    document.cookie = `role=user; path=/;`;
+
+    toast.success("Login Successful!");
+    router.push("/user/event-list");
+  };
+
+  // GOOGLE LOGIN
+  const handleGoogleSuccess = async (response) => {
     try {
       const googleToken = response.credential;
-      console.log("google token :",googleToken)
 
       const res = await googleAthuLoginApi({
         google: true,
@@ -47,15 +55,22 @@ export default function Page() {
         type: userRole
       });
 
+      if (!res.success) {
+        toast.error("Google Login Failed");
+        return;
+      }
+
       saveToken(res.data.token);
+      dispatch(loginSuccess(res.data.data));
+
+      document.cookie = `role=user; path=/;`;
 
       toast.success("Google Login Successful!");
-      router.push(landingPage);
+      router.push("/user/event-list");
     } catch (err) {
       toast.error("Google Login Failed");
-      console.log(err);
     }
-  }
+  };
 
   return (
     <div className="u-auth-shell">
@@ -89,14 +104,11 @@ export default function Page() {
                 onChange={(e)=>setForm({...form, password:e.target.value})}
                 required
               />
-
               <span
                 className="u-auth-pass-toggle"
                 onClick={() => setShowPass(!showPass)}
-                role="button"
-                aria-label="toggle password"
               >
-                {showPass ?  <ViewIcon /> : <HideIcon />}
+                {showPass ? <ViewIcon /> : <HideIcon />}
               </span>
             </div>
 
@@ -111,10 +123,9 @@ export default function Page() {
             </button>
 
             <div className="u-auth-center u-auth-muted" style={{ margin: '15px 0' }}>
-              — Or —
+              — Or —  
             </div>
 
-            {/* GOOGLE LOGIN BUTTON */}
             <div style={{ display: "flex", justifyContent: "center" }}>
               <GoogleLogin
                 onSuccess={handleGoogleSuccess}
@@ -123,7 +134,7 @@ export default function Page() {
             </div>
 
             <div className="u-auth-foot" style={{ marginTop: 20 }}>
-              Didn't have an Account!?{' '}
+              Didn't have an Account?{' '}
               <a className="u-auth-link" href={signupPage}>
                 Sign Up
               </a>

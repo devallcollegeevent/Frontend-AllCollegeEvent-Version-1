@@ -8,7 +8,7 @@ import { loginApi } from "@/lib/apiClient";
 import { saveToken } from "@/lib/auth";
 import { toast } from "react-hot-toast";
 import { organizerRole } from "@/const-value/page";
-import { organizerSignupCategoryPage } from "@/app/routes";
+import { landingPage, organizerSignupCategoryPage } from "@/app/routes";
 
 export default function Page() {
   const router = useRouter();
@@ -24,9 +24,19 @@ export default function Page() {
         password,
         type: organizerRole,
       });
+
+      if (!res.success) {
+        toast.error("Invalid credentials");
+        return;
+      }
+
       saveToken(res.data.token);
-      toast.success("successfully organizer Logged in ");
-      router.push("/organizer/dashboard");
+
+      document.cookie = `token=${res.data.token}; path=/; max-age=${60 * 60 * 24 * 7}`;
+      document.cookie = `role=organizer; path=/;`;
+
+      toast.success("Organizer Logged In Successfully!");
+      router.push("/organizer/event/list");
     } catch (err) {
       toast.error("Invalid credentials");
     }

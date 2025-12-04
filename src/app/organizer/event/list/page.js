@@ -1,134 +1,159 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import "./event-list.css";
-import { organizerEventsApi, deleteEventApi } from "@/lib/apiClient";
+import { getOrganizerEventsApi, deleteEventApi } from "@/lib/apiClient";
 import { toast } from "react-hot-toast";
+import { organizerEventCreatePage, organizerLoginPage } from "@/app/routes";
+import { logoutUser } from "@/lib/logout";
+import { getUserData } from "@/lib/auth";
+
 import { useRouter } from "next/navigation";
-import { organizerEventCreatePage } from "@/app/routes";
+import { useEffect, useState } from "react";
 
-const OrganizerEventListPage = () => {
+export default function OrganizerEventListPage() {
   const router = useRouter();
-
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
 
-  // Load events
+  const userData = getUserData();  
+  const organizerId = userData?.identity;  // <-- IMPORTANT
+
+  // LOAD EVENTS
   const loadEvents = async () => {
-    setLoading(true);
-    setError("");
-    try {
-      const res = await organizerEventsApi();
-      if (res.success) {
-        // assume API returns array in res.data
-        setEvents(Array.isArray(res.data) ? res.data : res.data?.events || []);
-      } else {
-        setError(res.message || "Failed to load events");
-      }
-    } catch (err) {
-      console.error(err);
-      setError("Failed to load events");
-    } finally {
-      setLoading(false);
+    if (!organizerId) {
+      toast.error("Organizer not logged in");
+      router.push(organizerLoginPage);
+      return;
     }
+
+    setLoading(true);
+
+    const res = await getOrganizerEventsApi(organizerId);
+
+    if (res.success) {
+      const list = Array.isArray(res.data) ? res.data : res.data?.events || [];
+      setEvents(list);
+    } else {
+      toast.error("Failed to load events");
+    }
+
+    setLoading(false);
   };
 
   useEffect(() => {
     loadEvents();
   }, []);
 
-  // Delete handler
-  const handleDelete = async (id) => {
-    const ok = confirm("Are you sure you want to delete this event?");
-    if (!ok) return;
-
-    try {
-      const res = await deleteEventApi(id);
-      if (res.success) {
-        toast.success("Event deleted");
-        // remove from UI
-        setEvents((prev) => prev.filter((ev) => ev.id !== id && ev._id !== id));
-      } else {
-        toast.error(res.message || "Delete failed");
-      }
-    } catch (err) {
-      console.error(err);
-      toast.error("Delete failed");
-    }
+  const handleLogout = () => {
+    logoutUser();
+    router.push(organizerLoginPage);
   };
 
-  // Navigate to create/edit/view
-  const goToCreate = () => router.push(organizerEventCreatePage);
-  const goToEdit = (id) => router.push(`/organizer/event/edit/${id}`);
-  const goToView = (id) => router.push(`/organizer/event/${id}`);
-
   return (
-    <div className="evlist-shell">
-      <div className="evlist-header">
-        <h1 className="evlist-title">My Events</h1>
-        <button className="evlist-create-btn" onClick={goToCreate}>
+    <div style={{ padding: 25 }}>
+      
+      {/* HEADER */}
+      <button
+        onClick={handleLogout}
+        style={{
+          padding: "8px 16px",
+          background: "#ff4444",
+          color: "#fff",
+          borderRadius: "10px",
+          marginBottom: 20,
+          cursor: "pointer",
+          border: "none",
+        }}
+      >
+        Logout
+      </button>
+
+      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 10 }}>
+        <h1 style={{ fontSize: 26, fontWeight: "700" }}>My Events</h1>
+
+        <button
+          onClick={() => router.push(organizerEventCreatePage)}
+          style={{
+            padding: "10px 18px",
+            background: "#7f00ff",
+            color: "#fff",
+            borderRadius: "10px",
+            border: "none",
+            fontWeight: "600",
+            cursor: "pointer",
+          }}
+        >
           + Create Event
         </button>
       </div>
 
-      {loading && <div className="evlist-empty">Loading events...</div>}
+      {/* LOADING */}
+      {loading && (
+        <div style={{ marginTop: 40, textAlign: "center" }}>Loading...</div>
+      )}
 
-      {!loading && error && <div className="evlist-empty evlist-error">{error}</div>}
-
-      {!loading && !error && events.length === 0 && (
-        <div className="evlist-empty">
-          No events found. <button className="link-btn" onClick={goToCreate}>Create your first event</button>
+      {/* NO EVENTS */}
+      {!loading && events.length === 0 && (
+        <div style={{ marginTop: 40, textAlign: "center", fontSize: 18 }}>
+          No events found for this organizer
         </div>
       )}
 
-      <div className="evlist-grid">
+      {/* GRID */}
+      <div
+        style={{
+          marginTop: 30,
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+          gap: 25,
+        }}
+      >
         {events.map((ev) => {
-          // support both id or _id shapes
-          const id = ev.id ?? ev._id ?? ev.event_id;
-          const title = ev.event_title ?? ev.title ?? ev.name ?? "Untitled Event";
-          const description = ev.description ?? "";
-          const date = ev.event_date ?? ev.date ?? "";
-          const time = ev.event_time ?? ev.time ?? "";
-          const mode = ev.mode ?? "";
-          const venue = ev.venue ?? "";
-          const image = ev.image ?? ev.banner ?? ev.image_url ?? null;
+          const id = ev._id || ev.id;
+          const title = ev.event_title || "Untitled Event";
+          const city = ev.city || ev.venue || "Unknown";
+          const date = ev.event_date || "N/A";
+          const mode = ev.mode || "N/A";
+          const price = ev.price || 0;
+
+          const image = ev.image?.startsWith("http")
+            ? ev.image
+            : ev.image
+            ? `/uploads/${ev.image}`
+            : "/images/default-event.jpg";
 
           return (
-            <div key={id} className="ev-card">
-              <div className="ev-card-media">
-                {image ? (
-                  // if the API returns filename, you might need to prefix baseURL; adjust if needed
-                  <img src={image.startsWith("http") ? image : `/uploads/${image}`} alt={title} />
-                ) : (
-                  <div className="ev-card-noimg">No Image</div>
-                )}
-              </div>
+            <div
+              key={id}
+              style={{
+                background: "#fff",
+                borderRadius: 18,
+                border: "1px solid #eaeaea",
+                padding: 12,
+                boxShadow: "0 4px 18px rgba(0,0,0,0.06)",
+                position: "relative",
+              }}
+            >
+              <img
+                src={image}
+                style={{
+                  width: "100%",
+                  height: 160,
+                  borderRadius: 12,
+                  objectFit: "cover",
+                }}
+              />
 
-              <div className="ev-card-body">
-                <h3 className="ev-card-title">{title}</h3>
-                <div className="ev-card-meta">
-                  <span>{date ? `${date}` : "Date N/A"}</span>
-                  <span>{time ? ` • ${time}` : ""}</span>
-                  <span className="ev-mode">{mode}</span>
-                </div>
+              <h3 style={{ fontSize: 17, fontWeight: 700, margin: "10px 0 6px" }}>
+                {title}
+              </h3>
 
-                <div className="ev-card-venue">{venue}</div>
-
-                <p className="ev-card-desc">{description.length > 140 ? description.slice(0, 140) + "..." : description}</p>
-
-                <div className="ev-card-actions">
-                  <button className="btn-ghost" onClick={() => goToView(id)}>View</button>
-                  <button className="btn-outline" onClick={() => goToEdit(id)}>Edit</button>
-                  <button className="btn-danger" onClick={() => handleDelete(id)}>Delete</button>
-                </div>
-              </div>
+              <div>📍 {city}</div>
+              <div>💰 ₹{price}</div>
+              <div>📅 {date} • {mode}</div>
             </div>
           );
         })}
       </div>
     </div>
   );
-};
-
-export default OrganizerEventListPage;
+}

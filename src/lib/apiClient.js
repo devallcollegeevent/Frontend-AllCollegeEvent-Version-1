@@ -84,16 +84,17 @@ export const createEventApi = async (data) => {
   );
 };
 
-export const organizerEventsApi = async () => {
-  return await handleApi(api.get("/event/organizer-events"));
+export const getOrganizerEventsApi = async (orgId) => {
+  return await handleApi(api.get(`/org/${orgId}/eve`));
 };
+
 
 export const userEventsApi = async () => {
   return await handleApi(api.get("/event/user-events"));
 };
 
 export const getAllEventsApi = async () => {
-  return await handleApi(api.get("/event/all"));
+  return await handleApi(api.get("/org/eve"));
 };
 
 export const getEventByIdApi = async (id) => {
