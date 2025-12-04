@@ -26,34 +26,34 @@ async function handleApi(promise) {
 
 export const signupApi = async (data) => {
   console.log("0000",data)
-  return await handleApi(api.post("/auth/signup", data));
+  return await handleApi(api.post("/acc/signup", data));
 };
 
 export const loginApi = async (data) => {
-  return await handleApi(api.post("/auth/login", data));
+  return await handleApi(api.post("/acc/login", data));
 };
 export const googleAthuLoginApi = async (data) => {
-  return await handleApi(api.post("/auth/google-login", data));
+  return await handleApi(api.post("/acc/google-login", data));
 };
 
 export const forgotApi = async (data) => {
-  return await handleApi(api.post("/auth/forgot-password", data));
+  return await handleApi(api.post("/acc/forgot-password", data));
 };
 
 export const verifyOtpApi = async (data) => {
-  return await handleApi(api.post("/auth/verify-otp", data));
+  return await handleApi(api.post("/acc/verify-otp", data));
 };
 
 export const resendOtpApi = async (data) => {
-  return await handleApi(api.post("/auth/resend-otp", data));
+  return await handleApi(api.post("/acc/resend-otp", data));
 };
 
 export const resetPasswordApi = async (data) => {
-  return await handleApi(api.post("/auth/reset-password", data));
+  return await handleApi(api.post("/acc/reset-password", data));
 };
 
 export const profileApi = async () => {
-  return await handleApi(api.get("/auth/profile"));
+  return await handleApi(api.get("/acc/profile"));
 };
 
 
@@ -62,12 +62,12 @@ export const profileApi = async () => {
 ================================ */
 
 export const organizerSignupApi = async (data) => {
-  return await handleApi(api.post("/auth/signup", data));
+  return await handleApi(api.post("/acc/signup", data));
 };
 
 export const verifyEmailApi = async (token) => {
   return await handleApi(
-    api.get(`/auth/org/verify?token=${encodeURIComponent(token)}`)
+    api.get(`/acc/org/verify?token=${encodeURIComponent(token)}`)
   );
 };
 
@@ -78,7 +78,7 @@ export const verifyEmailApi = async (token) => {
 
 export const createEventApi = async (data) => {
   return await handleApi(
-    api.post("/event/create", data, {
+    api.post("/org/eve/create", data, {
       headers: { "Content-Type": "multipart/form-data" }
     })
   );

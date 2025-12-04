@@ -13,8 +13,8 @@ export const resetPasswordSuccessPage = "/user/reset-password/success";
 // ORGANIZER AUTH ROUTES
 // ==================================
 
-export const organizerSignupCategoryPage = "/organizer/signup";
 export const organizerLoginPage = "/organizer/login";
+export const organizerSignupCategoryPage = "/organizer/signup/category";
 export const organizerSignupDetailsPage = "/organizer/signup/details";
 export const organizerSignupAccountPage = "/organizer/signup/account";
 export const organizerSignupVerifyPage = "/organizer/signup/verify"
@@ -26,3 +26,4 @@ export const organizerResetPasswordSuccessPage = "/organizer/reset-password/succ
 
 export const landingPage = "/dashboard";
 export const organizerEventCreatePage = "/organizer/event/create";
+export const organizerEventListPage = "/organizer/event/list";

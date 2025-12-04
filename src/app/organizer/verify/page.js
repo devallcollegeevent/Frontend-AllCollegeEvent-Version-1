@@ -5,6 +5,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
 import { verifyEmailApi } from "@/lib/apiClient";
 import "../verify/verify.css"; 
+import { landingPage, organizerLoginPage } from "@/app/routes";
 
 export default function VerifyPage() {
   const router = useRouter();
@@ -53,7 +54,7 @@ export default function VerifyPage() {
 
             <button
               className="u-auth-btn-primary"
-              onClick={() => router.push("/user/login")}
+              onClick={() => router.push(organizerLoginPage)}
             >
               Go to Login
             </button>
@@ -69,7 +70,7 @@ export default function VerifyPage() {
 
             <button
               className="u-auth-btn-primary"
-              onClick={() => router.push("/user/login")}
+              onClick={() => router.push(organizerLoginPage)}
             >
               Go to Login
             </button>

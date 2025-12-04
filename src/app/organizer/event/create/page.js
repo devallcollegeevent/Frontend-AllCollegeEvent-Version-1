@@ -2,8 +2,21 @@
 
 import { useState } from "react";
 import "./create-event.css";
+import { createEventApi } from "@/lib/apiClient";
+import { toast } from "react-hot-toast";
+import { useRouter } from "next/navigation";
+import { getUserData } from "@/lib/auth";
 
-export default function CreateEventPage() {
+const CreateEventPage = () => {
+  const router = useRouter();
+  const userData = getUserData(); // decoded token user data
+
+  // If organizer not logged in → block
+  if (!userData) {
+    toast.error("Please login as organizer");
+    if (typeof window !== "undefined") router.push("/organizer/login");
+  }
+
   const [eventTitle, setEventTitle] = useState("");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState(null);
@@ -13,31 +26,62 @@ export default function CreateEventPage() {
   const [mode, setMode] = useState("");
   const [venue, setVenue] = useState("");
 
-  function onImageSelect(e) {
+  // Image Selector
+  const onImageSelect = (e) => {
     const file = e.target.files[0];
     setImage(file);
 
     if (file) {
       setPreview(URL.createObjectURL(file));
     }
-  }
+  };
 
-  function onSubmit(e) {
+  // Submit Handler
+  const onSubmit = async (e) => {
     e.preventDefault();
 
-    const payload = {
-      event_title: eventTitle,
-      description,
-      event_date: eventDate,
-      event_time: eventTime,
-      mode,
-      venue,
-      image: image ? image.name : null,
-    };
+    if (!eventTitle || !description || !eventDate || !eventTime || !mode) {
+      return toast.error("Please fill all fields");
+    }
 
-    console.log("===== EVENT CREATE PAYLOAD =====");
-    console.log(payload);
-  }
+    if ((mode === "offline" || mode === "hybrid") && !venue) {
+      return toast.error("Venue is required for offline/hybrid events");
+    }
+
+    if (!userData?.id) {
+      return toast.error("Organizer ID not found! Login again.");
+    }
+
+    // Create FormData
+    const formData = new FormData();
+    formData.append("event_title", eventTitle);
+    formData.append("description", description);
+    formData.append("event_date", eventDate);
+    formData.append("event_time", eventTime);
+    formData.append("mode", mode);
+    formData.append("venue", venue);
+    formData.append("org_id", userData.id); // organizer ID from token
+
+    if (image) {
+      formData.append("image", image);
+    }
+
+    // Debugging (important)
+    console.log("====== FORMDATA SENT ======");
+    for (let pair of formData.entries()) {
+      console.log(pair[0], pair[1]);
+    }
+
+    // API CALL
+    const res = await createEventApi(formData);
+
+    if (res.success) {
+      toast.success("Event Created Successfully!");
+      router.push("/dashboard");
+    } else {
+      toast.error(res.message || "Event creation failed");
+    }
+  };
 
   return (
     <div className="create-event-wrapper">
@@ -93,7 +137,6 @@ export default function CreateEventPage() {
                   objectFit: "contain",
                   borderRadius: "12px",
                   border: "1px solid #ddd",
-                  background: "black",
                   marginBottom: "30px",
                 }}
               />
@@ -150,7 +193,7 @@ export default function CreateEventPage() {
                 value={venue}
                 onChange={(e) => setVenue(e.target.value)}
                 placeholder="Enter venue location"
-                required={mode !== "online"}
+                required
               />
             </div>
           )}
@@ -161,4 +204,6 @@ export default function CreateEventPage() {
       </div>
     </div>
   );
-}
+};
+
+export default CreateEventPage;

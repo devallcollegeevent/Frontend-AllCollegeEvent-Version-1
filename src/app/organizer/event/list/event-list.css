@@ -1,0 +1,167 @@
+/* Event List - Organizer (small & clean) */
+
+.evlist-shell {
+  padding: 28px;
+  min-height: 100vh;
+  background: var(--bg-light);
+  font-family: var(--font-main);
+}
+
+.evlist-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.evlist-title {
+  margin: 0;
+  font-size: 26px;
+  color: var(--tx-title);
+  font-weight: 700;
+}
+
+.evlist-create-btn {
+  background: linear-gradient(90deg, var(--primary-color), #7f00ff);
+  color: #fff;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(127, 0, 255, 0.12);
+}
+
+.evlist-empty {
+  text-align: center;
+  padding: 40px 10px;
+  color: var(--tx-sub-title);
+}
+
+.evlist-error {
+  color: crimson;
+}
+
+/* Grid */
+.evlist-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+/* Card */
+.ev-card {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+  border: 1px solid #eee;
+  display: flex;
+  flex-direction: column;
+}
+
+.ev-card-media {
+  height: 160px;
+  background: #f6f7fb;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+}
+
+.ev-card-media img {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.ev-card-noimg{
+  color: #888;
+  font-size: 14px;
+}
+
+.ev-card-body {
+  padding: 14px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  flex:1;
+}
+
+.ev-card-title {
+  font-size: 16px;
+  margin: 0;
+  color: var(--tx-title);
+  font-weight: 700;
+}
+
+.ev-card-meta {
+  display:flex;
+  gap:8px;
+  font-size: 13px;
+  color: var(--tx-sub-title);
+  align-items:center;
+}
+
+.ev-mode{
+  margin-left:auto;
+  text-transform:capitalize;
+  font-weight:600;
+  color: var(--primary-color);
+}
+
+.ev-card-venue{
+  font-size:13px;
+  color: #555;
+}
+
+.ev-card-desc{
+  font-size: 13px;
+  color: var(--tx-sub-title);
+  margin:0;
+  flex:1;
+}
+
+/* Actions */
+.ev-card-actions {
+  display:flex;
+  gap:8px;
+  margin-top:6px;
+}
+
+.btn-ghost {
+  background: transparent;
+  border: 1px solid #eee;
+  padding: 8px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-outline {
+  background: #fff;
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
+  padding: 8px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-danger {
+  background: #ff4d4f;
+  border: none;
+  color: white;
+  padding: 8px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .evlist-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 576px) {
+  .evlist-grid { grid-template-columns: 1fr; }
+  .evlist-header { flex-direction: column; gap:12px; align-items: flex-start; }
+  .evlist-create-btn { width: 100%; }
+}
