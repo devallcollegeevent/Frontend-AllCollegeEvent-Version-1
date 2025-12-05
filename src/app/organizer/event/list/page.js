@@ -15,9 +15,8 @@ export default function OrganizerEventListPage() {
   const [loading, setLoading] = useState(true);
 
   const userData = getUserData();  
-  const organizerId = userData?.identity;  // <-- IMPORTANT
+  const organizerId = userData?.identity; 
 
-  // LOAD EVENTS
   const loadEvents = async () => {
     if (!organizerId) {
       toast.error("Organizer not logged in");
@@ -51,7 +50,6 @@ export default function OrganizerEventListPage() {
   return (
     <div style={{ padding: 25 }}>
       
-      {/* HEADER */}
       <button
         onClick={handleLogout}
         style={{
@@ -86,19 +84,16 @@ export default function OrganizerEventListPage() {
         </button>
       </div>
 
-      {/* LOADING */}
       {loading && (
         <div style={{ marginTop: 40, textAlign: "center" }}>Loading...</div>
       )}
 
-      {/* NO EVENTS */}
       {!loading && events.length === 0 && (
         <div style={{ marginTop: 40, textAlign: "center", fontSize: 18 }}>
           No events found for this organizer
         </div>
       )}
 
-      {/* GRID */}
       <div
         style={{
           marginTop: 30,
@@ -115,11 +110,7 @@ export default function OrganizerEventListPage() {
           const mode = ev.mode || "N/A";
           const price = ev.price || 500;
 
-          const image = ev.bannerImage?.startsWith("http")
-            ? ev.bannerImage
-            : ev.bannerImage
-            ? `/uploads/${ev.image}`
-            : "/images/default-event.jpg";
+          const image = ev.bannerImage || "==="
 
           return (
             <div

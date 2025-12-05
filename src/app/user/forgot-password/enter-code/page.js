@@ -96,7 +96,6 @@ export default function Page() {
               {loading ? "Verifying..." : "Continue"}
             </button>
 
-            {/* RESEND CODE */}
             <div className="org-foot" style={{ marginTop: 10 }}>
               Didn't receive the code?{" "}
               <button

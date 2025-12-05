@@ -9,9 +9,8 @@ import { getUserData } from "@/lib/auth";
 
 const CreateEventPage = () => {
   const router = useRouter();
-  const userData = getUserData(); // decoded JWT
+  const userData = getUserData(); 
 
-  // Block if not logged in
   if (!userData) {
     if (typeof window !== "undefined") {
       toast.error("Please login as organizer");
@@ -28,7 +27,6 @@ const CreateEventPage = () => {
   const [mode, setMode] = useState("");
   const [venue, setVenue] = useState("");
 
-  // IMAGE PREVIEW
   const onImageSelect = (e) => {
     const file = e.target.files[0];
     setImage(file);
@@ -36,7 +34,6 @@ const CreateEventPage = () => {
     if (file) setPreview(URL.createObjectURL(file));
   };
 
-  // SUBMIT FORM
   const onSubmit = async (e) => {
     e.preventDefault();
 
@@ -49,7 +46,6 @@ const CreateEventPage = () => {
     if (!userData?.identity)
       return toast.error("Organizer ID missing");
 
-    // CREATE FORMDATA
     const formData = new FormData();
     formData.append("event_title", eventTitle);
     formData.append("description", description);

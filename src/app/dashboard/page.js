@@ -23,10 +23,9 @@ export default function Dashboard() {
   }
 
   function handleLogout() {
-    // logout handler
-    document.cookie = "token=; Max-Age=0; path=/;"; // remove cookie
-    clearToken(); // your function that clears token + userData from localStorage
-    dispatch(logoutUser()); // redux
+    document.cookie = "token=; Max-Age=0; path=/;"; 
+    clearToken(); 
+    dispatch(logoutUser()); 
     router.push("/user/login");
   }
 
@@ -41,7 +40,6 @@ export default function Dashboard() {
       >
         <h1 className="dashboard-title">Dashboard</h1>
 
-        {/* LOGOUT BUTTON */}
         <button
           onClick={handleLogout}
           style={{

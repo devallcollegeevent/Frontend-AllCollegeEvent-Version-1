@@ -24,7 +24,6 @@ export default function Page() {
     type: userRole
   });
 
-  // NORMAL LOGIN
   const onSubmit = async (e) => {
     e.preventDefault();
 
@@ -44,7 +43,6 @@ export default function Page() {
     router.push("/user/event-list");
   };
 
-  // GOOGLE LOGIN
   const handleGoogleSuccess = async (response) => {
     try {
       const googleToken = response.credential;

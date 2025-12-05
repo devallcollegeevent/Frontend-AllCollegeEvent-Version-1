@@ -1,6 +1,5 @@
 import api from "./axios";
 
-// Standard API Handler
 async function handleApi(promise) {
   try {
     console.log("======lplp",promise)

@@ -1,6 +1,4 @@
-/* ------------------------------ */
-/* DASHBOARD WRAPPER */
-/* ------------------------------ */
+
 .dashboard-wrapper {
   padding: 30px;
   background: #fafafa;
@@ -9,7 +7,6 @@
   text-align: center;
 }
 
-/* Heading */
 .dashboard-title {
   font-size: 32px;
   font-weight: 700;
@@ -23,9 +20,6 @@
   margin-bottom: 26px;
 }
 
-/* ------------------------------ */
-/* EVENT LIST */
-/* ------------------------------ */
 .event-list {
   margin-top: 20px;
   display: grid;
@@ -33,7 +27,6 @@
   gap: 18px;
 }
 
-/* Event Card */
 .event-card {
   background: #fff;
   border: 1px solid #eee;
@@ -68,9 +61,6 @@
   font-weight: 600;
 }
 
-/* ------------------------------ */
-/* EMPTY / LOADING TEXT */
-/* ------------------------------ */
 .event-empty,
 .event-loading {
   margin-top: 30px;
@@ -79,9 +69,6 @@
   text-align: center;
 }
 
-/* ------------------------------ */
-/* SIDEBAR (Optional future) */
-/* ------------------------------ */
 .dashboard-sidebar {
   width: 240px;
   background: #fff;
@@ -105,9 +92,6 @@
   color: #fff;
 }
 
-/* ------------------------------ */
-/* RESPONSIVE */
-/* ------------------------------ */
 @media (max-width: 768px) {
   .dashboard-title {
     font-size: 26px;
