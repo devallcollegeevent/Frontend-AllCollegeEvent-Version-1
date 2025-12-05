@@ -173,7 +173,7 @@
   background: var(--bg-input);
   text-align: center;
   font-size: 28px;
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
   outline: none;
 }
 
@@ -227,7 +227,7 @@
 }
 .org-foot a {
   color: var(--tx-link);
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
   text-decoration: none;
 }
 /* --------------------------------------------- */

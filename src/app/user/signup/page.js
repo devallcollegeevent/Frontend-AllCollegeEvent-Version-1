@@ -39,11 +39,11 @@ export default function Page() {
       };
 
       const res = await signupApi(payload);
-      toast.success("Signup successful!");
+      toast.success("Signup successfully!");
 
       router.push(loginPage);
     } catch (err) {
-      toast.error(err.response?.data?.message || "Signup failed");
+      toast.error(err.response?.data?.message || "signup failed");
     }
   }
 

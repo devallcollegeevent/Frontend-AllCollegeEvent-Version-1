@@ -79,7 +79,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 700;
+  font-weight: var(--fw-bold);
   color: #333;
 }
 
@@ -159,7 +159,7 @@
 
 .category-card .cat-title {
   font-size: 13px;
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
   color: var(--tx-title);
 }
 
@@ -187,7 +187,7 @@
 .form-label {
   display: block;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
   margin-bottom: 8px;
   color: var(--tx-title);
 }
@@ -240,7 +240,7 @@
   background: var(--bg-input);
   font-size: 28px;
   text-align: center;
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
 }
 .otp-input:focus {
   border-color: var(--primary-color);
@@ -258,7 +258,7 @@
   );
   color: #fff;
   border: 0;
-  font-weight: 700;
+  font-weight: var(--fw-bold);
   box-shadow: 0 8px 22px rgba(123, 44, 255, 0.18);
   cursor: pointer;
 }
@@ -283,7 +283,7 @@
 }
 .org-foot a {
   color: var(--tx-link);
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
   text-decoration: none;
 }
 
@@ -352,7 +352,7 @@
 
 .verify-title {
   font-size: 30px;
-  font-weight: 700;
+  font-weight: var(--fw-bold);
   margin: 10px 0 20px;
   color: #111;
 }

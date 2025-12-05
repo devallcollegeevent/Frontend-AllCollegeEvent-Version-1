@@ -9,7 +9,7 @@
 
 .dashboard-title {
   font-size: 32px;
-  font-weight: 700;
+  font-weight: var(--fw-bold);
   margin-bottom: 6px;
   color: var(--tx-title);
 }
@@ -43,7 +43,7 @@
 
 .event-title {
   font-size: 20px;
-  font-weight: 700;
+  font-weight: var(--fw-bold);
   color: var(--tx-title);
   margin-bottom: 8px;
 }
@@ -58,7 +58,7 @@
 .event-meta {
   font-size: 13px;
   color: #555;
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
 }
 
 .event-empty,
@@ -81,7 +81,7 @@
   padding: 12px 10px;
   border-radius: 10px;
   cursor: pointer;
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
   color: #444;
   transition: 0.2s;
 }

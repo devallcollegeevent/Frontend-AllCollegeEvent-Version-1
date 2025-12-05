@@ -18,7 +18,7 @@
   margin: 0;
   font-size: 26px;
   color: var(--tx-title);
-  font-weight: 700;
+  font-weight: var(--fw-bold);
 }
 
 .evlist-create-btn {
@@ -27,7 +27,7 @@
   border: none;
   padding: 10px 14px;
   border-radius: 10px;
-  font-weight: 700;
+  font-weight: var(--fw-bold);
   cursor: pointer;
   box-shadow: 0 8px 20px rgba(127, 0, 255, 0.12);
 }
@@ -92,7 +92,7 @@
   font-size: 16px;
   margin: 0;
   color: var(--tx-title);
-  font-weight: 700;
+  font-weight: var(--fw-bold);
 }
 
 .ev-card-meta {
@@ -106,7 +106,7 @@
 .ev-mode{
   margin-left:auto;
   text-transform:capitalize;
-  font-weight:600;
+  font-weight:var(--fw-semibold);
   color: var(--primary-color);
 }
 
