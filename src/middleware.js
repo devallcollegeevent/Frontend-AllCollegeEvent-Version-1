@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 export function middleware(req) {
   const path = req.nextUrl.pathname;
 
-  console.log("🔥 Middleware running for:", path);
+  console.log("Middleware running for:", path);
 
 
   const publicRoutes = [
@@ -31,30 +31,6 @@ export function middleware(req) {
     return NextResponse.next();
   }
 
-  // =====================================
-  // BLOCK IF NOT LOGGED IN
-  // =====================================
-
-
-  // =====================================
-  // USER PROTECTION
-  // =====================================
-  // if (role === "user") {
-  //   if (!path.startsWith("/user")) {
-  //     console.log("USER blocked from:", path);
-  //     return NextResponse.redirect(new URL("/unauthorized", req.url));
-  //   }
-  // }
-
-  // =====================================
-  // ORGANIZER PROTECTION
-  // =====================================
-  // if (role === "organizer") {
-  //   if (!path.startsWith("/organizer")) {
-  //     console.log("ORGANIZER blocked from:", path);
-  //     return NextResponse.redirect(new URL("/unauthorized", req.url));
-  //   }
-  // }
 
   return NextResponse.next();
 }

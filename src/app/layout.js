@@ -1,7 +1,7 @@
 import "./globals.css";
 import "./colors.css";
 import Providers from "@/components/Providers";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 
 export const metadata = {

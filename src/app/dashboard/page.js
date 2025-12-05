@@ -26,7 +26,7 @@ export default function Dashboard() {
     document.cookie = "token=; Max-Age=0; path=/;"; 
     clearToken(); 
     dispatch(logoutUser()); 
-    router.push("/user/login");
+    router.push(loginPage);
   }
 
   return (

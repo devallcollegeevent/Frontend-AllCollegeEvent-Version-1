@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { getAllEventsApi, deleteEventApi } from "@/lib/apiClient";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { organizerSignupCategoryPage } from "@/app/routes";
+import { loginPage, organizerSignupCategoryPage } from "@/app/routes";
 import { logoutUser } from "@/lib/logout";
 
 export default function EventListPage() {
@@ -41,7 +41,7 @@ export default function EventListPage() {
           <button
             onClick={() => {
               logoutUser();
-              router.push("/organizer/login");
+              router.push(loginPage);
             }}
             style={{
               padding: "8px 16px",
@@ -95,9 +95,9 @@ export default function EventListPage() {
       >
         {events.map((ev) => {
           const id = ev.id ?? ev._id;
-          const title = ev.event_title ?? "Untitled Event";
+          const title = ev.title ?? "Untitled Event";
           const city = ev.city ?? ev.venue ?? "N/A";
-          const date = ev.event_date ?? "No date";
+          const date = ev.eventDate ?? "No date";
           const mode = ev.mode ?? "N/A";
           const price = ev.price ?? 0;
           const image = ev.bannerImage ?? "--"
