@@ -13,28 +13,30 @@ export default function EventListPage() {
   const [loading, setLoading] = useState(true);
 
   const loadEvents = async () => {
-    setLoading(true);
     const res = await getAllEventsApi();
 
-    if (res.success) {
-      const list = Array.isArray(res.data) ? res.data : res.data?.events || [];
-      setEvents(list);
-    } else {
-      toast.error("Failed to load events");
-    }
 
-    setLoading(false);
+    if (res.success) {
+      setEvents(res.data.events || []);
+      setLoading(false)
+    } else {
+      toast.error(res.message || "Failed to load events");
+    }
   };
 
   useEffect(() => {
     loadEvents();
   }, []);
 
-
   return (
     <div style={{ padding: "25px" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
         <h1 style={{ fontSize: "26px", fontWeight: "700" }}>My Events</h1>
 
         <div style={{ display: "flex", gap: "10px" }}>
@@ -74,13 +76,13 @@ export default function EventListPage() {
       </div>
 
       {loading && (
-        <div style={{ marginTop: "40px", textAlign: "center" }}>
-          Loading...
-        </div>
+        <div style={{ marginTop: "40px", textAlign: "center" }}>Loading...</div>
       )}
 
       {!loading && events.length === 0 && (
-        <div style={{ marginTop: "40px", textAlign: "center", fontSize: "18px" }}>
+        <div
+          style={{ marginTop: "40px", textAlign: "center", fontSize: "18px" }}
+        >
           No events found
         </div>
       )}
@@ -89,22 +91,25 @@ export default function EventListPage() {
         style={{
           marginTop: "30px",
           display: "grid",
+          
           gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
           gap: "25px",
         }}
+        
       >
         {events.map((ev) => {
-          const id = ev.id ?? ev._id;
+          const id = ev.identity ?? ev.identity;
           const title = ev.title ?? "Untitled Event";
           const city = ev.city ?? ev.venue ?? "N/A";
           const date = ev.eventDate ?? "No date";
           const mode = ev.mode ?? "N/A";
           const price = ev.price ?? 0;
-          const image = ev.bannerImage ?? "--"
+          const image = ev.bannerImage ?? "--";
 
           return (
             <div
               key={id}
+              onClick={() => router.push(`/user/event/${id}?orgId=${ev.orgIdentity}`)}
               style={{
                 background: "#fff",
                 borderRadius: "18px",
@@ -125,20 +130,20 @@ export default function EventListPage() {
               />
 
               <div style={{ padding: "10px 4px" }}>
-                <h3 style={{ fontSize: "17px", fontWeight: "700", marginBottom: "8px" }}>
+                <h3
+                  style={{
+                    fontSize: "17px",
+                    fontWeight: "700",
+                    marginBottom: "8px",
+                  }}
+                >
                   {title}
                 </h3>
 
                 <div>📍 {city}</div>
-                <div style={{ marginTop: "5px" }}>
-                  📅 {date}
-                </div>
-                <div style={{ marginTop: "5px" }}>
-                  🎟 Mode: {mode}
-                </div>
-                <div style={{ marginTop: "5px" }}>
-                  💰 Price: ₹{price}
-                </div>
+                <div style={{ marginTop: "5px" }}>📅 {date}</div>
+                <div style={{ marginTop: "5px" }}>🎟 Mode: {mode}</div>
+                <div style={{ marginTop: "5px" }}>💰 Price: ₹{price}</div>
               </div>
             </div>
           );

@@ -19,36 +19,33 @@ async function handleApi(promise) {
   }
 }
 
-/* ================================
-   AUTH APIs (User )
-================================ */
+// ============================user auth =================================
 
 export const signupApi = async (data) => {
-  console.log("0000",data)
-  return await handleApi(api.post("/acc/signup", data));
+  return await handleApi(api.post("/v1/auth/signup", data));
 };
 
 export const loginApi = async (data) => {
-  return await handleApi(api.post("/acc/login", data));
+  return await handleApi(api.post("/v1/auth/login", data));
 };
 export const googleAthuLoginApi = async (data) => {
-  return await handleApi(api.post("/acc/google-login", data));
+  return await handleApi(api.post("/v1/auth/google-login", data));
 };
 
 export const forgotApi = async (data) => {
-  return await handleApi(api.post("/acc/forgot-password", data));
+  return await handleApi(api.post("/v1/auth/forgot-password", data));
 };
 
 export const verifyOtpApi = async (data) => {
-  return await handleApi(api.post("/acc/verify-otp", data));
+  return await handleApi(api.post("/v1/auth/verify-otp", data));
 };
 
 export const resendOtpApi = async (data) => {
-  return await handleApi(api.post("/acc/resend-otp", data));
+  return await handleApi(api.post("/v1/auth/resend-otp", data));
 };
 
 export const resetPasswordApi = async (data) => {
-  return await handleApi(api.post("/acc/reset-password", data));
+  return await handleApi(api.post("/v1/auth/reset-password", data));
 };
 
 export const profileApi = async () => {
@@ -56,55 +53,56 @@ export const profileApi = async () => {
 };
 
 
-/* ================================
-   AUTH APIs (organizer )
-================================ */
+// ============================organization auth =================================
 
 export const organizerSignupApi = async (data) => {
-  return await handleApi(api.post("/acc/signup", data));
+  return await handleApi(api.post("/v1/auth/signup", data));
 };
 
 export const verifyEmailApi = async (token) => {
   return await handleApi(
-    api.get(`/acc/org/verify?token=${encodeURIComponent(token)}`)
+    api.get(`/v1/auth/org/verify?token=${encodeURIComponent(token)}`)
   );
 };
 
+// ============================organizer creat , and list Event =================================
 
-/* ================================
-   EVENT APIs
-================================ */
-
-export const createEventApi = async (data) => {
+export const createEventApi = async (orgId, data) => {
   return await handleApi(
-    api.post("/org/eve/create", data, {
-      headers: { "Content-Type": "multipart/form-data" }
-    })
+    api.post(`/v1/organizations/${orgId}/events`, data)
   );
 };
+
 
 export const getOrganizerEventsApi = async (orgId) => {
-  return await handleApi(api.get(`/org/${orgId}/eve`));
+  return await handleApi(api.get(`/v1/organizations/${orgId}/events`));
+};
+
+export const getOrganizerSingleEventApi = async (orgId, eventId) => {
+  return await handleApi(
+    api.get(`/v1/organizations/${orgId}/events/${eventId}`)
+  );
 };
 
 
-export const userEventsApi = async () => {
-  return await handleApi(api.get("/event/user-events"));
+export const updateOrganizerSingleEventApi = async (orgId, eventId, data) => {
+  return await handleApi(
+    api.put(`/v1/organizations/${orgId}/events/${eventId}`, data)
+  );
 };
+
+
+
+// ============================user view  Event =================================
 
 export const getAllEventsApi = async () => {
-  return await handleApi(api.get("/org/eve"));
+  return await handleApi(api.get("/v1/organizations/eve"));
 };
 
-export const getEventByIdApi = async (id) => {
-  return await handleApi(api.get(`/event/${id}`));
-};
 
-export const updateEventApi = async (id, data) => {
+export const getEventByIdApi = async (orgId, eventId) => {
   return await handleApi(
-    api.put(`/event/update/${id}`, data, {
-      headers: { "Content-Type": "multipart/form-data" }
-    })
+    api.get(`/v1/organizations/${orgId}/events/${eventId}`)
   );
 };
 

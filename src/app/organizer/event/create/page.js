@@ -1,22 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./create-event.css";
-import { createEventApi } from "@/lib/apiClient";
+import { createEventApi, getOrganizerSingleEventApi, updateEventApi, updateOrganizerSingleEventApi } from "@/lib/apiClient";
 import { toast } from "react-hot-toast";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { getUserData } from "@/lib/auth";
+import { organizerEventListPage } from "@/app/routes";
 
 const CreateEventPage = () => {
   const router = useRouter();
-  const userData = getUserData(); 
+  const params = useSearchParams();
 
-  if (!userData) {
-    if (typeof window !== "undefined") {
-      toast.error("Please login as organizer");
-      router.push("/organizer/login");
-    }
-  }
+  const eventId = params.get("id"); // ⭐ EDIT MODE ID
+  const isEdit = Boolean(eventId);
+
+  const userData = getUserData();
 
   const [eventTitle, setEventTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -27,6 +26,37 @@ const CreateEventPage = () => {
   const [mode, setMode] = useState("");
   const [venue, setVenue] = useState("");
 
+  // -------------------------
+  // LOAD EXISTING EVENT (EDIT MODE)
+  // -------------------------
+  useEffect(() => {
+    if (!isEdit) return;
+
+    async function loadEvent() {
+      try {
+        const res = await getOrganizerSingleEventApi(userData.identity, eventId);
+
+        if (res.success) {
+          const ev = res.data.event;
+
+          setEventTitle(ev.title);
+          setDescription(ev.description);
+          setEventDate(ev.eventDate);
+          setEventTime(ev.eventTime);
+          setMode(ev.mode);
+          setVenue(ev.venue);
+
+          setPreview(ev.bannerImage); // existing image
+        }
+      } catch (error) {
+        toast.error("Failed to load event");
+      }
+    }
+
+    loadEvent();
+  }, [eventId]);
+
+  // IMAGE SELECT
   const onImageSelect = (e) => {
     const file = e.target.files[0];
     setImage(file);
@@ -34,17 +64,17 @@ const CreateEventPage = () => {
     if (file) setPreview(URL.createObjectURL(file));
   };
 
+  // SUBMIT HANDLER
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    if (!eventTitle || !description || !eventDate || !eventTime || !mode)
+    if (!eventTitle || !description || !eventDate || !eventTime || !mode) {
       return toast.error("Please fill all fields");
+    }
 
-    if ((mode === "offline" || mode === "hybrid") && !venue)
+    if ((mode === "offline" || mode === "hybrid") && !venue) {
       return toast.error("Venue required");
-
-    if (!userData?.identity)
-      return toast.error("Organizer ID missing");
+    }
 
     const formData = new FormData();
     formData.append("event_title", eventTitle);
@@ -57,11 +87,28 @@ const CreateEventPage = () => {
 
     if (image) formData.append("image", image);
 
-    const res = await createEventApi(formData);
+    // -------------------------
+    // UPDATE EVENT
+    // -------------------------
+    if (isEdit) {
+      const res = await updateOrganizerSingleEventApi(userData.identity, eventId, formData);
+      if (res.success) {
+        toast.success("Event Updated Successfully!");
+        router.push(organizerEventListPage);
+      } else {
+        toast.error(res.message || "Failed to update");
+      }
+      return;
+    }
+
+    // -------------------------
+    // CREATE NEW EVENT
+    // -------------------------
+    const res = await createEventApi(userData.identity, formData);
 
     if (res.success) {
       toast.success("Event Created Successfully!");
-      router.push("/organizer/event/list");
+      router.push(organizerEventListPage);
     } else {
       toast.error(res.message || "Failed to create");
     }
@@ -69,7 +116,7 @@ const CreateEventPage = () => {
 
   return (
     <div className="create-event-wrapper">
-      <h2 className="create-event-title">Create Event</h2>
+      <h2 className="create-event-title">{isEdit ? "Edit Event" : "Create Event"}</h2>
 
       <div className="create-event-card">
         <form onSubmit={onSubmit}>
@@ -160,7 +207,7 @@ const CreateEventPage = () => {
           )}
 
           <button className="ce-btn-submit" type="submit">
-            Submit Event
+            {isEdit ? "Update Event" : "Submit Event"}
           </button>
         </form>
       </div>

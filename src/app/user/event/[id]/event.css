@@ -1,0 +1,34 @@
+.event-page {
+  padding: 24px;
+  max-width: 800px;
+  margin: auto;
+}
+
+.event-banner {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+  border-radius: 16px;
+}
+
+.event-title {
+  margin-top: 20px;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.event-info {
+  margin-top: 15px;
+  font-size: 18px;
+  line-height: 1.6;
+  background: #fafafa;
+  padding: 15px;
+  border-radius: 12px;
+  border: 1px solid #eee;
+}
+
+.event-description {
+  margin-top: 25px;
+  font-size: 16px;
+  line-height: 1.7;
+}

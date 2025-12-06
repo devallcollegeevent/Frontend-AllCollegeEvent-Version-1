@@ -17,7 +17,7 @@ export default function Page() {
     email: "",
     password: "",
     confirmPassword: "",
-    type:userRole
+    type: userRole,
   });
 
   const [showPass, setShowPass] = useState(false);
@@ -35,15 +35,21 @@ export default function Page() {
         name: form.name,
         email: form.email,
         password: form.password,
-        type: form.type
+        type: form.type,
       };
 
       const res = await signupApi(payload);
-      toast.success("Signup successfully!");
+      console.log("===res", res);
 
+      if (!res.success) {
+        toast.error(res.message);
+        return;
+      }
+
+      toast.success("Signup successfully!");
       router.push(loginPage);
     } catch (err) {
-      toast.error(err.response?.data?.message || "signup failed");
+      toast.error(err.response?.data?.message || "Signup failed");
     }
   }
 

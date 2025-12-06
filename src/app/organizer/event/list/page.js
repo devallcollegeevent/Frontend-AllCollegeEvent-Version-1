@@ -14,8 +14,8 @@ export default function OrganizerEventListPage() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const userData = getUserData();  
-  const organizerId = userData?.identity; 
+  const userData = getUserData();
+  const organizerId = userData?.identity;
 
   const loadEvents = async () => {
     if (!organizerId) {
@@ -49,7 +49,6 @@ export default function OrganizerEventListPage() {
 
   return (
     <div style={{ padding: 25 }}>
-      
       <button
         onClick={handleLogout}
         style={{
@@ -65,7 +64,13 @@ export default function OrganizerEventListPage() {
         Logout
       </button>
 
-      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 10 }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          marginBottom: 10,
+        }}
+      >
         <h1 style={{ fontSize: 26, fontWeight: "700" }}>My Events</h1>
 
         <button
@@ -110,11 +115,13 @@ export default function OrganizerEventListPage() {
           const mode = ev.mode || "N/A";
           const price = ev.price || 500;
 
-          const image = ev.bannerImage || "==="
+          const image = ev.bannerImage || "===";
+          console.log("=====checkkkkkk",id)
 
           return (
             <div
               key={id}
+              onClick={() => router.push(`/organizer/event/${id}`)}
               style={{
                 background: "#fff",
                 borderRadius: 18,
@@ -122,6 +129,7 @@ export default function OrganizerEventListPage() {
                 padding: 12,
                 boxShadow: "0 4px 18px rgba(0,0,0,0.06)",
                 position: "relative",
+                cursor:"pointer"
               }}
             >
               <img
@@ -134,13 +142,17 @@ export default function OrganizerEventListPage() {
                 }}
               />
 
-              <h3 style={{ fontSize: 17, fontWeight: 700, margin: "10px 0 6px" }}>
+              <h3
+                style={{ fontSize: 17, fontWeight: 700, margin: "10px 0 6px" }}
+              >
                 {title}
               </h3>
 
               <div>📍 {city}</div>
               <div>💰 ₹{price}</div>
-              <div>📅 {date} • {mode}</div>
+              <div>
+                📅 {date} • {mode}
+              </div>
             </div>
           );
         })}

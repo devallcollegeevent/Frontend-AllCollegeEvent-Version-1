@@ -40,12 +40,13 @@ export default function Page() {
     document.cookie = `role=user; path=/;`;
 
     toast.success("Login Successful!");
-    router.push("/user/event-list");
+    router.push("/user/event/list");
   };
 
   const handleGoogleSuccess = async (response) => {
     try {
       const googleToken = response.credential;
+      console.log("======token",googleToken)
 
       const res = await googleAthuLoginApi({
         google: true,
@@ -64,7 +65,7 @@ export default function Page() {
       document.cookie = `role=user; path=/;`;
 
       toast.success("Google Login Successful!");
-      router.push("/user/event-list");
+      router.push("/user/event/list");
     } catch (err) {
       toast.error("Google Login Failed");
     }
