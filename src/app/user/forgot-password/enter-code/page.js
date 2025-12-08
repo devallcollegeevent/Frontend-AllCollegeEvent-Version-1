@@ -102,19 +102,13 @@ export default function Page() {
                 type="button"
                 onClick={resendCode}
                 disabled={resendLoading}
-                style={{
-                  border: "none",
-                  background: "none",
-                  color: "#6C2BD9",
-                  cursor: "pointer",
-                  fontWeight: 600,
-                }}
+                className="resendCondeText"
               >
                 {resendLoading ? "Sending..." : "Resend Code"}
               </button>
             </div>
 
-            <div style={{ marginTop: 16 }}>
+            <div>
               <div className="u-auth-pager">
                 <div className="u-auth-dot">1</div>
                 <div className="u-auth-dot active">2</div>

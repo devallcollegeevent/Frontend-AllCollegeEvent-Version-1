@@ -2,17 +2,21 @@
 
 import { useState, useEffect } from "react";
 import "./create-event.css";
-import { createEventApi, getOrganizerSingleEventApi, updateEventApi, updateOrganizerSingleEventApi } from "@/lib/apiClient";
+import {
+  createEventApi,
+  getOrganizerSingleEventApi,
+  updateOrganizerSingleEventApi,
+} from "@/lib/apiClient";
 import { toast } from "react-hot-toast";
 import { useRouter, useSearchParams } from "next/navigation";
 import { getUserData } from "@/lib/auth";
 import { organizerEventListPage } from "@/app/routes";
 
-const CreateEventPage = () => {
+export default function CreateEventPage() {
   const router = useRouter();
   const params = useSearchParams();
 
-  const eventId = params.get("id"); // ⭐ EDIT MODE ID
+  const eventId = params.get("id");
   const isEdit = Boolean(eventId);
 
   const userData = getUserData();
@@ -26,45 +30,36 @@ const CreateEventPage = () => {
   const [mode, setMode] = useState("");
   const [venue, setVenue] = useState("");
 
-  // -------------------------
-  // LOAD EXISTING EVENT (EDIT MODE)
-  // -------------------------
   useEffect(() => {
     if (!isEdit) return;
-
-    async function loadEvent() {
-      try {
-        const res = await getOrganizerSingleEventApi(userData.identity, eventId);
-
-        if (res.success) {
-          const ev = res.data.event;
-
-          setEventTitle(ev.title);
-          setDescription(ev.description);
-          setEventDate(ev.eventDate);
-          setEventTime(ev.eventTime);
-          setMode(ev.mode);
-          setVenue(ev.venue);
-
-          setPreview(ev.bannerImage); // existing image
-        }
-      } catch (error) {
-        toast.error("Failed to load event");
-      }
-    }
-
     loadEvent();
   }, [eventId]);
 
-  // IMAGE SELECT
+  async function loadEvent() {
+    try {
+      const res = await getOrganizerSingleEventApi(userData.identity, eventId);
+
+      if (res.success) {
+        const ev = res.data.event;
+        setEventTitle(ev.title);
+        setDescription(ev.description);
+        setEventDate(ev.eventDate);
+        setEventTime(ev.eventTime);
+        setMode(ev.mode);
+        setVenue(ev.venue);
+        setPreview(ev.bannerImage);
+      }
+    } catch {
+      toast.error("Failed to load event");
+    }
+  }
+
   const onImageSelect = (e) => {
     const file = e.target.files[0];
     setImage(file);
-
     if (file) setPreview(URL.createObjectURL(file));
   };
 
-  // SUBMIT HANDLER
   const onSubmit = async (e) => {
     e.preventDefault();
 
@@ -87,11 +82,12 @@ const CreateEventPage = () => {
 
     if (image) formData.append("image", image);
 
-    // -------------------------
-    // UPDATE EVENT
-    // -------------------------
     if (isEdit) {
-      const res = await updateOrganizerSingleEventApi(userData.identity, eventId, formData);
+      const res = await updateOrganizerSingleEventApi(
+        userData.identity,
+        eventId,
+        formData
+      );
       if (res.success) {
         toast.success("Event Updated Successfully!");
         router.push(organizerEventListPage);
@@ -101,11 +97,7 @@ const CreateEventPage = () => {
       return;
     }
 
-    // -------------------------
-    // CREATE NEW EVENT
-    // -------------------------
     const res = await createEventApi(userData.identity, formData);
-
     if (res.success) {
       toast.success("Event Created Successfully!");
       router.push(organizerEventListPage);
@@ -116,7 +108,9 @@ const CreateEventPage = () => {
 
   return (
     <div className="create-event-wrapper">
-      <h2 className="create-event-title">{isEdit ? "Edit Event" : "Create Event"}</h2>
+      <h2 className="create-event-title">
+        {isEdit ? "Edit Event" : "Create Event"}
+      </h2>
 
       <div className="create-event-card">
         <form onSubmit={onSubmit}>
@@ -145,18 +139,7 @@ const CreateEventPage = () => {
             <input type="file" accept="image/*" onChange={onImageSelect} />
           </div>
 
-          {preview && (
-            <img
-              src={preview}
-              style={{
-                width: "100%",
-                maxHeight: "240px",
-                objectFit: "cover",
-                borderRadius: "12px",
-                marginTop: 10,
-              }}
-            />
-          )}
+          {preview && <img src={preview} className="ce-preview-img" />}
 
           <div className="ce-row">
             <div className="ce-col ce-field">
@@ -213,6 +196,5 @@ const CreateEventPage = () => {
       </div>
     </div>
   );
-};
+}
 
-export default CreateEventPage;

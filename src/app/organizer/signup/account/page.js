@@ -34,10 +34,8 @@ export default function Page() {
   async function onContinue(e) {
     e.preventDefault();
 
-    if (!domain || !password || !confirm)
-      return toast.error("Fill all fields");
-    if (password !== confirm)
-      return toast.error("Passwords do not match");
+    if (!domain || !password || !confirm) return toast.error("Fill all fields");
+    if (password !== confirm) return toast.error("Passwords do not match");
     if (!queryData.category)
       return toast.error("Category missing. Start again.");
 
@@ -163,7 +161,7 @@ export default function Page() {
                     onClick={() => setShowPass2(!showPass2)}
                     role="button"
                   >
-                    {showPass2 ? <ViewIcon /> : <HideIcon /> }
+                    {showPass2 ? <ViewIcon /> : <HideIcon />}
                   </span>
                 </div>
               </div>
@@ -179,8 +177,7 @@ export default function Page() {
               </div>
 
               <div className="org-foot">
-                Already have an Account!?{" "}
-                <a href="/organizer/login">Sign In</a>
+                Already have an Account!? <a href={organizerLoginPage}>Sign In</a>
               </div>
             </form>
           </div>
@@ -189,12 +186,12 @@ export default function Page() {
 
       {showModal && (
         <div className="verify-overlay">
-          <div onClick={closeModal}>close</div>
           <div className="verify-modal gradient-bg">
+            <div onClick={closeModal} style={{ textAlign: "end" }}>
+              close
+            </div>
             <img src="/images/logo.png" alt="logo" className="verify-logo" />
-
             <h2 className="verify-title">Verify your Account</h2>
-
             <p className="verify-text">
               Link has been sent to your xyz.com domain mail id.
               <br />

@@ -87,7 +87,7 @@ export default function Page() {
               Continue
             </button>
 
-            <div style={{ marginTop: 16 }}>
+            <div>
               <div className="u-auth-pager">
                 <div className="u-auth-dot">1</div>
                 <div className="u-auth-dot">2</div>

@@ -4,7 +4,7 @@ import "../organizer-auth.css";
 import { useRouter, useParams } from "next/navigation";
 import { useState } from "react";
 import { ViewIcon, HideIcon } from "@/components/icons/Icons";
-import { organizerResetPasswordSuccessPage } from "@/app/routes";
+import { organizerLoginPage, organizerResetPasswordSuccessPage } from "@/app/routes";
 import { resetPasswordApi } from "@/lib/apiClient";
 import { clearEmail, getEmail } from "@/lib/auth";
 import { toast } from "react-hot-toast";
@@ -90,7 +90,7 @@ export default function Page() {
             </div>
 
             <div className="org-foot">
-              Already have an Account!? <a href="/organizer/login">Sign In</a>
+              Already have an Account!? <a href={organizerLoginPage}>Sign In</a>
             </div>
           </form>
         </div>

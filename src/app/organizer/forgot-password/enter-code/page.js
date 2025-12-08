@@ -102,19 +102,13 @@ export default function Page() {
               </button>
             </div>
 
-            <div className="org-foot" style={{ marginTop: 10 }}>
+            <div className="org-foot">
               Didn't receive the code?{" "}
               <button
                 type="button"
                 onClick={resendCode}
                 disabled={resendLoading}
-                style={{
-                  border: "none",
-                  background: "none",
-                  color: "#6C2BD9",
-                  cursor: "pointer",
-                  fontWeight: 600,
-                }}
+               className="resendCondeText"
               >
                 {resendLoading ? "Sending..." : "Resend Code"}
               </button>

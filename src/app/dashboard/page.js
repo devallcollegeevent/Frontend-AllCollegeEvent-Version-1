@@ -8,86 +8,41 @@ import {
 } from "@/app/routes";
 import "../dashboard/dashboard.css";
 import { useDispatch } from "react-redux";
-import { logoutUser } from "@/store/authSlice";
+import { organizerLogout } from "@/store/organizerAuthSlice";
+import { logoutOrganizer } from "@/lib/logout";
 
 export default function Dashboard() {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  function goToCreateEvent() {
-    router.push(organizerEventCreatePage);
-  }
+  const goToCreateEvent = () => router.push(organizerEventCreatePage);
+  const goToListEvent = () => router.push(organizerEventListPage);
 
-  function goToListEvent() {
-    router.push(organizerEventListPage);
-  }
-
-  function handleLogout() {
-    document.cookie = "token=; Max-Age=0; path=/;"; 
-    clearToken(); 
-    dispatch(logoutUser()); 
+  const handleLogout = () => {
+    dispatch(organizerLogout());
+    logoutOrganizer();
     router.push(loginPage);
-  }
+  };
 
   return (
     <div className="dashboard-wrapper">
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          padding: "10px 20px",
-        }}
-      >
+
+      <div className="dashboard-header">
         <h1 className="dashboard-title">Dashboard</h1>
 
-        <button
-          onClick={handleLogout}
-          style={{
-            padding: "10px 18px",
-            borderRadius: "8px",
-            background: "#FF4B4B",
-            color: "white",
-            fontWeight: "600",
-            border: "none",
-            cursor: "pointer",
-          }}
-        >
+        <button onClick={handleLogout} className="logout-btn">
           Logout
         </button>
       </div>
 
       <div className="dashboard-sub">Welcome to your dashboard</div>
 
-      <div style={{ display: "flex", gap: "50px", justifyContent: "center" }}>
-        <button
-          onClick={goToCreateEvent}
-          style={{
-            padding: "12px 22px",
-            borderRadius: "10px",
-            background: "#7F00FF",
-            color: "white",
-            fontWeight: "600",
-            border: "none",
-            marginTop: "20px",
-            cursor: "pointer",
-          }}
-        >
+      <div className="dashboard-actions">
+        <button onClick={goToCreateEvent} className="dashboard-btn">
           Go to Create Event Page
         </button>
 
-        <button
-          onClick={goToListEvent}
-          style={{
-            padding: "12px 22px",
-            borderRadius: "10px",
-            background: "#7F00FF",
-            color: "white",
-            fontWeight: "600",
-            border: "none",
-            marginTop: "20px",
-            cursor: "pointer",
-          }}
-        >
+        <button onClick={goToListEvent} className="dashboard-btn">
           Go to List of Event
         </button>
       </div>

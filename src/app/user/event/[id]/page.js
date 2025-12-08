@@ -1,12 +1,12 @@
 "use client";
 
-import { useSearchParams, useParams ,useRouter} from "next/navigation";
+import { useSearchParams, useParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { getEventByIdApi } from "@/lib/apiClient";
-import "bootstrap/dist/css/bootstrap.min.css";
+import "./event-view.css";   // <-- your custom CSS file
 
 export default function SingleEventPage() {
-  const { id } = useParams(); 
+  const { id } = useParams();
   const searchParams = useSearchParams();
   const orgId = searchParams.get("orgId");
   const router = useRouter();
@@ -24,78 +24,58 @@ export default function SingleEventPage() {
     }
   };
 
-  if (!event) return <div className="text-center mt-5">Loading…</div>;
-
+  if (!event) return <div className="event-loading">Loading…</div>;
 
   return (
-    <div className="container event-page-wrapper shadow p-3 mb-5 mt-5 bg-body-tertiary rounded">
-      <button
-        className="btn btn-outline-dark mb-3"
-        onClick={() => router.back()}
-      >
+    <div className="event-view-container">
+      <button className="event-back-btn" onClick={() => router.back()}>
         ← Back
       </button>
-      {/* Banner Image */}
-      <div className="card shadow-sm">
-        <img
-          src={event.bannerImage}
-          className="card-img-top"
-          style={{ height: "320px", objectFit: "cover", borderRadius: "10px" }}
-        />
 
-        <div className="card-body">
-          {/* Title */}
-          <h2 className="fw-bold">{event.title}</h2>
+      {/* Card */}
+      <div className="event-card">
+        <img src={event.bannerImage} className="event-banner" />
 
-          <hr />
+        <div className="event-card-body">
 
-          {/* Row Layout */}
-          <div className="row mt-3">
-            <div className="col-md-4 mb-3">
-              <div className="p-3 border rounded bg-light">
-                <h6 className="fw-bold">📍 Location</h6>
-                <p className="mb-0">{event.city || event.venue}</p>
-              </div>
+          <h2 className="event-title">{event.title}</h2>
+          <div className="event-divider"></div>
+
+          {/* Row 1 */}
+          <div className="event-row">
+            <div className="event-box">
+              <h6 className="event-box-title">📍 Location</h6>
+              <p>{event.city || event.venue}</p>
             </div>
 
-            <div className="col-md-4 mb-3">
-              <div className="p-3 border rounded bg-light">
-                <h6 className="fw-bold">📅 Date</h6>
-                <p className="mb-0">{event.eventDate}</p>
-              </div>
+            <div className="event-box">
+              <h6 className="event-box-title">📅 Date</h6>
+              <p>{event.eventDate}</p>
             </div>
 
-            <div className="col-md-4 mb-3">
-              <div className="p-3 border rounded bg-light">
-                <h6 className="fw-bold">💰 Price</h6>
-                <p className="mb-0">₹ {event.price}</p>
-              </div>
+            <div className="event-box">
+              <h6 className="event-box-title">💰 Price</h6>
+              <p>₹ {event.price}</p>
             </div>
           </div>
 
-          {/* Mode & Category */}
-          <div className="row mt-2">
-            <div className="col-md-6 mb-3">
-              <div className="p-3 border rounded bg-light">
-                <h6 className="fw-bold">🎟 Event Mode</h6>
-                <p className="mb-0">{event.mode}</p>
-              </div>
+          {/* Row 2 */}
+          <div className="event-row">
+            <div className="event-box">
+              <h6 className="event-box-title">🎟 Event Mode</h6>
+              <p>{event.mode}</p>
             </div>
 
-            <div className="col-md-6 mb-3">
-              <div className="p-3 border rounded bg-light">
-                <h6 className="fw-bold">📌 Category</h6>
-                <p className="mb-0">{event.category}</p>
-              </div>
+            <div className="event-box">
+              <h6 className="event-box-title">📌 Category</h6>
+              <p>{event.category}</p>
             </div>
           </div>
 
           {/* Description */}
-          <div className="mt-4 p-3 border rounded bg-white shadow-sm">
-            <h4 className="fw-bold">Event Description</h4>
-            <p className="mt-2" style={{ lineHeight: "1.7" }}>
-              {event.description}
-            </p>
+          <div className="event-description-box">
+            <h4 className="event-desc-title">Event Description</h4>
+            <p className="event-description">{event.description}</p>
           </div>
         </div>
       </div>

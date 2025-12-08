@@ -220,7 +220,7 @@
   color: var(--tx-sub-title);
 }
 .org-foot {
-  margin-top: 12px;
+  margin-top: 22px;
   text-align: center;
   color: var(--tx-sub-title);
   font-size: 14px;
@@ -230,12 +230,19 @@
   font-weight: var(--fw-semibold);
   text-decoration: none;
 }
+.resendCondeText{
+   border: none;
+   background: none;
+   color: #6C2BD9;
+   cursor: pointer;
+   font-weight: 600;
+}
 /* --------------------------------------------- */
 /* RESPONSIVE */
 /* --------------------------------------------- */
 @media (max-width: 991.98px) {
   .u-auth-shell {
-    flex-direction: column;
+    flex-direction: column-reverse;
   }
 
   .u-auth-left {
@@ -291,4 +298,5 @@
   justify-content: center;
   align-items: center;
   padding-top: 14px;
+  margin: 15px 0;
 }

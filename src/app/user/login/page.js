@@ -1,17 +1,17 @@
 "use client";
 
-import { ViewIcon, HideIcon } from '@/components/icons/Icons';
-import '../user-auth.css';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { toast } from 'react-hot-toast';
-import { googleAthuLoginApi, loginApi } from '@/lib/apiClient';
-import { saveToken } from '@/lib/auth';
-import { landingPage, signupPage } from '@/app/routes';
-import { userRole } from '@/const-value/page';
-import { GoogleLogin } from '@react-oauth/google';
+import { ViewIcon, HideIcon } from "@/components/icons/Icons";
+import "../user-auth.css";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "react-hot-toast";
+import { googleAthuLoginApi, loginApi } from "@/lib/apiClient";
+import { saveToken } from "@/lib/auth";
+import { landingPage, signupPage, userEventListPage } from "@/app/routes";
+import { userRole } from "@/const-value/page";
+import { GoogleLogin } from "@react-oauth/google";
 import { useDispatch } from "react-redux";
-import { loginSuccess } from "@/store/authSlice";
+import { userLoginSuccess } from "@/store/userAuthSlice";
 
 export default function Page() {
   const router = useRouter();
@@ -21,7 +21,7 @@ export default function Page() {
   const [form, setForm] = useState({
     email: "",
     password: "",
-    type: userRole
+    type: userRole,
   });
 
   const onSubmit = async (e) => {
@@ -34,24 +34,25 @@ export default function Page() {
       return;
     }
 
-    dispatch(loginSuccess(res.data.data)); 
+    dispatch(userLoginSuccess(res.data.data))
     saveToken(res.data.token);
-    document.cookie = `token=${res.data.token}; path=/; max-age=${60 * 60 * 24 * 7}`;
+    document.cookie = `token=${res.data.token}; path=/; max-age=${
+      60 * 60 * 24 * 7
+    }`;
     document.cookie = `role=user; path=/;`;
 
     toast.success("Login Successful!");
-    router.push("/user/event/list");
+    router.push(userEventListPage);
   };
 
   const handleGoogleSuccess = async (response) => {
     try {
       const googleToken = response.credential;
-      console.log("======token",googleToken)
 
       const res = await googleAthuLoginApi({
         google: true,
         googleToken,
-        type: userRole
+        type: userRole,
       });
 
       if (!res.success) {
@@ -60,12 +61,12 @@ export default function Page() {
       }
 
       saveToken(res.data.token);
-      dispatch(loginSuccess(res.data.data));
+      dispatch(userLoginSuccess(res.data.data));
 
       document.cookie = `role=user; path=/;`;
 
       toast.success("Google Login Successful!");
-      router.push("/user/event/list");
+      router.push(userEventListPage);
     } catch (err) {
       toast.error("Google Login Failed");
     }
@@ -89,7 +90,7 @@ export default function Page() {
               type="email"
               placeholder="Enter your mail id"
               value={form.email}
-              onChange={(e)=>setForm({...form, email:e.target.value})}
+              onChange={(e) => setForm({ ...form, email: e.target.value })}
               required
             />
 
@@ -97,10 +98,10 @@ export default function Page() {
             <div className="u-auth-pass-wrap">
               <input
                 className="u-auth-input"
-                type={showPass ? 'text' : 'password'}
+                type={showPass ? "text" : "password"}
                 placeholder="Enter your password"
                 value={form.password}
-                onChange={(e)=>setForm({...form, password:e.target.value})}
+                onChange={(e) => setForm({ ...form, password: e.target.value })}
                 required
               />
               <span
@@ -111,7 +112,7 @@ export default function Page() {
               </span>
             </div>
 
-            <div className="text-end" style={{ marginBottom: '15px' }}>
+            <div className="text-end" style={{ marginBottom: "15px" }}>
               <a className="u-auth-link" href="/user/forgot-password">
                 Forgot Password!
               </a>
@@ -121,8 +122,10 @@ export default function Page() {
               Sign In
             </button>
 
-            <div className="u-auth-center u-auth-muted" style={{ margin: '15px 0' }}>
-              — Or —  
+            <div
+              className="u-auth-center u-auth-muted"
+            >
+              — Or —
             </div>
 
             <div style={{ display: "flex", justifyContent: "center" }}>
@@ -132,8 +135,8 @@ export default function Page() {
               />
             </div>
 
-            <div className="u-auth-foot" style={{ marginTop: 20 }}>
-              Didn't have an Account?{' '}
+            <div className="u-auth-foot">
+              Didn't have an Account?{" "}
               <a className="u-auth-link" href={signupPage}>
                 Sign Up
               </a>

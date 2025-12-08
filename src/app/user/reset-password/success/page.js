@@ -20,7 +20,7 @@ export default function Page(){
             <button className="u-auth-btn-primary" onClick={()=>router.push(loginPage)}>Go to Login</button>
           </div>
 
-          <div style={{marginTop:16}}>
+          <div>
             <div className="u-auth-pager">
               <div className="u-auth-dot">1</div>
               <div className="u-auth-dot">2</div>

@@ -2,25 +2,25 @@ import { createSlice } from "@reduxjs/toolkit";
 import { clearToken, getUserData } from "@/lib/auth";
 
 const initialState = {
-  user: getUserData() || null,
-  isLoggedIn: !!getUserData(),
+  user: null,
+  isLoggedIn: false,
 };
 
-const authSlice = createSlice({
-  name: "auth",
+const userAuthSlice = createSlice({
+  name: "userAuth",
   initialState,
   reducers: {
-    loginSuccess: (state, action) => {
+    userLoginSuccess: (state, action) => {
       state.user = action.payload;
       state.isLoggedIn = true;
     },
-    logoutUser: (state) => {
+    userLogout: (state) => {
       clearToken();
       state.user = null;
       state.isLoggedIn = false;
     },
-  }
+  },
 });
 
-export const { loginSuccess, logoutUser } = authSlice.actions;
-export default authSlice.reducer;
+export const { userLoginSuccess, userLogout } = userAuthSlice.actions;
+export default userAuthSlice.reducer;

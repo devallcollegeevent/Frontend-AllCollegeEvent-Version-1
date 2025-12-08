@@ -39,7 +39,6 @@ export default function Page() {
       };
 
       const res = await signupApi(payload);
-      console.log("===res", res);
 
       if (!res.success) {
         toast.error(res.message);

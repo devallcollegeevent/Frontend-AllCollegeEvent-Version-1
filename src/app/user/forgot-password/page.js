@@ -49,7 +49,7 @@ export default function Page() {
             <button className="u-auth-btn-primary" type="submit">Send Code</button>
           </form>
 
-          <div style={{marginTop:16}}>
+          <div>
             <div className="u-auth-pager">
               <div className="u-auth-dot active">1</div>
               <div className="u-auth-dot">2</div>

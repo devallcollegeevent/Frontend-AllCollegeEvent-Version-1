@@ -1,0 +1,116 @@
+@import "../../../colors.css";
+
+/* Wrapper */
+.uev-wrapper {
+  padding: 25px;
+  background: var(--bg-light);
+  min-height: 100vh;
+  font-family: var(--font-main);
+}
+
+/* Header */
+.uev-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.uev-title {
+  font-size: 26px;
+  font-weight: var(--fw-bold);
+  color: var(--tx-title);
+}
+
+/* Buttons */
+.uev-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.uev-btn-logout {
+  padding: 8px 16px;
+  background: #ff4d4d;
+  color: white;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: var(--fw-semibold);
+}
+
+.uev-btn-create {
+  padding: 10px 18px;
+  background: var(--primary-color);
+  color: white;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: var(--fw-bold);
+}
+
+/* Loading */
+.uev-loading,
+.uev-no-events {
+  margin-top: 40px;
+  text-align: center;
+  font-size: 18px;
+  color: var(--tx-sub-title);
+}
+
+/* Event Grid */
+.uev-grid {
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+}
+
+/* Event Card */
+.uev-card {
+  background: white;
+  border-radius: 18px;
+  border: 1px solid #eaeaea;
+  padding: 12px;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.06);
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.uev-card:hover {
+  transform: translateY(-4px);
+}
+
+/* Card Image */
+.uev-card-media {
+  width: 100%;
+  height: 160px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #f5f5f5;
+}
+
+.uev-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.uev-noimg {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  color: #777;
+}
+
+/* Card Body */
+.uev-card-body {
+  padding: 10px 4px;
+}
+
+.uev-card-title {
+  font-size: 17px;
+  font-weight: var(--fw-bold);
+  margin-bottom: 8px;
+}
+    

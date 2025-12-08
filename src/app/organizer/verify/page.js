@@ -12,8 +12,6 @@ export default function VerifyPage() {
   const params = useSearchParams();
   const token = params.get("token");
 
-  console.log("check",token)
-
   const [status, setStatus] = useState("loading");
 
   useEffect(() => {
@@ -63,7 +61,7 @@ export default function VerifyPage() {
 
         {status === "error" && (
           <>
-            <h1 className="u-auth-title">Verification Failed ❌</h1>
+            <h1 className="u-auth-title">Verification Failed</h1>
             <p className="u-auth-sub">
               The link may be expired or already used.
             </p>

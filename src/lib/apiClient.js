@@ -2,10 +2,8 @@ import api from "./axios";
 
 async function handleApi(promise) {
   try {
-    console.log("======lplp",promise)
     const res = await promise;
 
-    console.log("=====api paylod",res)
     return {
       success: true,
       data: res.data,

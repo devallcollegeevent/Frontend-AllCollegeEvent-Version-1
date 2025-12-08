@@ -1,13 +1,17 @@
 "use client";
 
-import { getOrganizerEventsApi, deleteEventApi } from "@/lib/apiClient";
+import { getOrganizerEventsApi } from "@/lib/apiClient";
 import { toast } from "react-hot-toast";
-import { organizerEventCreatePage, organizerLoginPage } from "@/app/routes";
+import {
+  organizerEventCreatePage,
+  organizerLoginPage,
+} from "@/app/routes";
 import { logoutUser } from "@/lib/logout";
 import { getUserData } from "@/lib/auth";
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import "./event-list.css";
 
 export default function OrganizerEventListPage() {
   const router = useRouter();
@@ -15,18 +19,17 @@ export default function OrganizerEventListPage() {
   const [loading, setLoading] = useState(true);
 
   const userData = getUserData();
-  const organizerId = userData?.identity;
 
   const loadEvents = async () => {
-    if (!organizerId) {
-      toast.error("Organizer not logged in");
+    if (!userData?.identity) {
+      toast.error("Organizer not found");
       router.push(organizerLoginPage);
       return;
     }
 
     setLoading(true);
 
-    const res = await getOrganizerEventsApi(organizerId);
+    const res = await getOrganizerEventsApi(userData.identity);
 
     if (res.success) {
       const list = Array.isArray(res.data) ? res.data : res.data?.events || [];
@@ -48,111 +51,67 @@ export default function OrganizerEventListPage() {
   };
 
   return (
-    <div style={{ padding: 25 }}>
-      <button
-        onClick={handleLogout}
-        style={{
-          padding: "8px 16px",
-          background: "#ff4444",
-          color: "#fff",
-          borderRadius: "10px",
-          marginBottom: 20,
-          cursor: "pointer",
-          border: "none",
-        }}
-      >
+    <div className="evlist-shell">
+
+      {/* Logout Button */}
+      <button onClick={handleLogout} className="evlist-logout-btn">
         Logout
       </button>
 
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          marginBottom: 10,
-        }}
-      >
-        <h1 style={{ fontSize: 26, fontWeight: "700" }}>My Events</h1>
+      {/* Header */}
+      <div className="evlist-header">
+        <h1 className="evlist-title">My Events</h1>
 
         <button
           onClick={() => router.push(organizerEventCreatePage)}
-          style={{
-            padding: "10px 18px",
-            background: "#7f00ff",
-            color: "#fff",
-            borderRadius: "10px",
-            border: "none",
-            fontWeight: "600",
-            cursor: "pointer",
-          }}
+          className="evlist-create-btn"
         >
           + Create Event
         </button>
       </div>
 
-      {loading && (
-        <div style={{ marginTop: 40, textAlign: "center" }}>Loading...</div>
-      )}
+      {/* Loading */}
+      {loading && <div className="evlist-loading">Loading...</div>}
 
+      {/* Empty State */}
       {!loading && events.length === 0 && (
-        <div style={{ marginTop: 40, textAlign: "center", fontSize: 18 }}>
-          No events found for this organizer
-        </div>
+        <div className="evlist-empty">No events found for this organizer</div>
       )}
 
-      <div
-        style={{
-          marginTop: 30,
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-          gap: 25,
-        }}
-      >
+      {/* Events Grid */}
+      <div className="evlist-grid">
         {events.map((ev) => {
-          const id = ev.identity || ev.identity;
+          const id = ev.identity;
           const title = ev.title || "Untitled Event";
-          const city = ev.venue || ev.venue || "Unknown";
+          const city = ev.venue || "Unknown";
           const date = ev.eventDate || "N/A";
           const mode = ev.mode || "N/A";
           const price = ev.price || 500;
-
-          const image = ev.bannerImage || "===";
-          console.log("=====checkkkkkk",id)
+          const image = ev.bannerImage || "";
 
           return (
             <div
               key={id}
               onClick={() => router.push(`/organizer/event/${id}`)}
-              style={{
-                background: "#fff",
-                borderRadius: 18,
-                border: "1px solid #eaeaea",
-                padding: 12,
-                boxShadow: "0 4px 18px rgba(0,0,0,0.06)",
-                position: "relative",
-                cursor:"pointer"
-              }}
+              className="ev-card"
             >
-              <img
-                src={image}
-                style={{
-                  width: "100%",
-                  height: 160,
-                  borderRadius: 12,
-                  objectFit: "cover",
-                }}
-              />
-
-              <h3
-                style={{ fontSize: 17, fontWeight: 700, margin: "10px 0 6px" }}
-              >
-                {title}
-              </h3>
-
-              <div>📍 {city}</div>
-              <div>💰 ₹{price}</div>
-              <div>
-                📅 {date} • {mode}
+              <div className="ev-card-media">
+                {image ? (
+                  <img src={image} />
+                ) : (
+                  <span className="ev-card-noimg">No Image</span>
+                )}
               </div>
+
+              <h3 className="ev-card-title">{title}</h3>
+
+              <div className="ev-card-meta">
+                <span>📅 {date}</span>
+                <span className="ev-mode">{mode}</span>
+              </div>
+
+              <div className="ev-card-venue">📍 {city}</div>
+              <div className="ev-card-venue">💰 ₹{price}</div>
             </div>
           );
         })}

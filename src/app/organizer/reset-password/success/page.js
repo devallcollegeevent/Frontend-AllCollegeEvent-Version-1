@@ -1,5 +1,6 @@
 "use client";
 
+import { organizerLoginPage } from "@/app/routes";
 import "../../organizer-auth.css";
 import { useRouter } from "next/navigation";
 
@@ -17,11 +18,11 @@ export default function Page() {
           <div className="org-sub">Link has been sent to your xyz.com domain mail id. Please click and verify your account.</div>
 
           <div style={{ marginTop: 24 }}>
-            <button className="btn-primary-ghost" onClick={() => router.push("/organizer/login")}>Go to Login</button>
+            <button className="btn-primary-ghost" onClick={() => router.push(organizerLoginPage)}>Go to Login</button>
           </div>
 
           <div style={{ marginTop: 18 }} className="org-foot">
-            Already have an Account!? <a href="/organizer/login">Sign In</a>
+            Already have an Account!? <a href={organizerLoginPage}>Sign In</a>
           </div>
         </div>
       </main>

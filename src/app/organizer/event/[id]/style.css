@@ -3,7 +3,9 @@
   padding-bottom: 40px;
 }
 
-/* Banner */
+/* ------------------------------------------
+  Banner
+------------------------------------------- */
 .event-banner-box {
   position: relative;
   width: 100%;
@@ -20,21 +22,26 @@
   position: absolute;
   bottom: 15px;
   left: 15px;
-  background: #7f00ff;
-  color: #fff;
+  background: var(--primary-color);
+  color: var(--white);
   padding: 6px 14px;
   border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
 }
 
-/* Title */
+/* ------------------------------------------
+  Title
+------------------------------------------- */
 .event-title {
   font-size: 28px;
-  font-weight: 700;
+  font-weight: var(--fw-bold);
+  color: var(--tx-title);
 }
 
-/* Tags */
+/* ------------------------------------------
+  Tags
+------------------------------------------- */
 .event-tags {
   display: flex;
   gap: 10px;
@@ -45,27 +52,31 @@
   padding: 5px 12px;
   border-radius: 6px;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
 }
 
 .tag-purple {
-  background: #efe3ff;
-  color: #6b00d6;
+  background: #efe3ff; /* Optional: convert to theme if needed */
+  color: var(--primary-color);
 }
 
 .tag-light {
-  background: #f5f5f5;
-  color: #444;
+  background: var(--bg-light);
+  color: var(--tx-sub-title);
 }
 
-/* Description */
+/* ------------------------------------------
+  Description
+------------------------------------------- */
 .event-description {
   font-size: 15px;
-  color: #444;
+  color: var(--tx-sub-title);
   line-height: 1.6;
 }
 
-/* Detail Grid */
+/* ------------------------------------------
+  Detail Grid
+------------------------------------------- */
 .detail-grid {
   display: grid;
   gap: 18px;
@@ -77,7 +88,7 @@
   gap: 12px;
   align-items: center;
   padding: 12px;
-  background: #fafafa;
+  background: var(--bg-input);
   border-radius: 10px;
   border: 1px solid #ededed;
 }
@@ -86,9 +97,11 @@
   font-size: 22px;
 }
 
-/* Right Card */
+/* ------------------------------------------
+  Right Side Summary Card
+------------------------------------------- */
 .right-card {
-  background: white;
+  background: var(--white);
   border-radius: 12px;
   border: 1px solid #e7e7e7;
 }
@@ -103,5 +116,5 @@
 .summary-item p {
   margin: 0;
   font-size: 15px;
-  color: #333;
+  color: var(--tx-title);
 }
