@@ -41,14 +41,14 @@ export default function CreateEventPage() {
       const res = await getOrganizerSingleEventApi(userData.identity, eventId);
 
       if (res.success) {
-        const ev = res.data.data;
-        setEventTitle(ev.title);
-        setDescription(ev.description);
-        setEventDate(ev.eventDate);
-        setEventTime(ev.eventTime);
-        setMode(ev.mode);
-        setVenue(ev.venue);
-        setPreview(ev.bannerImage);
+        const event = res.data.data;
+        setEventTitle(event.title);
+        setDescription(event.description);
+        setEventDate(event.eventDate);
+        setEventTime(event.eventTime);
+        setMode(event.mode);
+        setVenue(event.venue);
+        setPreview(event.bannerImage);
       }
     } catch {
       toast.error("Failed to load event");
