@@ -4,7 +4,7 @@ import "../organizer-auth.css";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { saveEmail } from "@/lib/auth";
-import { organizerEnterCodePage } from "@/app/routes";
+import { organizerEnterCodePage, organizerLoginPage } from "@/app/routes";
 import { forgotApi } from "@/lib/apiClient";
 import {toast} from "react-hot-toast";
 
@@ -47,7 +47,7 @@ export default function Page() {
             </div>
 
             <div className="org-foot">
-              Already have an Account!? <a href="/organizer/login">Sign In</a>
+              Already have an Account!? <a href={organizerLoginPage}>Sign In</a>
             </div>
           </form>
         </div>

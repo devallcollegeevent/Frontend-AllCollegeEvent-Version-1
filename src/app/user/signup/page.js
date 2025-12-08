@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
 import { signupApi } from "@/lib/apiClient";
 import { loginPage } from "@/app/routes";
-import { userRole } from "@/const-value/page";
+import { password, text, userRole } from "@/const-value/page";
 
 export default function Page() {
   const router = useRouter();
@@ -88,7 +88,7 @@ export default function Page() {
             <div className="u-auth-pass-wrap">
               <input
                 className="u-auth-input"
-                type={showPass ? "text" : "password"}
+                type={showPass ? text : password}
                 placeholder="Enter your password"
                 value={form.password}
                 onChange={(e) => setForm({ ...form, password: e.target.value })}
@@ -108,7 +108,7 @@ export default function Page() {
             <div className="u-auth-pass-wrap">
               <input
                 className="u-auth-input"
-                type={showConfirm ? "text" : "password"}
+                type={showConfirm ? text : password}
                 placeholder="Enter your password again"
                 value={form.confirmPassword}
                 onChange={(e) =>

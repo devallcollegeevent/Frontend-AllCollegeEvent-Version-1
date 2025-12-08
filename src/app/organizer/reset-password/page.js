@@ -8,6 +8,7 @@ import { organizerLoginPage, organizerResetPasswordSuccessPage } from "@/app/rou
 import { resetPasswordApi } from "@/lib/apiClient";
 import { clearEmail, getEmail } from "@/lib/auth";
 import { toast } from "react-hot-toast";
+import { password, text } from "@/const-value/page";
 
 export default function Page() {
   const router = useRouter();
@@ -56,7 +57,7 @@ export default function Page() {
               <div className="pass-wrap">
                 <input
                   className="form-control"
-                  type={show1 ? "text" : "password"}
+                  type={show1 ? text : password}
                   value={pass}
                   onChange={(e) => setPass(e.target.value)}
                   placeholder="Enter your new password"
@@ -72,7 +73,7 @@ export default function Page() {
               <div className="pass-wrap">
                 <input
                   className="form-control"
-                  type={show2 ? "text" : "password"}
+                  type={show2 ? text : password}
                   value={confirm}
                   onChange={(e) => setConfirm(e.target.value)}
                   placeholder="Re-enter password"

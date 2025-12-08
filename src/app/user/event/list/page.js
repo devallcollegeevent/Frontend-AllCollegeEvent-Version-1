@@ -58,35 +58,27 @@ export default function EventListPage() {
 
       {/* Events Grid */}
       <div className="uev-grid">
-        {events.map((ev) => {
-          const id = ev.identity;
-          const title = ev.title || "Untitled Event";
-          const city = ev.city || ev.venue || "N/A";
-          const date = ev.eventDate || "No date";
-          const mode = ev.mode || "N/A";
-          const price = ev.price || 0;
-          const image = ev.bannerImage;
-
+        {events.map((event) => {
           return (
             <div
-              key={id}
+              key={event.identity}
               className="uev-card"
-              onClick={() => router.push(`/user/event/${id}`)}
+              onClick={() => router.push(`/user/event/${event.identity}`)}
             >
               <div className="uev-card-media">
-                {image ? (
-                  <img src={image} alt="event banner" />
+                {event.bannerImage ? (
+                  <img src={event.bannerImage} alt="event banner" />
                 ) : (
                   <span className="uev-noimg">No Image</span>
                 )}
               </div>
 
               <div className="uev-card-body">
-                <h3 className="uev-card-title">{title}</h3>
-                <div>📍 {city}</div>
-                <div>📅 {date}</div>
-                <div>🎟 Mode: {mode}</div>
-                <div>💰 Price: ₹{price}</div>
+                <h3 className="uev-card-title">{event.title}</h3>
+                <div>📍 {event.venue}</div>
+                <div>📅 {event.eventDate}</div>
+                <div>🎟 Mode: {event.mode || "N/A"}</div>
+                <div>💰 Price: ₹{event.price || 0}</div>
               </div>
             </div>
           );

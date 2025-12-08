@@ -7,8 +7,8 @@ import { ViewIcon, HideIcon } from "@/components/icons/Icons";
 import { loginApi } from "@/lib/apiClient";
 import { saveToken } from "@/lib/auth";
 import { toast } from "react-hot-toast";
-import { organizerRole } from "@/const-value/page";
-import { landingPage, organizerSignupCategoryPage } from "@/app/routes";
+import { organizerRole, text } from "@/const-value/page";
+import { landingPage, organizerForgotPasswordPage, organizerSignupCategoryPage } from "@/app/routes";
 
 export default function Page() {
   const router = useRouter();
@@ -69,7 +69,7 @@ export default function Page() {
               <div className="pass-wrap">
                 <input
                   className="form-control"
-                  type={show1 ? "text" : "password"}
+                  type={show1 ? text : password}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter your password"
@@ -81,7 +81,7 @@ export default function Page() {
             </div>
 
             <div style={{ textAlign: "right", marginBottom: 12 }}>
-              <a className="u-organizer-link" href="/organizer/forgot-password">
+              <a className="u-organizer-link" href={organizerForgotPasswordPage}>
                 Forgot Password!
               </a>
             </div>

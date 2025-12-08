@@ -8,7 +8,7 @@ import { toast } from "react-hot-toast";
 import { googleAthuLoginApi, loginApi } from "@/lib/apiClient";
 import { saveToken } from "@/lib/auth";
 import { landingPage, signupPage, userEventListPage } from "@/app/routes";
-import { userRole } from "@/const-value/page";
+import { password, text, userRole } from "@/const-value/page";
 import { GoogleLogin } from "@react-oauth/google";
 import { useDispatch } from "react-redux";
 import { userLoginSuccess } from "@/store/userAuthSlice";
@@ -97,7 +97,7 @@ export default function Page() {
             <div className="u-auth-pass-wrap">
               <input
                 className="u-auth-input"
-                type={showPass ? "text" : "password"}
+                type={showPass ? text : password}
                 placeholder="Enter your password"
                 value={form.password}
                 onChange={(e) => setForm({ ...form, password: e.target.value })}

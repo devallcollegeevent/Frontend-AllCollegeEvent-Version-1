@@ -8,6 +8,7 @@ import { resetPasswordApi } from "@/lib/apiClient";
 import { toast } from "react-hot-toast";
 import { resetPasswordSuccessPage } from "@/app/routes";
 import { clearEmail, getEmail } from "@/lib/auth";
+import { password, text } from "@/const-value/page";
 
 export default function Page() {
   const router = useRouter();
@@ -52,7 +53,7 @@ export default function Page() {
             <div className="u-auth-pass-wrap">
               <input
                 className="u-auth-input"
-                type={show1 ? "text" : "password"}
+                type={show1 ? text : password}
                 placeholder="Enter new password"
                 value={pass}
                 onChange={(e) => setPass(e.target.value)}
@@ -70,7 +71,7 @@ export default function Page() {
             <div className="u-auth-pass-wrap">
               <input
                 className="u-auth-input"
-                type={show2 ? "text" : "password"}
+                type={show2 ? text : password}
                 placeholder="Re-enter password"
                 value={confirm}
                 onChange={(e) => setConfirm(e.target.value)}

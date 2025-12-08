@@ -11,6 +11,7 @@ import { toast } from "react-hot-toast";
 import { useRouter, useSearchParams } from "next/navigation";
 import { getUserData } from "@/lib/auth";
 import { organizerEventListPage } from "@/app/routes";
+import { hybrid, offline } from "@/const-value/page";
 
 export default function CreateEventPage() {
   const router = useRouter();
@@ -67,7 +68,7 @@ export default function CreateEventPage() {
       return toast.error("Please fill all fields");
     }
 
-    if ((mode === "offline" || mode === "hybrid") && !venue) {
+    if ((mode === offline || mode === hybrid) && !venue) {
       return toast.error("Venue required");
     }
 
@@ -177,7 +178,7 @@ export default function CreateEventPage() {
             </select>
           </div>
 
-          {(mode === "offline" || mode === "hybrid") && (
+          {(mode === offline || mode === hybrid) && (
             <div className="ce-field">
               <label className="ce-label">Venue</label>
               <input

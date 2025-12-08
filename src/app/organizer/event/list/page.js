@@ -80,38 +80,30 @@ export default function OrganizerEventListPage() {
 
       {/* Events Grid */}
       <div className="evlist-grid">
-        {events.map((ev) => {
-          const id = ev.identity;
-          const title = ev.title || "Untitled Event";
-          const city = ev.venue || "Unknown";
-          const date = ev.eventDate || "N/A";
-          const mode = ev.mode || "N/A";
-          const price = ev.price || 500;
-          const image = ev.bannerImage || "";
-
+        {events.map((event) => {
           return (
             <div
-              key={id}
-              onClick={() => router.push(`/organizer/event/${id}`)}
+              key={event.identity}
+              onClick={() => router.push(`/organizer/event/${event.identity}`)}
               className="ev-card"
             >
               <div className="ev-card-media">
-                {image ? (
-                  <img src={image} />
+                {event.bannerImage ? (
+                  <img src={event.bannerImage} />
                 ) : (
                   <span className="ev-card-noimg">No Image</span>
                 )}
               </div>
 
-              <h3 className="ev-card-title">{title}</h3>
+              <h3 className="ev-card-title">{event.title}</h3>
 
               <div className="ev-card-meta">
-                <span>📅 {date}</span>
-                <span className="ev-mode">{mode}</span>
+                <span>📅 {event.eventDate}</span>
+                <span className="ev-mode">{event.mode}</span>
               </div>
 
-              <div className="ev-card-venue">📍 {city}</div>
-              <div className="ev-card-venue">💰 ₹{price}</div>
+              <div className="ev-card-venue">📍 {event.venue || "Unknown"}</div>
+              <div className="ev-card-venue">💰 ₹{event.price || 0}</div>
             </div>
           );
         })}

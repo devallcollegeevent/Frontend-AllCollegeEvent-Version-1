@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { organizerSignupApi } from "@/lib/apiClient";
 import { toast } from "react-hot-toast";
-import { organizerRole } from "@/const-value/page";
+import { organizerRole, text } from "@/const-value/page";
 import { organizerLoginPage } from "@/app/routes";
 import { ViewIcon, HideIcon } from "@/components/icons/Icons";
 
@@ -131,7 +131,7 @@ export default function Page() {
                 <div className="pass-wrap">
                   <input
                     className="form-control"
-                    type={showPass1 ? "text" : "password"}
+                    type={showPass1 ? text : password}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter your password"
@@ -151,7 +151,7 @@ export default function Page() {
                 <div className="pass-wrap">
                   <input
                     className="form-control"
-                    type={showPass2 ? "text" : "password"}
+                    type={showPass2 ? text : password}
                     value={confirm}
                     onChange={(e) => setConfirm(e.target.value)}
                     placeholder="Re-enter your password"
