@@ -48,12 +48,11 @@ export default function Page() {
   const handleGoogleSuccess = async (response) => {
     try {
       const googleToken = response.credential;
-
       const res = await googleAthuLoginApi({
         google: true,
         googleToken,
         type: userRole,
-      });
+      }); 
 
       if (!res.success) {
         toast.error("Google Login Failed");

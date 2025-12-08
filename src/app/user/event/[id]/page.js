@@ -1,26 +1,23 @@
 "use client";
 
-import { useSearchParams, useParams, useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { getEventByIdApi } from "@/lib/apiClient";
-import "./event-view.css";   // <-- your custom CSS file
+import "./event.css";
 
 export default function SingleEventPage() {
   const { id } = useParams();
-  const searchParams = useSearchParams();
-  const orgId = searchParams.get("orgId");
   const router = useRouter();
-
   const [event, setEvent] = useState(null);
 
   useEffect(() => {
-    if (orgId && id) loadEvent();
-  }, [orgId, id]);
+    if (id) loadEvent();
+  }, [id]);
 
   const loadEvent = async () => {
-    const res = await getEventByIdApi(orgId, id);
+    const res = await getEventByIdApi(id);
     if (res.success) {
-      setEvent(res.data.event);
+      setEvent(res.data.data);
     }
   };
 
@@ -28,17 +25,17 @@ export default function SingleEventPage() {
 
   return (
     <div className="event-view-container">
+
       <button className="event-back-btn" onClick={() => router.back()}>
         ← Back
       </button>
 
-      {/* Card */}
       <div className="event-card">
         <img src={event.bannerImage} className="event-banner" />
 
         <div className="event-card-body">
-
           <h2 className="event-title">{event.title}</h2>
+
           <div className="event-divider"></div>
 
           {/* Row 1 */}

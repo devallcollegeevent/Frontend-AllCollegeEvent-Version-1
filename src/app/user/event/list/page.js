@@ -4,9 +4,9 @@ import { useEffect, useState } from "react";
 import { getAllEventsApi } from "@/lib/apiClient";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { loginPage, organizerSignupCategoryPage } from "@/app/routes";
+import { loginPage } from "@/app/routes";
 import { logoutUser } from "@/lib/logout";
-import "./event-list.css"; // <-- NEW CSS FILE
+import "./event-list.css";
 
 export default function EventListPage() {
   const router = useRouter();
@@ -17,7 +17,7 @@ export default function EventListPage() {
     const res = await getAllEventsApi();
 
     if (res.success) {
-      setEvents(res.data.events || []);
+      setEvents(res.data.data || []);
       setLoading(false);
     } else {
       toast.error(res.message || "Failed to load events");
@@ -30,9 +30,10 @@ export default function EventListPage() {
 
   return (
     <div className="uev-wrapper">
+      
       {/* Header */}
       <div className="uev-header">
-        <h1 className="uev-title">My Events</h1>
+        <h1 className="uev-title">All Events</h1>
 
         <div className="uev-actions">
           <button
@@ -44,27 +45,18 @@ export default function EventListPage() {
           >
             Logout
           </button>
-
-          <button
-            onClick={() => router.push(organizerSignupCategoryPage)}
-            className="uev-btn-create"
-          >
-            + Create Event
-          </button>
         </div>
       </div>
 
       {/* Loading */}
-      {loading && (
-        <div className="uev-loading">Loading...</div>
-      )}
+      {loading && <div className="uev-loading">Loading...</div>}
 
-      {/* No events */}
+      {/* Empty */}
       {!loading && events.length === 0 && (
         <div className="uev-no-events">No events found</div>
       )}
 
-      {/* Grid */}
+      {/* Events Grid */}
       <div className="uev-grid">
         {events.map((ev) => {
           const id = ev.identity;
@@ -79,9 +71,7 @@ export default function EventListPage() {
             <div
               key={id}
               className="uev-card"
-              onClick={() =>
-                router.push(`/user/event/${id}?orgId=${ev.orgIdentity}`)
-              }
+              onClick={() => router.push(`/user/event/${id}`)}
             >
               <div className="uev-card-media">
                 {image ? (
@@ -93,7 +83,6 @@ export default function EventListPage() {
 
               <div className="uev-card-body">
                 <h3 className="uev-card-title">{title}</h3>
-
                 <div>📍 {city}</div>
                 <div>📅 {date}</div>
                 <div>🎟 Mode: {mode}</div>

@@ -36,7 +36,7 @@ export default function Page() {
       document.cookie = `role=organizer; path=/;`;
 
       toast.success("Organizer Logged In Successfully!");
-      router.push("/organizer/event/list");
+      router.push(landingPage);
     } catch (err) {
       toast.error("Invalid credentials");
     }

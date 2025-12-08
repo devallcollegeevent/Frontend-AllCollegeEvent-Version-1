@@ -94,13 +94,13 @@ export const updateOrganizerSingleEventApi = async (orgId, eventId, data) => {
 // ============================user view  Event =================================
 
 export const getAllEventsApi = async () => {
-  return await handleApi(api.get("/v1/organizations/eve"));
+  return await handleApi(api.get("/v1/events"));
 };
 
 
-export const getEventByIdApi = async (orgId, eventId) => {
+export const getEventByIdApi = async (eventId) => {
   return await handleApi(
-    api.get(`/v1/organizations/${orgId}/events/${eventId}`)
+    api.get(`/v1/events/${eventId}`)
   );
 };
 

@@ -32,7 +32,7 @@ export default function OrganizerEventListPage() {
     const res = await getOrganizerEventsApi(userData.identity);
 
     if (res.success) {
-      const list = Array.isArray(res.data) ? res.data : res.data?.events || [];
+      const list = Array.isArray(res.data) ? res.data : res.data?.data || [];
       setEvents(list);
     } else {
       toast.error("Failed to load events");

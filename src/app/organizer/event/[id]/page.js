@@ -19,7 +19,7 @@ export default function OrganizerEventDetailsPage() {
     async function load() {
       try {
         const res = await getOrganizerSingleEventApi(userData.identity, id);
-        setEvent(res.data?.event || null);
+        setEvent(res.data?.data || null);
       } catch (err) {
         toast.error("Failed to load event");
       }

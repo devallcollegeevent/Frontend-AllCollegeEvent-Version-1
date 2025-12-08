@@ -40,7 +40,7 @@ export default function CreateEventPage() {
       const res = await getOrganizerSingleEventApi(userData.identity, eventId);
 
       if (res.success) {
-        const ev = res.data.event;
+        const ev = res.data.data;
         setEventTitle(ev.title);
         setDescription(ev.description);
         setEventDate(ev.eventDate);
