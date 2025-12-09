@@ -14,18 +14,27 @@ export default function EventListPage() {
   const [loading, setLoading] = useState(true);
 
   const loadEvents = async () => {
-    const res = await getAllEventsApi();
+    try {
+      const res = await getAllEventsApi();
 
-    if (res.success) {
-      setEvents(res.data.data || []);
-      setLoading(false);
-    } else {
-      toast.error(res.message || "Failed to load events");
+      if (res.success) {
+        setEvents(res.data.data || []);
+        setLoading(false);
+      } else {
+        toast.error(res.message || "Failed to load events");
+      }
+    } catch (error) {
+      console.error("Load events error:", error);
+      toast.error("Something went wrong");
     }
   };
 
   useEffect(() => {
-    loadEvents();
+    try {
+      loadEvents();
+    } catch (error) {
+      console.error("UseEffect error:", error);
+    }
   }, []);
 
   return (
@@ -39,8 +48,12 @@ export default function EventListPage() {
           <button
             className="uev-btn-logout"
             onClick={() => {
-              logoutUser();
-              router.push(loginPage);
+              try {
+                logoutUser();
+                router.push(loginPage);
+              } catch (err) {
+                console.error("Logout error:", err);
+              }
             }}
           >
             Logout
@@ -63,7 +76,13 @@ export default function EventListPage() {
             <div
               key={event.identity}
               className="uev-card"
-              onClick={() => router.push(`/user/event/${event.identity}`)}
+              onClick={() => {
+                try {
+                  router.push(`/user/event/${event.identity}`);
+                } catch (error) {
+                  console.error("Navigation error:", error);
+                }
+              }}
             >
               <div className="uev-card-media">
                 {event.bannerImage ? (

@@ -21,33 +21,47 @@ export default function OrganizerEventListPage() {
   const userData = getUserData();
 
   const loadEvents = async () => {
-    if (!userData?.identity) {
-      toast.error("Organizer not found");
-      router.push(organizerLoginPage);
-      return;
+    try {
+      if (!userData?.identity) {
+        toast.error("Organizer not found");
+        router.push(organizerLoginPage);
+        return;
+      }
+
+      setLoading(true);
+
+      const res = await getOrganizerEventsApi(userData.identity);
+
+      if (res.success) {
+        const list = Array.isArray(res.data) ? res.data : res.data?.data || [];
+        setEvents(list);
+      } else {
+        toast.error("Failed to load events");
+      }
+    } catch (error) {
+      console.error("Error loading events:", error);
+      toast.error("Something went wrong while loading events");
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(true);
-
-    const res = await getOrganizerEventsApi(userData.identity);
-
-    if (res.success) {
-      const list = Array.isArray(res.data) ? res.data : res.data?.data || [];
-      setEvents(list);
-    } else {
-      toast.error("Failed to load events");
-    }
-
-    setLoading(false);
   };
 
   useEffect(() => {
-    loadEvents();
+    try {
+      loadEvents();
+    } catch (error) {
+      console.error("UseEffect error:", error);
+    }
   }, []);
 
   const handleLogout = () => {
-    logoutUser();
-    router.push(organizerLoginPage);
+    try {
+      logoutUser();
+      router.push(organizerLoginPage);
+    } catch (error) {
+      console.error("Logout error:", error);
+      toast.error("Failed to logout");
+    }
   };
 
   return (
@@ -63,7 +77,13 @@ export default function OrganizerEventListPage() {
         <h1 className="evlist-title">My Events</h1>
 
         <button
-          onClick={() => router.push(organizerEventCreatePage)}
+          onClick={() => {
+            try {
+              router.push(organizerEventCreatePage);
+            } catch (error) {
+              console.error("Redirect error:", error);
+            }
+          }}
           className="evlist-create-btn"
         >
           + Create Event
@@ -84,7 +104,13 @@ export default function OrganizerEventListPage() {
           return (
             <div
               key={event.identity}
-              onClick={() => router.push(`/organizer/event/${event.identity}`)}
+              onClick={() => {
+                try {
+                  router.push(`/organizer/event/${event.identity}`);
+                } catch (error) {
+                  console.error("Navigation error:", error);
+                }
+              }}
               className="ev-card"
             >
               <div className="ev-card-media">

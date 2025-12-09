@@ -8,7 +8,7 @@ import {
   getStates,
   getCities,
   getColleges,
-} from "@/lib/locationApi"; 
+} from "@/lib/locationApi";
 import { organizerSignupAccountPage } from "@/app/routes";
 import { toast } from "react-hot-toast";
 
@@ -95,13 +95,14 @@ export default function Page() {
   useEffect(() => {
     async function loadCollegeList() {
       if (selectedCat !== "college" && selectedCat !== "training") return;
-
       if (!country || !stateCode || !city) return;
 
       setLoadingColleges(true);
       try {
         const data = await getColleges(country, stateCode, city);
         setCollegeList(data || []);
+      } catch (err) {
+        console.error("College load error:", err);
       } finally {
         setLoadingColleges(false);
       }
@@ -114,18 +115,26 @@ export default function Page() {
 
   function onContinue(e) {
     e.preventDefault();
-    if (!canContinue) {
-      toast.error("Fill all fields");
-    }
-    const qs = new URLSearchParams({
-      cat: selectedCat,
-      country,
-      state: stateCode,
-      city,
-      orgName,
-    }).toString();
 
-    router.push(`${organizerSignupAccountPage}?${qs}`);
+    try {
+      if (!canContinue) {
+        toast.error("Fill all fields");
+        return;
+      }
+
+      const qs = new URLSearchParams({
+        cat: selectedCat,
+        country,
+        state: stateCode,
+        city,
+        orgName,
+      }).toString();
+
+      router.push(`${organizerSignupAccountPage}?${qs}`);
+    } catch (error) {
+      console.error("Navigation error:", error);
+      toast.error("Something went wrong.");
+    }
   }
 
   return (
@@ -239,16 +248,14 @@ export default function Page() {
               <div className="form-group full">
                 <label className="form-label">Organization Name</label>
 
-                {selectedCat === "college" || selectedCat === "training" ? (
+                {(selectedCat === "college" || selectedCat === "training") ? (
                   <select
                     className="form-control"
                     value={orgName}
                     onChange={(e) => setOrgName(e.target.value)}
                   >
                     <option value="">
-                      {loadingColleges
-                        ? "Loading colleges..."
-                        : "Select College"}
+                      {loadingColleges ? "Loading colleges..." : "Select College"}
                     </option>
 
                     {collegeList.map((col) => (

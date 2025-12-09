@@ -11,13 +11,21 @@ export default function SingleEventPage() {
   const [event, setEvent] = useState(null);
 
   useEffect(() => {
-    if (id) loadEvent();
+    try {
+      if (id) loadEvent();
+    } catch (error) {
+      console.error("Load event error:", error);
+    }
   }, [id]);
 
   const loadEvent = async () => {
-    const res = await getEventByIdApi(id);
-    if (res.success) {
-      setEvent(res.data.data);
+    try {
+      const res = await getEventByIdApi(id);
+      if (res.success) {
+        setEvent(res.data.data);
+      }
+    } catch (error) {
+      console.error("API error:", error);
     }
   };
 
@@ -26,7 +34,16 @@ export default function SingleEventPage() {
   return (
     <div className="event-view-container">
 
-      <button className="event-back-btn" onClick={() => router.back()}>
+      <button
+        className="event-back-btn"
+        onClick={() => {
+          try {
+            router.back();
+          } catch (err) {
+            console.error("Back navigation error:", err);
+          }
+        }}
+      >
         ← Back
       </button>
 

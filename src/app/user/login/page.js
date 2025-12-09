@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
 import { googleAthuLoginApi, loginApi } from "@/lib/apiClient";
 import { saveToken } from "@/lib/auth";
-import { landingPage, signupPage, userEventListPage } from "@/app/routes";
+import { signupPage, userEventListPage } from "@/app/routes";
 import { password, text, userRole } from "@/const-value/page";
 import { GoogleLogin } from "@react-oauth/google";
 import { useDispatch } from "react-redux";
@@ -27,22 +27,26 @@ export default function Page() {
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    const res = await loginApi(form);
+    try {
+      const res = await loginApi(form);
 
-    if (!res.success) {
-      toast.error(res.message || "Login Failed");
-      return;
+      if (!res.success) {
+        toast.error(res.message || "Login Failed");
+        return;
+      }
+
+      dispatch(userLoginSuccess(res.data.data));
+      saveToken(res.data.token);
+
+      document.cookie = `token=${res.data.token}; path=/; max-age=${60 * 60 * 24 * 7}`;
+      document.cookie = `role=user; path=/;`;
+
+      toast.success("Login Successful!");
+      router.push(userEventListPage);
+    } catch (error) {
+      console.error("Login error:", error);
+      toast.error("Something went wrong");
     }
-
-    dispatch(userLoginSuccess(res.data.data))
-    saveToken(res.data.token);
-    document.cookie = `token=${res.data.token}; path=/; max-age=${
-      60 * 60 * 24 * 7
-    }`;
-    document.cookie = `role=user; path=/;`;
-
-    toast.success("Login Successful!");
-    router.push(userEventListPage);
   };
 
   const handleGoogleSuccess = async (response) => {
@@ -52,7 +56,7 @@ export default function Page() {
         google: true,
         googleToken,
         type: userRole,
-      }); 
+      });
 
       if (!res.success) {
         toast.error("Google Login Failed");
@@ -67,6 +71,7 @@ export default function Page() {
       toast.success("Google Login Successful!");
       router.push(userEventListPage);
     } catch (err) {
+      console.error("Google login error:", err);
       toast.error("Google Login Failed");
     }
   };
@@ -121,11 +126,7 @@ export default function Page() {
               Sign In
             </button>
 
-            <div
-              className="u-auth-center u-auth-muted"
-            >
-              — Or —
-            </div>
+            <div className="u-auth-center u-auth-muted">— Or —</div>
 
             <div style={{ display: "flex", justifyContent: "center" }}>
               <GoogleLogin

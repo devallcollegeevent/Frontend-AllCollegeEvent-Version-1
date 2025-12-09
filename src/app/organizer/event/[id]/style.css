@@ -56,7 +56,7 @@
 }
 
 .tag-purple {
-  background: #efe3ff; /* Optional: convert to theme if needed */
+  background: #efe3ff;
   color: var(--primary-color);
 }
 
@@ -64,14 +64,16 @@
   background: var(--bg-light);
   color: var(--tx-sub-title);
 }
-
+.row {
+  max-width: 100%;
+  overflow-x: hidden;
+}
 /* ------------------------------------------
-  Description
+  Description — FIXED NEWLINE ISSUE
 ------------------------------------------- */
 .event-description {
-  font-size: 15px;
-  color: var(--tx-sub-title);
-  line-height: 1.6;
+  width: 100%;
+  display: block;
 }
 
 /* ------------------------------------------
@@ -104,6 +106,10 @@
   background: var(--white);
   border-radius: 12px;
   border: 1px solid #e7e7e7;
+   width: 100%;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .summary-item {
@@ -111,10 +117,15 @@
   align-items: center;
   gap: 10px;
   margin-bottom: 10px;
+  flex-wrap: wrap; /* ← IMPORTANT */
+  max-width: 100%;
 }
 
+/* FIX: prevent text breaking into new lines */
 .summary-item p {
   margin: 0;
   font-size: 15px;
   color: var(--tx-title);
+  white-space: nowrap !important; /* 🔥 FIX */
+  display: inline-block;
 }

@@ -50,60 +50,84 @@ export default function CreateEventPage() {
         setVenue(event.venue);
         setPreview(event.bannerImage);
       }
-    } catch {
+    } catch (error) {
+      console.error("Load event error:", error);
       toast.error("Failed to load event");
     }
   }
 
   const onImageSelect = (e) => {
-    const file = e.target.files[0];
-    setImage(file);
-    if (file) setPreview(URL.createObjectURL(file));
+    try {
+      const file = e.target.files[0];
+      setImage(file);
+      if (file) setPreview(URL.createObjectURL(file));
+    } catch (error) {
+      console.error("Image select error:", error);
+      toast.error("Failed to load image");
+    }
   };
 
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    if (!eventTitle || !description || !eventDate || !eventTime || !mode) {
-      return toast.error("Please fill all fields");
-    }
-
-    if ((mode === offline || mode === hybrid) && !venue) {
-      return toast.error("Venue required");
-    }
-
-    const formData = new FormData();
-    formData.append("event_title", eventTitle);
-    formData.append("description", description);
-    formData.append("event_date", eventDate);
-    formData.append("event_time", eventTime);
-    formData.append("mode", mode);
-    formData.append("venue", venue);
-    formData.append("org_id", userData.identity);
-
-    if (image) formData.append("image", image);
-
-    if (isEdit) {
-      const res = await updateOrganizerSingleEventApi(
-        userData.identity,
-        eventId,
-        formData
-      );
-      if (res.success) {
-        toast.success("Event Updated Successfully!");
-        router.push(organizerEventListPage);
-      } else {
-        toast.error(res.message || "Failed to update");
+    try {
+      if (!eventTitle || !description || !eventDate || !eventTime || !mode) {
+        return toast.error("Please fill all fields");
       }
-      return;
-    }
 
-    const res = await createEventApi(userData.identity, formData);
-    if (res.success) {
-      toast.success("Event Created Successfully!");
-      router.push(organizerEventListPage);
-    } else {
-      toast.error(res.message || "Failed to create");
+      if ((mode === offline || mode === hybrid) && !venue) {
+        return toast.error("Venue required");
+      }
+
+      const formData = new FormData();
+      formData.append("event_title", eventTitle);
+      formData.append("description", description);
+      formData.append("event_date", eventDate);
+      formData.append("event_time", eventTime);
+      formData.append("mode", mode);
+      formData.append("venue", venue);
+      formData.append("org_id", userData.identity);
+
+      if (image) formData.append("image", image);
+
+      if (isEdit) {
+        try {
+          const res = await updateOrganizerSingleEventApi(
+            userData.identity,
+            eventId,
+            formData
+          );
+
+          if (res.success) {
+            toast.success("Event Updated Successfully!");
+            router.push(organizerEventListPage);
+          } else {
+            toast.error(res.message || "Failed to update");
+          }
+        } catch (error) {
+          console.error("Update event error:", error);
+          toast.error("Failed to update event");
+        }
+
+        return;
+      }
+
+      try {
+        const res = await createEventApi(userData.identity, formData);
+
+        if (res.success) {
+          toast.success("Event Created Successfully!");
+          router.push(organizerEventListPage);
+        } else {
+          toast.error(res.message || "Failed to create");
+        }
+      } catch (error) {
+        console.error("Create event error:", error);
+        toast.error("Failed to create event");
+      }
+    } catch (error) {
+      console.error("Submit error:", error);
+      toast.error("Something went wrong");
     }
   };
 
@@ -198,4 +222,3 @@ export default function CreateEventPage() {
     </div>
   );
 }
-

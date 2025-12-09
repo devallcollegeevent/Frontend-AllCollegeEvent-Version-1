@@ -27,7 +27,7 @@
 .event-card {
   background: var(--white);
   border-radius: 16px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
   overflow: hidden;
   border: 1px solid #eaeaea;
 }
@@ -81,11 +81,12 @@
 /* Description */
 .event-description-box {
   background: var(--white);
+  width: 100%;
   padding: 18px;
   border-radius: 12px;
   border: 1px solid #eee;
   margin-top: 20px;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
 }
 
 .event-desc-title {
@@ -97,8 +98,19 @@
 
 .event-description {
   font-size: 16px;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  word-break: break-word;
   line-height: 1.7;
   color: var(--tx-sub-title);
+}
+
+.event-description,
+.detail-item p,
+.summary-item p {
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 /* Loading */

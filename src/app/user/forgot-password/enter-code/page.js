@@ -1,7 +1,7 @@
 "use client";
 
 import "../../user-auth.css";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState, useRef } from "react";
 import { toast } from "react-hot-toast";
 import { verifyOtpApi, resendOtpApi } from "@/lib/apiClient";
@@ -18,49 +18,67 @@ export default function Page() {
   const inputs = [useRef(null), useRef(null), useRef(null), useRef(null)];
 
   function onChange(index, value) {
-    if (!/^\d*$/.test(value)) return;
-    const next = [...otp];
-    next[index] = value.slice(-1);
-    setOtp(next);
-    if (value && index < 3) inputs[index + 1].current?.focus();
+    try {
+      if (!/^\d*$/.test(value)) return;
+
+      const next = [...otp];
+      next[index] = value.slice(-1);
+      setOtp(next);
+
+      if (value && index < 3) inputs[index + 1].current?.focus();
+    } catch (err) {
+      console.error("OTP input error:", err);
+    }
   }
 
   async function onSubmit(e) {
     e.preventDefault();
 
-    const code = otp.join("");
+    try {
+      const code = otp.join("");
 
-    if (code.length !== 4) {
-      return toast.error("Enter 4-digit code");
-    }
+      if (code.length !== 4) {
+        return toast.error("Enter 4-digit code");
+      }
 
-    setLoading(true);
+      setLoading(true);
 
-    const res = await verifyOtpApi({ email, otp: code });
+      const res = await verifyOtpApi({ email, otp: code });
 
-    setLoading(false);
+      setLoading(false);
 
-    if (res.success) {
-      toast.success("Code verified");
-      router.push(resetPasswordPage);
-    } else {
-      toast.error(res.message || "Invalid code");
+      if (res.success) {
+        toast.success("Code verified");
+        router.push(resetPasswordPage);
+      } else {
+        toast.error(res.message || "Invalid code");
+      }
+    } catch (error) {
+      console.error("Verify OTP error:", error);
+      toast.error("Something went wrong");
+      setLoading(false);
     }
   }
 
   async function resendCode() {
-    if (!email) return toast.error("Email missing");
+    try {
+      if (!email) return toast.error("Email missing");
 
-    setResendLoading(true);
+      setResendLoading(true);
 
-    const res = await resendOtpApi({ email });
+      const res = await resendOtpApi({ email });
 
-    setResendLoading(false);
+      setResendLoading(false);
 
-    if (res.success) {
-      toast.success("New code sent to your email");
-    } else {
-      toast.error(res.message || "Failed to resend");
+      if (res.success) {
+        toast.success("New code sent to your email");
+      } else {
+        toast.error(res.message || "Failed to resend");
+      }
+    } catch (error) {
+      console.error("Resend OTP error:", error);
+      toast.error("Something went wrong");
+      setResendLoading(false);
     }
   }
 

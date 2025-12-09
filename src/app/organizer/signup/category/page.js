@@ -49,10 +49,16 @@ export default function Page() {
   const [selected, setSelected] = useState(null);
 
   function onContinue() {
-    if (!selected) {
-      return alert("Please pick a category");
+    try {
+      if (!selected) {
+        return alert("Please pick a category");
+      }
+
+      router.push(`${organizerSignupDetailsPage}?cat=${selected}`);
+    } catch (error) {
+      console.error("Navigation error:", error);
+      alert("Something went wrong. Try again.");
     }
-    router.push(`${organizerSignupDetailsPage}?cat=${selected}`);
   }
 
   return (
@@ -114,6 +120,7 @@ export default function Page() {
               Continue
             </button>
           </div>
+
           <div className="u-auth-foot">
             Already have an Account!?{" "}
             <a className="u-auth-link" href={organizerLoginPage}>

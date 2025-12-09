@@ -15,18 +15,34 @@ export default function Dashboard() {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const goToCreateEvent = () => router.push(organizerEventCreatePage);
-  const goToListEvent = () => router.push(organizerEventListPage);
+  const goToCreateEvent = () => {
+    try {
+      router.push(organizerEventCreatePage);
+    } catch (error) {
+      console.error("Error in goToCreateEvent:", error);
+    }
+  };
+
+  const goToListEvent = () => {
+    try {
+      router.push(organizerEventListPage);
+    } catch (error) {
+      console.error("Error in goToListEvent:", error);
+    }
+  };
 
   const handleLogout = () => {
-    dispatch(organizerLogout());
-    logoutOrganizer();
-    router.push(loginPage);
+    try {
+      dispatch(organizerLogout());
+      logoutOrganizer();
+      router.push(loginPage);
+    } catch (error) {
+      console.error("Error in handleLogout:", error);
+    }
   };
 
   return (
     <div className="dashboard-wrapper">
-
       <div className="dashboard-header">
         <h1 className="dashboard-title">Dashboard</h1>
 

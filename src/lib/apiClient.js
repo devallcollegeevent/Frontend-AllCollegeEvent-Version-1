@@ -9,106 +9,167 @@ async function handleApi(promise) {
       data: res.data,
     };
   } catch (err) {
+    console.error("API Error:", err?.response || err);
+
     return {
       success: false,
-      message: err.response?.data?.message || "Something went wrong",
-      status: err.response?.status || 500,
+      message:
+        err?.response?.data?.message ||
+        err?.message ||
+        "Something went wrong",
+      status: err?.response?.status || 500,
     };
   }
 }
 
-// ============================user auth =================================
+// ============================ USER AUTH ============================
 
 export const signupApi = async (data) => {
-  return await handleApi(api.post("/v1/auth/signup", data));
+  try {
+    return await handleApi(api.post("/v1/auth/signup", data));
+  } catch (err) {
+    return handleApi(Promise.reject(err));
+  }
 };
 
 export const loginApi = async (data) => {
-  return await handleApi(api.post("/v1/auth/login", data));
+  try {
+    return await handleApi(api.post("/v1/auth/login", data));
+  } catch (err) {
+    return handleApi(Promise.reject(err));
+  }
 };
+
 export const googleAthuLoginApi = async (data) => {
-  return await handleApi(api.post("/v1/auth/google-login", data));
+  try {
+    return await handleApi(api.post("/v1/auth/google-login", data));
+  } catch (err) {
+    return handleApi(Promise.reject(err));
+  }
 };
 
 export const forgotApi = async (data) => {
-  return await handleApi(api.post("/v1/auth/forgot-password", data));
+  try {
+    return await handleApi(api.post("/v1/auth/forgot-password", data));
+  } catch (err) {
+    return handleApi(Promise.reject(err));
+  }
 };
 
 export const verifyOtpApi = async (data) => {
-  return await handleApi(api.post("/v1/auth/verify-otp", data));
+  try {
+    return await handleApi(api.post("/v1/auth/verify-otp", data));
+  } catch (err) {
+    return handleApi(Promise.reject(err));
+  }
 };
 
 export const resendOtpApi = async (data) => {
-  return await handleApi(api.post("/v1/auth/resend-otp", data));
+  try {
+    return await handleApi(api.post("/v1/auth/resend-otp", data));
+  } catch (err) {
+    return handleApi(Promise.reject(err));
+  }
 };
 
 export const resetPasswordApi = async (data) => {
-  return await handleApi(api.post("/v1/auth/reset-password", data));
+  try {
+    return await handleApi(api.post("/v1/auth/reset-password", data));
+  } catch (err) {
+    return handleApi(Promise.reject(err));
+  }
 };
 
 export const profileApi = async () => {
-  return await handleApi(api.get("/acc/profile"));
+  try {
+    return await handleApi(api.get("/acc/profile"));
+  } catch (err) {
+    return handleApi(Promise.reject(err));
+  }
 };
 
-
-// ============================organization auth =================================
+// ============================ ORGANIZATION AUTH ============================
 
 export const organizerSignupApi = async (data) => {
-  return await handleApi(api.post("/v1/auth/signup", data));
+  try {
+    return await handleApi(api.post("/v1/auth/signup", data));
+  } catch (err) {
+    return handleApi(Promise.reject(err));
+  }
 };
 
 export const verifyEmailApi = async (token) => {
-  return await handleApi(
-    api.get(`/v1/auth/org/verify?token=${encodeURIComponent(token)}`)
-  );
+  try {
+    return await handleApi(
+      api.get(`/v1/auth/org/verify?token=${encodeURIComponent(token)}`)
+    );
+  } catch (err) {
+    return handleApi(Promise.reject(err));
+  }
 };
 
-// ============================organizer creat , and list Event =================================
+// ============================ ORGANIZER EVENTS ============================
 
 export const createEventApi = async (orgId, data) => {
-  return await handleApi(
-    api.post(`/v1/organizations/${orgId}/events`, data)
-  );
+  try {
+    return await handleApi(
+      api.post(`/v1/organizations/${orgId}/events`, data)
+    );
+  } catch (err) {
+    return handleApi(Promise.reject(err));
+  }
 };
 
-
 export const getOrganizerEventsApi = async (orgId) => {
-  return await handleApi(api.get(`/v1/organizations/${orgId}/events`));
+  try {
+    return await handleApi(api.get(`/v1/organizations/${orgId}/events`));
+  } catch (err) {
+    return handleApi(Promise.reject(err));
+  }
 };
 
 export const getOrganizerSingleEventApi = async (orgId, eventId) => {
-  return await handleApi(
-    api.get(`/v1/organizations/${orgId}/events/${eventId}`)
-  );
+  try {
+    return await handleApi(
+      api.get(`/v1/organizations/${orgId}/events/${eventId}`)
+    );
+  } catch (err) {
+    return handleApi(Promise.reject(err));
+  }
 };
-
 
 export const updateOrganizerSingleEventApi = async (orgId, eventId, data) => {
-  return await handleApi(
-    api.put(`/v1/organizations/${orgId}/events/${eventId}`, data)
-  );
+  try {
+    return await handleApi(
+      api.put(`/v1/organizations/${orgId}/events/${eventId}`, data)
+    );
+  } catch (err) {
+    return handleApi(Promise.reject(err));
+  }
 };
 
-
-
-// ============================user view  Event =================================
+// ============================ USER EVENTS ============================
 
 export const getAllEventsApi = async () => {
-  return await handleApi(api.get("/v1/events"));
+  try {
+    return await handleApi(api.get("/v1/events"));
+  } catch (err) {
+    return handleApi(Promise.reject(err));
+  }
 };
 
-
 export const getEventByIdApi = async (eventId) => {
-  return await handleApi(
-    api.get(`/v1/events/${eventId}`)
-  );
+  try {
+    return await handleApi(api.get(`/v1/events/${eventId}`));
+  } catch (err) {
+    return handleApi(Promise.reject(err));
+  }
 };
 
 export const deleteEventApi = async (id) => {
-  return await handleApi(api.delete(`/event/delete/${id}`));
+  try {
+    return await handleApi(api.delete(`/event/delete/${id}`));
+  } catch (err) {
+    return handleApi(Promise.reject(err));
+  }
 };
-
-
-
-
-

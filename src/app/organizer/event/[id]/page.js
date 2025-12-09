@@ -35,11 +35,9 @@ export default function OrganizerEventDetailsPage() {
 
   return (
     <div className="container event-page-wrapper shadow p-3 mb-5 mt-5 bg-body-tertiary rounded">
+
       {/* Back Button */}
-      <button
-        className="btn btn-outline-dark mb-3"
-        onClick={() => router.back()}
-      >
+      <button className="btn btn-outline-dark mb-3" onClick={() => router.back()}>
         ← Back
       </button>
 
@@ -54,25 +52,26 @@ export default function OrganizerEventDetailsPage() {
       </div>
 
       <div className="row g-4">
-        {/* LEFT CONTENT */}
+
+        {/* LEFT SIDE */}
         <div className="col-lg-8">
-          {/* Title */}
+
           <h2 className="event-title">{event.title}</h2>
 
-          {/* Tags */}
           <div className="event-tags mt-2">
             <span className="tag tag-purple">{event.mode}</span>
             <span className="tag tag-light">{event.eventDate}</span>
             <span className="tag tag-light">{event.eventTime}</span>
           </div>
 
-          {/* Description */}
-          <p className="event-description mt-4">
+          {/* DESCRIPTION */}
+          <div className="event-description mt-4">
             {event.description || "No description available"}
-          </p>
+          </div>
 
-          {/* DETAIL GRID */}
+          {/* DETAILS GRID */}
           <div className="detail-grid mt-4">
+
             <div className="detail-item">
               <span className="detail-icon">🏫</span>
               <div>
@@ -112,28 +111,33 @@ export default function OrganizerEventDetailsPage() {
                 <p>{event.mode}</p>
               </div>
             </div>
+
           </div>
         </div>
 
-        {/* RIGHT SIDEBAR CARD */}
+        {/* RIGHT SIDEBAR */}
         <div className="col-lg-4">
           <div className="right-card p-4 shadow-sm">
             <h5 className="fw-bold mb-3">Event Summary</h5>
 
             <div className="summary-item">
-              <span>📅</span> <p>{event.eventDate}</p>
+              <span>📅</span>
+              <p>{event.eventDate}</p>
             </div>
 
             <div className="summary-item">
-              <span>⏰</span> <p>{event.eventTime}</p>
+              <span>⏰</span>
+              <p>{event.eventTime}</p>
             </div>
 
             <div className="summary-item">
-              <span>📍</span> <p>{event.venue}</p>
+              <span>📍</span>
+              <p>{event.venue}</p>
             </div>
 
             <div className="summary-item">
-              <span>🎫</span> <p>{event.mode}</p>
+              <span>🎫</span>
+              <p>{event.mode}</p>
             </div>
 
             <button
@@ -146,6 +150,7 @@ export default function OrganizerEventDetailsPage() {
             </button>
           </div>
         </div>
+
       </div>
     </div>
   );

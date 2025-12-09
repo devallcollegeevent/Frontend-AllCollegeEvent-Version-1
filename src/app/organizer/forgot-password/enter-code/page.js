@@ -19,48 +19,64 @@ export default function Page() {
   const [resendLoading, setResendLoading] = useState(false);
 
   function onChange(i, v) {
-    if (!/^\d*$/.test(v)) return;
+    try {
+      if (!/^\d*$/.test(v)) return;
 
-    const next = [...otp];
-    next[i] = v.slice(-1);
-    setOtp(next);
+      const next = [...otp];
+      next[i] = v.slice(-1);
+      setOtp(next);
 
-    if (v && i < 3) refs[i + 1].current?.focus();
+      if (v && i < 3) refs[i + 1].current?.focus();
+    } catch (error) {
+      console.error("OTP input error:", error);
+    }
   }
 
   async function onSubmit(e) {
     e.preventDefault();
 
-    const code = otp.join("");
-    if (code.length !== 4) return toast.error("Enter 4 digit code");
+    try {
+      const code = otp.join("");
+      if (code.length !== 4) return toast.error("Enter 4 digit code");
 
-    setLoading(true);
+      setLoading(true);
 
-    const res = await verifyOtpApi({ email, otp: code });
+      const res = await verifyOtpApi({ email, otp: code });
 
-    setLoading(false);
+      setLoading(false);
 
-    if (res.success) {
-      toast.success("Code verified");
-      router.push(organizerResetPasswordPage);
-    } else {
-      toast.error(res.message || "Invalid code");
+      if (res.success) {
+        toast.success("Code verified");
+        router.push(organizerResetPasswordPage);
+      } else {
+        toast.error(res.message || "Invalid code");
+      }
+    } catch (error) {
+      console.error("Verify OTP error:", error);
+      toast.error("Something went wrong");
+      setLoading(false);
     }
   }
 
   async function resendCode() {
-    if (!email) return toast.error("Email missing");
+    try {
+      if (!email) return toast.error("Email missing");
 
-    setResendLoading(true);
+      setResendLoading(true);
 
-    const res = await resendOtpApi({ email });
+      const res = await resendOtpApi({ email });
 
-    setResendLoading(false);
+      setResendLoading(false);
 
-    if (res.success) {
-      toast.success("New code sent!");
-    } else {
-      toast.error(res.message || "Could not resend code");
+      if (res.success) {
+        toast.success("New code sent!");
+      } else {
+        toast.error(res.message || "Could not resend code");
+      }
+    } catch (error) {
+      console.error("Resend OTP error:", error);
+      toast.error("Something went wrong");
+      setResendLoading(false);
     }
   }
 
@@ -97,7 +113,11 @@ export default function Page() {
             </div>
 
             <div className="form-actions">
-              <button className="btn-primary-ghost" type="submit" disabled={loading}>
+              <button
+                className="btn-primary-ghost"
+                type="submit"
+                disabled={loading}
+              >
                 {loading ? "Verifying..." : "Continue"}
               </button>
             </div>
@@ -108,7 +128,7 @@ export default function Page() {
                 type="button"
                 onClick={resendCode}
                 disabled={resendLoading}
-               className="resendCondeText"
+                className="resendCondeText"
               >
                 {resendLoading ? "Sending..." : "Resend Code"}
               </button>

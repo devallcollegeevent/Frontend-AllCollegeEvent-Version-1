@@ -69,9 +69,12 @@
 .uev-card {
   background: white;
   border-radius: 18px;
+  max-width: 300px;
+  width: 100%;
+  overflow: hidden;
   border: 1px solid #eaeaea;
   padding: 12px;
-  box-shadow: 0 4px 18px rgba(0,0,0,0.06);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
   cursor: pointer;
   transition: 0.2s ease;
 }
@@ -106,6 +109,13 @@
 /* Card Body */
 .uev-card-body {
   padding: 10px 4px;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+}
+.uev-card-body div {
+  white-space: normal;
+  overflow-wrap: break-word;
 }
 
 .uev-card-title {
@@ -113,4 +123,3 @@
   font-weight: var(--fw-bold);
   margin-bottom: 8px;
 }
-    

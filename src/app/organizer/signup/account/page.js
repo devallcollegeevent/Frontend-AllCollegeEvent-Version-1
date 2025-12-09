@@ -34,24 +34,29 @@ export default function Page() {
   async function onContinue(e) {
     e.preventDefault();
 
-    if (!domain || !password || !confirm) return toast.error("Fill all fields");
-    if (password !== confirm) return toast.error("Passwords do not match");
-    if (!queryData.category)
-      return toast.error("Category missing. Start again.");
-
-    const payload = {
-      org_cat: queryData.category,
-      country: queryData.country,
-      state: queryData.state,
-      city: queryData.city,
-      org_name: queryData.orgName,
-      email: domain,
-      password: password,
-      type: organizerRole,
-    };
-
     try {
+      if (!domain || !password || !confirm)
+        return toast.error("Fill all fields");
+
+      if (password !== confirm)
+        return toast.error("Passwords do not match");
+
+      if (!queryData.category)
+        return toast.error("Category missing. Start again.");
+
+      const payload = {
+        org_cat: queryData.category,
+        country: queryData.country,
+        state: queryData.state,
+        city: queryData.city,
+        org_name: queryData.orgName,
+        email: domain,
+        password: password,
+        type: organizerRole,
+      };
+
       setLoading(true);
+
       const res = await organizerSignupApi(payload);
 
       if (!res.success) {
@@ -61,7 +66,7 @@ export default function Page() {
 
       setShowModal(true);
     } catch (err) {
-      console.error(err);
+      console.error("Signup error:", err);
       toast.error("Something went wrong");
     } finally {
       setLoading(false);
@@ -69,8 +74,12 @@ export default function Page() {
   }
 
   function closeModal() {
-    setShowModal(false);
-    router.push(organizerLoginPage);
+    try {
+      setShowModal(false);
+      router.push(organizerLoginPage);
+    } catch (error) {
+      console.error("Modal close error:", error);
+    }
   }
 
   return (
@@ -111,9 +120,7 @@ export default function Page() {
             </div>
 
             <h2 className="org-title">Account Creation</h2>
-            <div className="org-sub">
-              Add your domain mail id and set a password
-            </div>
+            <div className="org-sub">Add your domain mail id and set a password</div>
 
             <form className="org-form" onSubmit={onContinue}>
               <div className="form-group full">
@@ -167,11 +174,7 @@ export default function Page() {
               </div>
 
               <div className="form-actions">
-                <button
-                  className="btn-primary-ghost"
-                  type="submit"
-                  disabled={loading}
-                >
+                <button className="btn-primary-ghost" type="submit" disabled={loading}>
                   {loading ? "Saving..." : "Verify Your Domain"}
                 </button>
               </div>
