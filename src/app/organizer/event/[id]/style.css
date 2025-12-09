@@ -74,6 +74,9 @@
 .event-description {
   width: 100%;
   display: block;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 /* ------------------------------------------
@@ -84,7 +87,11 @@
   gap: 18px;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 }
-
+.detail-item p {
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
 .detail-item {
   display: flex;
   gap: 12px;
@@ -106,7 +113,7 @@
   background: var(--white);
   border-radius: 12px;
   border: 1px solid #e7e7e7;
-   width: 100%;
+  width: 100%;
   max-width: 100%;
   overflow-wrap: break-word;
   word-break: break-word;
@@ -126,6 +133,8 @@
   margin: 0;
   font-size: 15px;
   color: var(--tx-title);
-  white-space: nowrap !important; /* 🔥 FIX */
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: break-word;
   display: inline-block;
 }
