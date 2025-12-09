@@ -334,6 +334,9 @@
   font-weight: var(--fw-bold);
   color: var(--tx-title);
 }
+.form-actions{
+  padding: 7% 17%;
+}
 
 .verify-text {
   font-size: 16px;

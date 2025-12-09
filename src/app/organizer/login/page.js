@@ -8,7 +8,8 @@ import { loginApi } from "@/lib/apiClient";
 import { saveToken } from "@/lib/auth";
 import { toast } from "react-hot-toast";
 import { organizerRole, text } from "@/const-value/page";
-import { landingPage, organizerForgotPasswordPage, organizerSignupCategoryPage } from "@/app/routes";
+import { landingPage, organizerSignupCategoryPage } from "@/app/routes";
+import { organizerLoginSchema } from "@/components/validation";
 
 export default function Page() {
   const router = useRouter();
@@ -18,6 +19,17 @@ export default function Page() {
 
   async function onSubmit(e) {
     e.preventDefault();
+
+    // VALIDATION
+    try {
+      await organizerLoginSchema.validate(
+        { email: domain, password },
+        { abortEarly: false }
+      );
+    } catch (err) {
+      return toast.error(err.errors[0]); 
+    }
+
     try {
       const res = await loginApi({
         email: domain,
@@ -25,10 +37,7 @@ export default function Page() {
         type: organizerRole,
       });
 
-      if (!res.success) {
-        toast.error("Invalid credentials");
-        return;
-      }
+      if (!res.success) return toast.error("Invalid credentials");
 
       saveToken(res.data.token);
 
@@ -69,7 +78,7 @@ export default function Page() {
               <div className="pass-wrap">
                 <input
                   className="form-control"
-                  type={show1 ? text : password}
+                  type={show1 ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter your password"
@@ -81,9 +90,7 @@ export default function Page() {
             </div>
 
             <div style={{ textAlign: "right", marginBottom: 12 }}>
-              <a className="u-organizer-link" href={organizerForgotPasswordPage}>
-                Forgot Password!
-              </a>
+              <a href="/auth/forgot-password?role=organizer">Forgot Password?</a>
             </div>
 
             <div className="form-actions">

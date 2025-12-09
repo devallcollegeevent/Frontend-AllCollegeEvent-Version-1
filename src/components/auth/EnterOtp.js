@@ -1,58 +1,62 @@
 "use client";
 
-import { organizerResetPasswordPage } from "@/app/routes";
-import "../../organizer-auth.css";
-import { useRouter } from "next/navigation";
-import { useRef, useState } from "react";
+import { useState, useRef } from "react";
 import { verifyOtpApi, resendOtpApi } from "@/lib/apiClient";
-import { toast } from "react-hot-toast";
 import { getEmail } from "@/lib/auth";
+import { toast } from "react-hot-toast";
 
-export default function Page() {
-  const router = useRouter();
+export default function EnterOtp({ role }) {
   const email = getEmail();
-
   const [otp, setOtp] = useState(["", "", "", ""]);
-  const refs = [useRef(), useRef(), useRef(), useRef()];
-
+  const inputs = [useRef(null), useRef(null), useRef(null), useRef(null)];
   const [loading, setLoading] = useState(false);
   const [resendLoading, setResendLoading] = useState(false);
 
-  function onChange(i, v) {
-    try {
-      if (!/^\d*$/.test(v)) return;
+  // ROLE BASED CONFIG
+  const config = {
+    user: {
+      image: "/images/auth-forgot.png",
+      redirect: "/auth/reset-password?role=user",
+    },
+    organizer: {
+      image: "/images/or_forgotpassword.png",
+      redirect: "/auth/reset-password?role=organizer",
+    },
+  };
 
-      const next = [...otp];
-      next[i] = v.slice(-1);
-      setOtp(next);
+  const ui = config[role];
 
-      if (v && i < 3) refs[i + 1].current?.focus();
-    } catch (error) {
-      console.error("OTP input error:", error);
+  function onChange(index, value) {
+    if (!/^\d*$/.test(value)) return;
+
+    const next = [...otp];
+    next[index] = value.slice(-1);
+    setOtp(next);
+
+    if (value && index < 3) {
+      inputs[index + 1].current?.focus();
     }
   }
 
   async function onSubmit(e) {
     e.preventDefault();
 
+    const code = otp.join("");
+
+    if (code.length !== 4) return toast.error("Enter 4-digit code");
+
     try {
-      const code = otp.join("");
-      if (code.length !== 4) return toast.error("Enter 4 digit code");
-
       setLoading(true);
-
       const res = await verifyOtpApi({ email, otp: code });
-
       setLoading(false);
 
       if (res.success) {
-        toast.success("Code verified");
-        router.push(organizerResetPasswordPage);
+        toast.success("Code verified!");
+        window.location.href = ui.redirect;
       } else {
         toast.error(res.message || "Invalid code");
       }
-    } catch (error) {
-      console.error("Verify OTP error:", error);
+    } catch (err) {
       toast.error("Something went wrong");
       setLoading(false);
     }
@@ -60,21 +64,16 @@ export default function Page() {
 
   async function resendCode() {
     try {
-      if (!email) return toast.error("Email missing");
-
       setResendLoading(true);
-
       const res = await resendOtpApi({ email });
-
       setResendLoading(false);
 
       if (res.success) {
         toast.success("New code sent!");
       } else {
-        toast.error(res.message || "Could not resend code");
+        toast.error(res.message || "Failed to resend");
       }
-    } catch (error) {
-      console.error("Resend OTP error:", error);
+    } catch (err) {
       toast.error("Something went wrong");
       setResendLoading(false);
     }
@@ -83,11 +82,7 @@ export default function Page() {
   return (
     <div className="org-shell">
       <aside className="org-left">
-        <img
-          className="org-left-img"
-          src="/images/or_forgotpassword.png"
-          alt="left"
-        />
+        <img className="org-left-img" src={ui.image} alt="left" />
       </aside>
 
       <main className="org-right">
@@ -99,19 +94,18 @@ export default function Page() {
 
           <form className="org-form" onSubmit={onSubmit}>
             <div className="otp-row">
-              {otp.map((v, i) => (
+              {otp.map((val, i) => (
                 <input
                   key={i}
-                  ref={refs[i]}
+                  ref={inputs[i]}
                   className="otp-input"
                   inputMode="numeric"
                   maxLength={1}
-                  value={v}
+                  value={val}
                   onChange={(e) => onChange(i, e.target.value)}
                 />
               ))}
             </div>
-
             <div className="form-actions">
               <button
                 className="btn-primary-ghost"
@@ -122,13 +116,13 @@ export default function Page() {
               </button>
             </div>
 
-            <div className="org-foot">
-              Didn't receive the code?{" "}
+            <div className="org-foot" style={{ marginTop: 10 }}>
+              Didn’t receive the code?{" "}
               <button
                 type="button"
+                className="resendCondeText"
                 onClick={resendCode}
                 disabled={resendLoading}
-                className="resendCondeText"
               >
                 {resendLoading ? "Sending..." : "Resend Code"}
               </button>

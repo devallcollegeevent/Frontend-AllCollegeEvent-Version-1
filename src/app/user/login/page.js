@@ -12,6 +12,7 @@ import { password, text, userRole } from "@/const-value/page";
 import { GoogleLogin } from "@react-oauth/google";
 import { useDispatch } from "react-redux";
 import { userLoginSuccess } from "@/store/userAuthSlice";
+import { userLoginSchema } from "@/components/validation";
 
 export default function Page() {
   const router = useRouter();
@@ -27,6 +28,20 @@ export default function Page() {
   const onSubmit = async (e) => {
     e.preventDefault();
 
+    // ⭐ YUP VALIDATION
+    try {
+      await userLoginSchema.validate(
+        {
+          email: form.email,
+          password: form.password,
+        },
+        { abortEarly: false }
+      );
+    } catch (err) {
+      return toast.error(err.errors[0]);
+    }
+
+    // ⭐ API CALL
     try {
       const res = await loginApi(form);
 
@@ -38,7 +53,9 @@ export default function Page() {
       dispatch(userLoginSuccess(res.data.data));
       saveToken(res.data.token);
 
-      document.cookie = `token=${res.data.token}; path=/; max-age=${60 * 60 * 24 * 7}`;
+      document.cookie = `token=${res.data.token}; path=/; max-age=${
+        60 * 60 * 24 * 7
+      }`;
       document.cookie = `role=user; path=/;`;
 
       toast.success("Login Successful!");
@@ -95,7 +112,6 @@ export default function Page() {
               placeholder="Enter your mail id"
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
-              required
             />
 
             <label className="u-auth-muted">Password</label>
@@ -106,7 +122,6 @@ export default function Page() {
                 placeholder="Enter your password"
                 value={form.password}
                 onChange={(e) => setForm({ ...form, password: e.target.value })}
-                required
               />
               <span
                 className="u-auth-pass-toggle"
@@ -117,9 +132,7 @@ export default function Page() {
             </div>
 
             <div className="text-end" style={{ marginBottom: "15px" }}>
-              <a className="u-auth-link" href="/user/forgot-password">
-                Forgot Password!
-              </a>
+              <a href="/auth/forgot-password?role=user">Forgot Password?</a>
             </div>
 
             <button className="u-auth-btn-primary" type="submit">

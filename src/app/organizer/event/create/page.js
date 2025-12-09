@@ -12,6 +12,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { getUserData } from "@/lib/auth";
 import { organizerEventListPage } from "@/app/routes";
 import { hybrid, offline } from "@/const-value/page";
+import { eventSchema } from "@/components/validation";
 
 export default function CreateEventPage() {
   const router = useRouter();
@@ -70,64 +71,71 @@ export default function CreateEventPage() {
   const onSubmit = async (e) => {
     e.preventDefault();
 
+    // ⭐ YUP VALIDATION
     try {
-      if (!eventTitle || !description || !eventDate || !eventTime || !mode) {
-        return toast.error("Please fill all fields");
-      }
+      await eventSchema.validate(
+        {
+          eventTitle,
+          description,
+          eventDate,
+          eventTime,
+          mode,
+          venue,
+        },
+        { abortEarly: false }
+      );
+    } catch (err) {
+      console.log("======reee",err)
+      return toast.error(err.errors[0]); 
+    }
 
-      if ((mode === offline || mode === hybrid) && !venue) {
-        return toast.error("Venue required");
-      }
+    // ⭐ Prepare form data
+    const formData = new FormData();
+    formData.append("event_title", eventTitle);
+    formData.append("description", description);
+    formData.append("event_date", eventDate);
+    formData.append("event_time", eventTime);
+    formData.append("mode", mode);
+    formData.append("venue", venue);
+    formData.append("org_id", userData.identity);
 
-      const formData = new FormData();
-      formData.append("event_title", eventTitle);
-      formData.append("description", description);
-      formData.append("event_date", eventDate);
-      formData.append("event_time", eventTime);
-      formData.append("mode", mode);
-      formData.append("venue", venue);
-      formData.append("org_id", userData.identity);
+    if (image) formData.append("image", image);
 
-      if (image) formData.append("image", image);
-
-      if (isEdit) {
-        try {
-          const res = await updateOrganizerSingleEventApi(
-            userData.identity,
-            eventId,
-            formData
-          );
-
-          if (res.success) {
-            toast.success("Event Updated Successfully!");
-            router.push(organizerEventListPage);
-          } else {
-            toast.error(res.message || "Failed to update");
-          }
-        } catch (error) {
-          console.error("Update event error:", error);
-          toast.error("Failed to update event");
-        }
-
-        return;
-      }
-
+    // ⭐ EDIT EVENT FLOW
+    if (isEdit) {
       try {
-        const res = await createEventApi(userData.identity, formData);
+        const res = await updateOrganizerSingleEventApi(
+          userData.identity,
+          eventId,
+          formData
+        );
 
         if (res.success) {
-          toast.success("Event Created Successfully!");
+          toast.success("Event Updated Successfully!");
           router.push(organizerEventListPage);
         } else {
-          toast.error(res.message || "Failed to create");
+          toast.error(res.message || "Failed to update");
         }
       } catch (error) {
-        console.error("Create event error:", error);
-        toast.error("Failed to create event");
+        console.error("Update event error:", error);
+        toast.error("Failed to update event");
+      }
+      return;
+    }
+
+    // ⭐ CREATE EVENT FLOW
+    try {
+      const res = await createEventApi(userData.identity, formData);
+
+      if (res.success) {
+        toast.success("Event Created Successfully!");
+        router.push(organizerEventListPage);
+      } else {
+        toast.error(res.message || "Failed to create");
       }
     } catch (error) {
-      console.error("Submit error:", error);
-      toast.error("Something went wrong");
+      console.error("Create event error:", error);
+      toast.error("Failed to create event");
     }
   };
 

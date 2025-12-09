@@ -48,37 +48,26 @@ export const googleAthuLoginApi = async (data) => {
   }
 };
 
+// Step 1: send email
 export const forgotApi = async (data) => {
-  try {
-    return await handleApi(api.post("/v1/auth/forgot-password", data));
-  } catch (err) {
-    return handleApi(Promise.reject(err));
-  }
+  return await handleApi(api.post("/v1/auth/forgot-password", data));
 };
 
+// Step 2: verify OTP
 export const verifyOtpApi = async (data) => {
-  try {
-    return await handleApi(api.post("/v1/auth/verify-otp", data));
-  } catch (err) {
-    return handleApi(Promise.reject(err));
-  }
+  return await handleApi(api.post("/v1/auth/verify-otp", data));
 };
 
+// Resend OTP
 export const resendOtpApi = async (data) => {
-  try {
-    return await handleApi(api.post("/v1/auth/resend-otp", data));
-  } catch (err) {
-    return handleApi(Promise.reject(err));
-  }
+  return await handleApi(api.post("/v1/auth/resend-otp", data));
 };
 
+// Step 3: reset password
 export const resetPasswordApi = async (data) => {
-  try {
-    return await handleApi(api.post("/v1/auth/reset-password", data));
-  } catch (err) {
-    return handleApi(Promise.reject(err));
-  }
+  return await handleApi(api.post("/v1/auth/reset-password", data));
 };
+
 
 export const profileApi = async () => {
   try {
