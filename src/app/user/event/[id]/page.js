@@ -3,94 +3,123 @@
 import { useParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { getEventByIdApi } from "@/lib/apiClient";
-import "./event.css";
+
+import {
+  DEFAULT_TEXT,
+  DEFAULT_DATE,
+  DEFAULT_PRICE,
+  LABEL_EVENT_DATE,
+  LABEL_EVENT_VENUE,
+  LABEL_EVENT_PRICE,
+  LABEL_EVENT_MODE,
+  LABEL_EVENT_DESCRIPTION,
+  DEFAULT_BACK,
+} from "@/const-value/config-message/page";
 
 export default function SingleEventPage() {
   const { id } = useParams();
   const router = useRouter();
+
   const [event, setEvent] = useState(null);
 
+  // ------------------------------------------------------
+  // Load event when ID changes
+  // ------------------------------------------------------
   useEffect(() => {
-    try {
-      if (id) loadEvent();
-    } catch (error) {
-      console.error("Load event error:", error);
-    }
+    if (id) loadEvent();
   }, [id]);
 
   const loadEvent = async () => {
     try {
       const res = await getEventByIdApi(id);
-      if (res.success) {
-        setEvent(res.data.data);
-      }
+      if (res.success) setEvent(res.data.data);
     } catch (error) {
       console.error("API error:", error);
     }
   };
 
-  if (!event) return <div className="event-loading">Loading…</div>;
+  // ------------------------------------------------------
+  // Show loader until data arrives
+  // ------------------------------------------------------
+  if (!event) return <div className="text-center p-4">Loading...</div>;
 
   return (
-    <div className="event-view-container">
+    <div className="container py-4 shadow-none p-3 mb-5 bg-light rounded mt-5">
 
+      {/* Back Button */}
       <button
-        className="event-back-btn"
-        onClick={() => {
-          try {
-            router.back();
-          } catch (err) {
-            console.error("Back navigation error:", err);
-          }
-        }}
+        className="btn btn-outline-secondary mb-3"
+        onClick={() => router.back()}
       >
-        ← Back
+        {DEFAULT_BACK}
       </button>
 
-      <div className="event-card">
-        <img src={event.bannerImage} className="event-banner" />
+      {/* Event Card */}
+      <div className="position-relative mb-4">
 
-        <div className="event-card-body">
-          <h2 className="event-title">{event.title}</h2>
+        {/* Banner */}
+        <img
+          src={event.bannerImage}
+          className="card-img-top"
+          alt="Event Banner"
+          style={{ height: "340px", objectFit: "cover" }}
+        />
 
-          <div className="event-divider"></div>
+        <div className="card-body">
+
+          {/* Title */}
+          <h2 className="fw-bold">{event.title || DEFAULT_TEXT}</h2>
+
+          <hr />
 
           {/* Row 1 */}
-          <div className="event-row">
-            <div className="event-box">
-              <h6 className="event-box-title">📍 Location</h6>
-              <p>{event.city || event.venue}</p>
+          <div className="row mb-3">
+
+            {/* Venue */}
+            <div className="col-md-4">
+              <h6 className="fw-semibold">{LABEL_EVENT_VENUE}</h6>
+              <p className="text-muted">
+                {event.city || event.venue || DEFAULT_TEXT}
+              </p>
             </div>
 
-            <div className="event-box">
-              <h6 className="event-box-title">📅 Date</h6>
-              <p>{event.eventDate}</p>
+            {/* Date */}
+            <div className="col-md-4">
+              <h6 className="fw-semibold">{LABEL_EVENT_DATE}</h6>
+              <p className="text-muted">{event.eventDate || DEFAULT_DATE}</p>
             </div>
 
-            <div className="event-box">
-              <h6 className="event-box-title">💰 Price</h6>
-              <p>₹ {event.price}</p>
+            {/* Price */}
+            <div className="col-md-4">
+              <h6 className="fw-semibold">{LABEL_EVENT_PRICE}</h6>
+              <p className="text-muted">₹ {event.price || DEFAULT_PRICE}</p>
             </div>
           </div>
 
           {/* Row 2 */}
-          <div className="event-row">
-            <div className="event-box">
-              <h6 className="event-box-title">🎟 Event Mode</h6>
-              <p>{event.mode}</p>
+          <div className="row mb-3">
+
+            {/* Mode */}
+            <div className="col-md-4">
+              <h6 className="fw-semibold">{LABEL_EVENT_MODE}</h6>
+              <p className="text-muted">{event.mode || DEFAULT_TEXT}</p>
             </div>
 
-            <div className="event-box">
-              <h6 className="event-box-title">📌 Category</h6>
-              <p>{event.category}</p>
+            {/* Category */}
+            <div className="col-md-4">
+              <h6 className="fw-semibold">Category</h6>
+              <p className="text-muted">{event.category || DEFAULT_TEXT}</p>
             </div>
           </div>
 
           {/* Description */}
-          <div className="event-description-box">
-            <h4 className="event-desc-title">Event Description</h4>
-            <p className="event-description">{event.description}</p>
+          <div className="mt-4">
+            <h5 className="fw-bold">{LABEL_EVENT_DESCRIPTION}</h5>
+            <p className="text-muted" style={{ whiteSpace: "pre-wrap" }}>
+              {event.description || DEFAULT_TEXT}
+            </p>
           </div>
+
         </div>
       </div>
     </div>

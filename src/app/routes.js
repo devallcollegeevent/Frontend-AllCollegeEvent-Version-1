@@ -1,14 +1,14 @@
 // ======================= USER AUTH ROUTES ============================
 
-export const signupPage = "/auth/signup";
-export const loginPage = "/auth/login";
+export const signupPage = "/user/signup";
+export const loginPage = "/user/login";
 
 export const forgotPasswordPage = "/auth/forgot-password";
 export const enterCodePage = "/auth/forgot-password/enter-code";
 export const resetPasswordPage = "/auth/reset-password";
 export const resetPasswordSuccessPage = "/auth/reset-password/success";
 
-export const userEventListPage = "/user/events";
+export const userEventListPage = "/user/event/list";
 
 // ======================= ORGANIZER AUTH ROUTES ========================
 
@@ -17,7 +17,7 @@ export const organizerLoginPage = "/organizer/login";
 export const organizerSignupCategoryPage = "/organizer/signup/category";
 export const organizerSignupDetailsPage = "/organizer/signup/details";
 export const organizerSignupAccountPage = "/organizer/signup/account";
-export const organizerSignupVerifyPage = "/organizer/signup/verify";
+export const organizerSignupVerifyPage = "/components/auth";
 
 export const organizerForgotPasswordPage = "/organizer/forgot-password";
 export const organizerEnterCodePage = "/organizer/forgot-password/enter-code";

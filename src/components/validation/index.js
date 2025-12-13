@@ -79,6 +79,13 @@ export const userForgotSchema = Yup.object({
   email,
 });
 
+export const otpSchema = Yup.object({
+  otp: Yup.string()
+    .length(4, "OTP must be 4 digits")
+    .required("OTP is required"),
+});
+
+
 export const userResetSchema = Yup.object({
   password: password8,
   confirmPassword: confirmPassword("password"),

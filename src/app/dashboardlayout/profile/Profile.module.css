@@ -1,0 +1,161 @@
+.profileWrapper {
+  width: 100%;
+}
+
+.viewBox {
+  background: #f9f9f9;
+  padding: 25px;
+  border-radius: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.viewBox label {
+  font-size: 14px;
+  color: #999;
+}
+
+.viewBox p {
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.editIcon {
+  width: 22px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.editBox {
+  background: #f9f9f9;
+  padding: 25px;
+  border-radius: 20px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.left {
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.left input {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.changePassword {
+  color: #7a12ff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.uploadBox {
+  border: 2px dashed #ccc;
+  border-radius: 12px;
+  padding: 30px;
+  text-align: center;
+}
+
+.btnRow {
+  display: flex;
+  gap: 50px;
+  margin-top: 20px;
+  justify-content: center;
+}
+
+.cancelBtn {
+  padding: 5px 47px;
+  border-radius: 25px;
+  border: 1px solid #000;
+  background: #fff;
+}
+
+.saveBtn {
+  padding: 11px 36px;
+  border-radius: 25px;
+  border: none;
+  background: #7a12ff;
+  color: #fff;
+  font-weight: 600;
+}
+
+.otpBox {
+  background: #f9f9f9;
+  padding: 25px;
+  border-radius: 20px;
+  text-align: center;
+}
+
+.otpInputs {
+  margin: 40px 0;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.otpInputs input {
+  width: 50px;
+  height: 55px;
+  border-radius: 12px;
+  border: 2px solid #ccc;
+  font-size: 24px;
+  text-align: center;
+}
+
+.resend span {
+  color: #7a12ff;
+  cursor: pointer;
+}
+
+.passwordBox {
+  background: #f9f9f9;
+  padding-top: 20px;
+  border-radius: 20px;
+  text-align: center;
+}
+
+.passwordBox input {
+width: 40%;
+    margin: 32px auto;
+    display: block;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+}
+
+.successBox {
+  background: #f9f9f9;
+  padding: 40px;
+  border-radius: 20px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.inputWrapper {
+  position: relative;
+  width: 45%;
+  margin: 15px auto;
+}
+
+.inputWrapper input {
+  width: 100%;
+  padding: 12px 45px 12px 12px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+}
+
+.eyeIcon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  color: #777;
+  cursor: pointer;
+}
+

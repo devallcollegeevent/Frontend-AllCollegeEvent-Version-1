@@ -4,6 +4,7 @@ import { useState, useRef } from "react";
 import { verifyOtpApi, resendOtpApi } from "@/lib/apiClient";
 import { getEmail } from "@/lib/auth";
 import { toast } from "react-hot-toast";
+import { otpSchema } from "@/components/validation";
 
 export default function EnterOtp({ role }) {
   const email = getEmail();
@@ -12,7 +13,7 @@ export default function EnterOtp({ role }) {
   const [loading, setLoading] = useState(false);
   const [resendLoading, setResendLoading] = useState(false);
 
-  // ROLE BASED CONFIG
+  // ROLE CONFIG
   const config = {
     user: {
       image: "/images/auth-forgot.png",
@@ -43,7 +44,15 @@ export default function EnterOtp({ role }) {
 
     const code = otp.join("");
 
-    if (code.length !== 4) return toast.error("Enter 4-digit code");
+    // ⭐ YUP VALIDATION
+    try {
+      await otpSchema.validate(
+        { otp: code },
+        { abortEarly: false }
+      );
+    } catch (err) {
+      return toast.error(err.errors[0]);
+    }
 
     try {
       setLoading(true);
@@ -106,6 +115,7 @@ export default function EnterOtp({ role }) {
                 />
               ))}
             </div>
+
             <div className="form-actions">
               <button
                 className="btn-primary-ghost"

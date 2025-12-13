@@ -350,39 +350,3 @@
    cursor: pointer;
    font-weight: 600;
 }
-
-/* --------------------------------------------------
-   RESPONSIVE
--------------------------------------------------- */
-@media (max-width: 991.98px) {
-  .org-shell {
-    flex-direction: column;
-  }
-  .org-left {
-    display: none;
-  }
-  .org-right {
-    padding: 28px;
-  }
-  .category-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .two-col {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 575.98px) {
-  .category-grid {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-  .org-title {
-    font-size: 22px;
-  }
-  .otp-input {
-    width: 54px;
-    height: 54px;
-    font-size: 22px;
-  }
-}

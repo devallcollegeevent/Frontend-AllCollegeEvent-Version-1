@@ -6,6 +6,7 @@ import { clearEmail, getEmail } from "@/lib/auth";
 import { toast } from "react-hot-toast";
 import { ViewIcon, HideIcon } from "@/components/icons/Icons";
 import { password, text } from "@/const-value/page";
+import { userResetSchema } from "@/components/validation";
 
 export default function ResetPassword({ role }) {
   const email = getEmail();
@@ -15,7 +16,7 @@ export default function ResetPassword({ role }) {
   const [show1, setShow1] = useState(false);
   const [show2, setShow2] = useState(false);
 
-  // 🔥 ROLE-BASED CONFIG
+  // ROLE CONFIG
   const config = {
     user: {
       image: "/images/auth-forgot.png",
@@ -34,10 +35,20 @@ export default function ResetPassword({ role }) {
   async function onSubmit(e) {
     e.preventDefault();
 
-    if (pass !== confirm) {
-      return toast.error("Passwords do not match");
+    // ⭐ YUP VALIDATION
+    try {
+      await userResetSchema.validate(
+        {
+          password: pass,
+          confirmPassword: confirm,
+        },
+        { abortEarly: false }
+      );
+    } catch (err) {
+      return toast.error(err.errors[0]);
     }
 
+    // ⭐ API CALL
     try {
       await resetPasswordApi({ email, password: pass });
 

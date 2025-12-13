@@ -1,0 +1,162 @@
+.role-container {
+  width: 100%;
+  background: #f3f3f3;
+  border-radius: 26px;
+  box-sizing: border-box;
+  margin-top: 20px;
+  height: fit-content;
+  padding-bottom: 30px;
+}
+.wrapper {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 0px 0px 20px 20px;
+}
+
+.role-back {
+  display: flex;
+  align-items: center;
+}
+
+.back-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: none;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.arrow {
+  background: #8b00ff;
+  color: #fff;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font-size: 18px;
+}
+
+.role-title {
+  text-align: center;
+  font-size: 26px;
+  font-weight: 700;
+  margin: 30px 0 50px;
+}
+
+.role-cards {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  flex-wrap: wrap;
+}
+
+.role-card {
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.25s ease;
+}
+
+.role-card:hover {
+  transform: translateY(-5px);
+}
+
+.role-img {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.role-img img {
+  width: 82%;
+  height: 82%;
+  object-fit: contain;
+}
+
+.role-name {
+  margin-top: 14px;
+  font-size: 18px;
+  font-weight: 700;
+}
+.event-mode-container {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.mode-event-title {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.event-subtitle {
+  color: #666;
+  margin-bottom: 40px;
+}
+
+.event-card-wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.event-mode-container .event-card {
+  width: 330px;
+  padding: 40px 25px;
+  background: linear-gradient(135deg, #6b3cf5, #ff4d7a);
+  color: white;
+  border-radius: 18px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.event-mode-container .event-card h3 {
+  font-size: 22px;
+  margin-bottom: 12px;
+}
+
+.event-mode-container .event-card p {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.event-mode-container .event-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+}
+
+@media (max-width: 768px) {
+  .event-card-wrapper {
+    gap: 20px;
+  }
+
+  .event-card {
+    width: 90%;
+  }
+}
+
+@media (max-width: 768px) {
+  .role-cards {
+    gap: 30px;
+  }
+
+  .role-img {
+    width: 120px;
+    height: 120px;
+  }
+
+  .role-name {
+    font-size: 16px;
+  }
+}

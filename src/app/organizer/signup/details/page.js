@@ -9,38 +9,69 @@ import {
   getCities,
   getColleges,
 } from "@/lib/locationApi";
+
+// Constants
+import {
+  LABEL_ORG_STEP_CATEGORY,
+  LABEL_ORG_STEP_DETAILS,
+  LABEL_ORG_STEP_ACCOUNT,
+  SUBTITLE_ORG_DETAILS,
+  MSG_ERR_FILL_ALL_FIELDS,
+  BTN_CONTINUE,
+  DEFAULT_COLLEGE,
+  DEFAULT_TRAINING,
+  LABEL_ORG_COUNTRY,
+  LABEL_ORG_STATE,
+  LABEL_ORG_SELECT_COUNTRY,
+  MSG_ORG_SELECT_COUNTRY ,
+  LABEL_ORG_CITY,
+  MSG_ORG_SELECT_STATE ,
+  LABEL_ORG_NAME ,
+  PH_ORG_ORGANIZATION_NAME ,
+  LABEL_LOADING ,
+  LABEL_ORG_SELECT_STATE ,
+  LABEL_LOADING_STATES ,
+  LABEL_ORG_SELECT_CITY ,
+  LABEL_LOADING_CITIES 
+
+} from "@/const-value/config-message/page";
+
 import { organizerSignupAccountPage } from "@/app/routes";
 import { toast } from "react-hot-toast";
 
-export default function Page() {
+export default function OrganizerDetailsPage() {
+  
   const router = useRouter();
   const params = useSearchParams();
   const selectedCat = params?.get("cat") || "";
 
+  // Form Values
   const [country, setCountry] = useState("");
   const [stateCode, setStateCode] = useState("");
   const [city, setCity] = useState("");
   const [orgName, setOrgName] = useState("");
 
+  // Dropdown Data
   const [countries, setCountries] = useState([]);
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
-
   const [collegeList, setCollegeList] = useState([]);
-  const [loadingColleges, setLoadingColleges] = useState(false);
 
+  // Loading flags
   const [loadingCountries, setLoadingCountries] = useState(false);
   const [loadingStates, setLoadingStates] = useState(false);
   const [loadingCities, setLoadingCities] = useState(false);
+  const [loadingColleges, setLoadingColleges] = useState(false);
 
+  // -----------------------------
+  // Load Countries
+  // -----------------------------
   useEffect(() => {
     async function load() {
       setLoadingCountries(true);
       try {
         const data = await getCountries();
         setCountries(data || []);
-      } catch (err) {
-        console.error(err);
       } finally {
         setLoadingCountries(false);
       }
@@ -48,22 +79,21 @@ export default function Page() {
     load();
   }, []);
 
+  // -----------------------------
+  // Load States when Country changes
+  // -----------------------------
   useEffect(() => {
     if (!country) {
       setStates([]);
       setStateCode("");
       return;
     }
+
     async function load() {
       setLoadingStates(true);
       try {
         const data = await getStates(country);
         setStates(data || []);
-        setStateCode("");
-        setCities([]);
-        setCity("");
-      } catch (err) {
-        console.error(err);
       } finally {
         setLoadingStates(false);
       }
@@ -71,20 +101,21 @@ export default function Page() {
     load();
   }, [country]);
 
+  // -----------------------------
+  // Load Cities when State changes
+  // -----------------------------
   useEffect(() => {
     if (!stateCode) {
       setCities([]);
       setCity("");
       return;
     }
+
     async function load() {
       setLoadingCities(true);
       try {
         const data = await getCities(country, stateCode);
         setCities(data || []);
-        setCity("");
-      } catch (err) {
-        console.error(err);
       } finally {
         setLoadingCities(false);
       }
@@ -92,17 +123,18 @@ export default function Page() {
     load();
   }, [stateCode]);
 
+  // -----------------------------
+  // Load College List (only for category: college or training)
+  // -----------------------------
   useEffect(() => {
-    async function loadCollegeList() {
-      if (selectedCat !== "college" && selectedCat !== "training") return;
-      if (!country || !stateCode || !city) return;
+    if (![DEFAULT_COLLEGE, DEFAULT_TRAINING].includes(selectedCat)) return;
+    if (!country || !stateCode || !city) return;
 
+    async function loadCollegeList() {
       setLoadingColleges(true);
       try {
         const data = await getColleges(country, stateCode, city);
         setCollegeList(data || []);
-      } catch (err) {
-        console.error("College load error:", err);
       } finally {
         setLoadingColleges(false);
       }
@@ -113,178 +145,176 @@ export default function Page() {
 
   const canContinue = country && stateCode && city && orgName;
 
+  // -----------------------------
+  // SUBMIT → Go to Account page
+  // -----------------------------
   function onContinue(e) {
     e.preventDefault();
 
-    try {
-      if (!canContinue) {
-        toast.error("Fill all fields");
-        return;
-      }
-
-      const qs = new URLSearchParams({
-        cat: selectedCat,
-        country,
-        state: stateCode,
-        city,
-        orgName,
-      }).toString();
-
-      router.push(`${organizerSignupAccountPage}?${qs}`);
-    } catch (error) {
-      console.error("Navigation error:", error);
-      toast.error("Something went wrong.");
+    if (!canContinue) {
+      return toast.error(MSG_ERR_FILL_ALL_FIELDS);
     }
+
+    const qs = new URLSearchParams({
+      cat: selectedCat,
+      country,
+      state: stateCode,
+      city,
+      orgName,
+    }).toString();
+
+    router.push(`${organizerSignupAccountPage}?${qs}`);
   }
 
   return (
-    <div className="org-shell">
+    <div className="org-shell container-fluid">
+      
+      {/* Left Image (Kept exactly as original) */}
       <aside
-        className="org-left"
+        className="org-left d-flex align-items-center justify-content-center"
         style={{ backgroundImage: "url('/images/organizer-bg-circles.png')" }}
       >
         <img
-          className="org-left-img"
+          className="org-left-img img-fluid"
           src="/images/organizer-rocket.png"
           alt="rocket"
         />
       </aside>
 
+      {/* Right Section */}
       <main className="org-right">
-        <div className="org-card">
-          <div className="org-stepper">
+        <div className="org-card shadow-sm p-4">
+
+          {/* Stepper */}
+          <div className="org-stepper mb-4">
+            
             <div className="org-step active">
               <div className="dot">1</div>
-              <div className="label">Organization Category</div>
+              <div className="label">{LABEL_ORG_STEP_CATEGORY}</div>
             </div>
 
-            <div className="line active" />
+            <div className="line active"></div>
 
             <div className="org-step active">
               <div className="dot">2</div>
-              <div className="label">Organization Details</div>
+              <div className="label">{LABEL_ORG_STEP_DETAILS}</div>
             </div>
 
-            <div className="line" />
+            <div className="line"></div>
 
             <div className="org-step">
               <div className="dot">3</div>
-              <div className="label">Account Creation</div>
+              <div className="label">{LABEL_ORG_STEP_ACCOUNT}</div>
             </div>
           </div>
 
-          <h2 className="org-title">Organization Details</h2>
-          <div className="org-sub">Provide your organization information</div>
+          {/* Page Heading */}
+          <h2 className="org-title">{LABEL_ORG_STEP_DETAILS}</h2>
+          <div className="org-sub mb-4">{SUBTITLE_ORG_DETAILS}</div>
 
-          <form className="org-form" onSubmit={onContinue}>
-            <div className="form-row">
-              <div className="form-group full">
-                <label className="form-label">Country</label>
+          {/* Form */}
+          <form onSubmit={onContinue}>
+            
+            {/* COUNTRY */}
+            <div className="mb-3">
+              <label className="form-label">{LABEL_ORG_COUNTRY}</label>
+              <select
+                className="form-select"
+                value={country}
+                onChange={(e) => setCountry(e.target.value)}
+              >
+                <option value="">
+                  {loadingCountries ? LABEL_LOADING : LABEL_ORG_SELECT_COUNTRY}
+                </option>
+                {countries.map((c) => (
+                  <option key={c.code} value={c.name}>{c.name}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* STATE + CITY */}
+            <div className="row">
+              <div className="col-md-6 mb-3">
+                <label className="form-label">{LABEL_ORG_STATE}</label>
                 <select
-                  className="form-control"
-                  value={country}
-                  onChange={(e) => setCountry(e.target.value)}
-                  disabled={loadingCountries}
+                  className="form-select"
+                  value={stateCode}
+                  onChange={(e) => setStateCode(e.target.value)}
                 >
                   <option value="">
-                    {loadingCountries ? "Loading..." : "Select Country"}
+                    {!country
+                      ? MSG_ORG_SELECT_COUNTRY
+                      : loadingStates
+                      ? LABEL_LOADING_STATES
+                      : LABEL_ORG_SELECT_STATE}
                   </option>
-                  {countries.map((c) => (
-                    <option key={c.code} value={c.name}>
-                      {c.name}
-                    </option>
+                  {states.map((s) => (
+                    <option key={s.name} value={s.name}>{s.name}</option>
                   ))}
                 </select>
               </div>
 
-              <div className="two-col">
-                <div className="form-group">
-                  <label className="form-label">State</label>
-                  <select
-                    className="form-control"
-                    value={stateCode}
-                    onChange={(e) => setStateCode(e.target.value)}
-                    disabled={!country || loadingStates}
-                  >
-                    <option value="">
-                      {!country
-                        ? "Select country first"
-                        : loadingStates
-                        ? "Loading states..."
-                        : "Select State"}
-                    </option>
-                    {states.map((s) => (
-                      <option key={s.name} value={s.name}>
-                        {s.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="form-group">
-                  <label className="form-label">City</label>
-                  <select
-                    className="form-control"
-                    value={city}
-                    onChange={(e) => setCity(e.target.value)}
-                    disabled={!stateCode || loadingCities}
-                  >
-                    <option value="">
-                      {!stateCode
-                        ? "Select state first"
-                        : loadingCities
-                        ? "Loading cities..."
-                        : "Select City"}
-                    </option>
-                    {cities.map((ct) => (
-                      <option key={ct.name} value={ct.name}>
-                        {ct.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-              <div className="form-group full">
-                <label className="form-label">Organization Name</label>
-
-                {(selectedCat === "college" || selectedCat === "training") ? (
-                  <select
-                    className="form-control"
-                    value={orgName}
-                    onChange={(e) => setOrgName(e.target.value)}
-                  >
-                    <option value="">
-                      {loadingColleges ? "Loading colleges..." : "Select College"}
-                    </option>
-
-                    {collegeList.map((col) => (
-                      <option key={col.id} value={col.name}>
-                        {col.name}
-                      </option>
-                    ))}
-                  </select>
-                ) : (
-                  <input
-                    className="form-control"
-                    value={orgName}
-                    onChange={(e) => setOrgName(e.target.value)}
-                    placeholder="Enter Organization Name"
-                  />
-                )}
-              </div>
-
-              <div className="form-actions">
-                <button
-                  className="btn-primary-ghost"
-                  type="submit"
-                  disabled={!canContinue}
+              <div className="col-md-6 mb-3">
+                <label className="form-label">{LABEL_ORG_CITY}</label>
+                <select
+                  className="form-select"
+                  value={city}
+                  onChange={(e) => setCity(e.target.value)}
                 >
-                  Continue
-                </button>
+                  <option value="">
+                    {!stateCode
+                      ? MSG_ORG_SELECT_STATE
+                      : loadingCities
+                      ? LABEL_LOADING_CITIES
+                      : LABEL_ORG_SELECT_CITY}
+                  </option>
+                  {cities.map((ct) => (
+                    <option key={ct.name} value={ct.name}>{ct.name}</option>
+                  ))}
+                </select>
               </div>
             </div>
+
+            {/* Organization Name */}
+            <div className="mb-3">
+              <label className="form-label">{LABEL_ORG_NAME}</label>
+
+              {(selectedCat === DEFAULT_COLLEGE || selectedCat === DEFAULT_TRAINING) ? (
+                <select
+                  className="form-select"
+                  value={orgName}
+                  onChange={(e) => setOrgName(e.target.value)}
+                >
+                  <option value="">
+                    {loadingColleges ? LABEL_LOADING_COLLEGE : LABEL_ORG_SELECT_COLLEGE}
+                  </option>
+
+                  {collegeList.map((col) => (
+                    <option key={col.id} value={col.name}>
+                      {col.name}
+                    </option>
+                  ))}
+                </select>
+              ) : (
+                <input
+                  className="form-control"
+                  value={orgName}
+                  onChange={(e) => setOrgName(e.target.value)}
+                  placeholder={PH_ORG_ORGANIZATION_NAME}
+                />
+              )}
+            </div>
+
+            {/* Continue Button */}
+            <button
+              className="btn btn-primary w-100 mt-3"
+              type="submit"
+              disabled={!canContinue}
+            >
+              {BTN_CONTINUE}
+            </button>
           </form>
+
         </div>
       </main>
     </div>

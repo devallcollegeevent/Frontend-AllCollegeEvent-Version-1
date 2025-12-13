@@ -4,6 +4,10 @@ import { useState } from "react";
 import { forgotApi } from "@/lib/apiClient";
 import { saveEmail } from "@/lib/auth";
 import { toast } from "react-hot-toast";
+import {
+  userForgotSchema,
+  organizerForgotSchema,
+} from "@/components/validation";
 
 export default function ForgotPassword({ role }) {
   const [email, setEmail] = useState("");
@@ -15,6 +19,7 @@ export default function ForgotPassword({ role }) {
       label: "Domain Mail ID",
       redirect: "/auth/enter-code?role=organizer",
       loginLink: "/organizer/login",
+      schema: organizerForgotSchema,
     },
     user: {
       image: "/images/auth-forgot.png",
@@ -22,6 +27,7 @@ export default function ForgotPassword({ role }) {
       label: "Email",
       redirect: "/auth/enter-code?role=user",
       loginLink: "/user/login",
+      schema: userForgotSchema,
     },
   };
 
@@ -29,6 +35,17 @@ export default function ForgotPassword({ role }) {
 
   async function onSubmit(e) {
     e.preventDefault();
+
+    // ⭐ YUP VALIDATION
+    try {
+      await ui.schema.validate(
+        { email },
+        { abortEarly: false }
+      );
+    } catch (err) {
+      return toast.error(err.errors[0]);
+    }
+
     try {
       await forgotApi({ email });
       saveEmail(email);
@@ -58,6 +75,7 @@ export default function ForgotPassword({ role }) {
               onChange={(e) => setEmail(e.target.value)}
               placeholder={ui.label}
             />
+
             <div className="form-actions">
               <button className="btn-primary-ghost" type="submit">
                 Send Code

@@ -237,61 +237,6 @@
    cursor: pointer;
    font-weight: 600;
 }
-/* --------------------------------------------- */
-/* RESPONSIVE */
-/* --------------------------------------------- */
-@media (max-width: 991.98px) {
-  .u-auth-shell {
-    flex-direction: column-reverse;
-  }
-
-  .u-auth-left {
-    order: 2;
-    padding: 28px 20px;
-  }
-
-  .u-auth-right {
-    order: 1;
-    padding: 24px 18px;
-  }
-
-  .u-auth-left img {
-    max-width: 420px;
-  }
-
-  .u-auth-pager {
-    margin-top: 18%;
-  }
-
-  .u-auth-card {
-    max-width: 100%;
-  }
-}
-
-@media (max-width: 480px) {
-  .u-auth-left {
-    display: none;
-  }
-
-  .u-auth-right {
-    padding: 18px;
-  }
-
-  .u-auth-title {
-    font-size: 22px;
-  }
-
-  .u-auth-otp {
-    width: 54px;
-    height: 54px;
-    font-size: 22px;
-    line-height: 54px;
-  }
-
-  .u-auth-pager {
-    margin-top: 14%;
-  }
-}
 
 .u-auth-center {
   display: flex;

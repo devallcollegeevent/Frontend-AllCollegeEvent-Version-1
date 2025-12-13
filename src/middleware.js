@@ -28,14 +28,9 @@ export function middleware(req) {
     return NextResponse.next();
   }
 
-
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: [
-    "/user/:path*",
-    "/organizer/:path*",
-    "/dashboard/:path*",
-  ],
+  matcher: ["/user/:path*", "/organizer/:path*", "/dashboard/:path*"],
 };

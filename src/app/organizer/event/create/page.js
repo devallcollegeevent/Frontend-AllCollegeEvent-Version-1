@@ -1,17 +1,49 @@
 "use client";
 
+/**
+ * Create & Edit Event Page
+ * Bootstrap 5 version
+ * Simple comments + clean structure
+ */
+
 import { useState, useEffect } from "react";
-import "./create-event.css";
 import {
   createEventApi,
   getOrganizerSingleEventApi,
   updateOrganizerSingleEventApi,
 } from "@/lib/apiClient";
+
 import { toast } from "react-hot-toast";
 import { useRouter, useSearchParams } from "next/navigation";
 import { getUserData } from "@/lib/auth";
 import { organizerEventListPage } from "@/app/routes";
-import { hybrid, offline } from "@/const-value/page";
+
+import {
+  MODE_OFFLINE,
+  MODE_HYBRID,
+  LABEL_EVENT_DATE,
+  LABEL_EVENT_TIME,
+  LABEL_EVENT_MODE,
+  LABEL_EVENT_VENUE,
+  MSG_EVENT_LOAD_ERROR,
+  MODE_ONLINE,
+  MSG_EVENT_UPDATE_SUCCESS,
+  MSG_EVENT_UPDATE_FAILED,
+  MSG_EVENT_UPDATE_ERROR,
+  MSG_EVENT_CREATE_SUCCESS,
+  MSG_EVENT_CREATE_FAILED,
+  MSG_EVENT_CREATE_ERROR,
+  PH_EVENT_TITLE,
+  LABEL_FORM_DESCRIPTION,
+  PH_DESCRIPTION,
+  BTN_SUBMIT_EVENT,
+  BTN_UPDATE_EVENT,
+  PH_VENUE,
+  LABEL_FORM_EVENT_TITLE,
+  LABEL_SELECT_MODE,
+  LABEL_FORM_IMAGE
+} from "@/const-value/config-message/page";
+
 import { eventSchema } from "@/components/validation";
 
 export default function CreateEventPage() {
@@ -23,6 +55,7 @@ export default function CreateEventPage() {
 
   const userData = getUserData();
 
+  // Form states
   const [eventTitle, setEventTitle] = useState("");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState(null);
@@ -32,12 +65,14 @@ export default function CreateEventPage() {
   const [mode, setMode] = useState("");
   const [venue, setVenue] = useState("");
 
+  // Load data when editing
   useEffect(() => {
     if (!isEdit) return;
     loadEvent();
   }, [eventId]);
 
-  async function loadEvent() {
+  // Load existing event
+  const loadEvent = async () => {
     try {
       const res = await getOrganizerSingleEventApi(userData.identity, eventId);
 
@@ -51,45 +86,33 @@ export default function CreateEventPage() {
         setVenue(event.venue);
         setPreview(event.bannerImage);
       }
-    } catch (error) {
-      console.error("Load event error:", error);
-      toast.error("Failed to load event");
-    }
-  }
-
-  const onImageSelect = (e) => {
-    try {
-      const file = e.target.files[0];
-      setImage(file);
-      if (file) setPreview(URL.createObjectURL(file));
-    } catch (error) {
-      console.error("Image select error:", error);
-      toast.error("Failed to load image");
+    } catch {
+      toast.error(MSG_EVENT_LOAD_ERROR);
     }
   };
 
+  // Select image
+  const onImageSelect = (e) => {
+    const file = e.target.files[0];
+    setImage(file);
+    if (file) setPreview(URL.createObjectURL(file));
+  };
+
+  // Submit form
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    // ⭐ YUP VALIDATION
+    // Validate inputs
     try {
       await eventSchema.validate(
-        {
-          eventTitle,
-          description,
-          eventDate,
-          eventTime,
-          mode,
-          venue,
-        },
+        { eventTitle, description, eventDate, eventTime, mode, venue },
         { abortEarly: false }
       );
     } catch (err) {
-      console.log("======reee",err)
-      return toast.error(err.errors[0]); 
+      return toast.error(err.errors[0]);
     }
 
-    // ⭐ Prepare form data
+    // Build formData
     const formData = new FormData();
     formData.append("event_title", eventTitle);
     formData.append("description", description);
@@ -98,10 +121,9 @@ export default function CreateEventPage() {
     formData.append("mode", mode);
     formData.append("venue", venue);
     formData.append("org_id", userData.identity);
-
     if (image) formData.append("image", image);
 
-    // ⭐ EDIT EVENT FLOW
+    // EDIT FLOW
     if (isEdit) {
       try {
         const res = await updateOrganizerSingleEventApi(
@@ -111,119 +133,139 @@ export default function CreateEventPage() {
         );
 
         if (res.success) {
-          toast.success("Event Updated Successfully!");
+          toast.success(MSG_EVENT_UPDATE_SUCCESS);
           router.push(organizerEventListPage);
         } else {
-          toast.error(res.message || "Failed to update");
+          toast.error(res.message || MSG_EVENT_UPDATE_FAILED);
         }
-      } catch (error) {
-        console.error("Update event error:", error);
-        toast.error("Failed to update event");
+      } catch {
+        toast.error(MSG_EVENT_UPDATE_ERROR);
       }
       return;
     }
 
-    // ⭐ CREATE EVENT FLOW
+    // CREATE FLOW
     try {
       const res = await createEventApi(userData.identity, formData);
 
       if (res.success) {
-        toast.success("Event Created Successfully!");
+        toast.success(MSG_EVENT_CREATE_SUCCESS);
         router.push(organizerEventListPage);
       } else {
-        toast.error(res.message || "Failed to create");
+        toast.error(res.message || MSG_EVENT_CREATE_FAILED);
       }
-    } catch (error) {
-      console.error("Create event error:", error);
-      toast.error("Failed to create event");
+    } catch {
+      toast.error(MSG_EVENT_CREATE_ERROR);
     }
   };
 
   return (
-    <div className="create-event-wrapper">
-      <h2 className="create-event-title">
+    <div className="container py-4">
+      {/* Title */}
+      <h2 className="text-center mb-4">
         {isEdit ? "Edit Event" : "Create Event"}
       </h2>
 
-      <div className="create-event-card">
+      <div className="card shadow-sm p-4 mx-auto" style={{ maxWidth: "700px" }}>
         <form onSubmit={onSubmit}>
-          <div className="ce-field">
-            <label className="ce-label">Event Title</label>
+          {/* Event Title */}
+          <div className="mb-3">
+            <label className="form-label">{LABEL_FORM_EVENT_TITLE}</label>
             <input
-              className="ce-input"
+              className="form-control"
               value={eventTitle}
               onChange={(e) => setEventTitle(e.target.value)}
-              placeholder="Enter title"
+              placeholder={PH_EVENT_TITLE}
             />
           </div>
 
-          <div className="ce-field">
-            <label className="ce-label">Description</label>
+          {/* Description */}
+          <div className="mb-3">
+            <label className="form-label">{LABEL_FORM_DESCRIPTION}</label>
             <textarea
-              className="ce-textarea"
+              className="form-control"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Enter description"
+              placeholder={PH_DESCRIPTION}
+              rows={4}
             />
           </div>
 
-          <div className="ce-field">
-            <label className="ce-label">Event Image</label>
-            <input type="file" accept="image/*" onChange={onImageSelect} />
+          {/* Image Upload */}
+          <div className="mb-3">
+            <label className="form-label">{LABEL_FORM_IMAGE}</label>
+            <input
+              type="file"
+              className="form-control"
+              accept="image/*"
+              onChange={onImageSelect}
+            />
           </div>
 
-          {preview && <img src={preview} className="ce-preview-img" />}
+          {/* Image Preview */}
+          {preview && (
+            <img
+              src={preview}
+              className="img-fluid rounded mb-3"
+              style={{ maxHeight: "250px", objectFit: "cover" }}
+            />
+          )}
 
-          <div className="ce-row">
-            <div className="ce-col ce-field">
-              <label className="ce-label">Event Date</label>
+          <div className="row">
+            {/* Event Date */}
+            <div className="col-md-6 mb-3">
+              <label className="form-label">{LABEL_EVENT_DATE}</label>
               <input
-                className="ce-input"
                 type="date"
+                className="form-control"
                 value={eventDate}
                 onChange={(e) => setEventDate(e.target.value)}
               />
             </div>
 
-            <div className="ce-col ce-field">
-              <label className="ce-label">Event Time</label>
+            {/* Event Time */}
+            <div className="col-md-6 mb-3">
+              <label className="form-label">{LABEL_EVENT_TIME}</label>
               <input
-                className="ce-input"
                 type="time"
+                className="form-control"
                 value={eventTime}
                 onChange={(e) => setEventTime(e.target.value)}
               />
             </div>
           </div>
 
-          <div className="ce-field">
-            <label className="ce-label">Mode</label>
+          {/* Mode */}
+          <div className="mb-3">
+            <label className="form-label">{LABEL_EVENT_MODE}</label>
             <select
-              className="ce-select"
+              className="form-select"
               value={mode}
               onChange={(e) => setMode(e.target.value)}
             >
-              <option value="">Select Mode</option>
-              <option value="online">Online</option>
-              <option value="offline">Offline</option>
-              <option value="hybrid">Hybrid</option>
+              <option value="">{LABEL_SELECT_MODE}</option>
+              <option value={MODE_ONLINE}>{MODE_ONLINE}</option>
+              <option value={MODE_OFFLINE}>{MODE_OFFLINE}</option>
+              <option value={MODE_HYBRID}>{MODE_HYBRID}</option>
             </select>
           </div>
 
-          {(mode === offline || mode === hybrid) && (
-            <div className="ce-field">
-              <label className="ce-label">Venue</label>
+          {/* Venue (only offline/hybrid) */}
+          {(mode === MODE_OFFLINE || mode === MODE_HYBRID) && (
+            <div className="mb-3">
+              <label className="form-label">{LABEL_EVENT_VENUE}</label>
               <input
-                className="ce-input"
+                className="form-control"
                 value={venue}
                 onChange={(e) => setVenue(e.target.value)}
-                placeholder="Enter venue"
+                placeholder={PH_VENUE}
               />
             </div>
           )}
 
-          <button className="ce-btn-submit" type="submit">
-            {isEdit ? "Update Event" : "Submit Event"}
+          {/* Submit Button */}
+          <button className="btn btn-primary w-100">
+            {isEdit ? BTN_UPDATE_EVENT : BTN_SUBMIT_EVENT}
           </button>
         </form>
       </div>
