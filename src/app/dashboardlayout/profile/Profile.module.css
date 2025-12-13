@@ -2,22 +2,28 @@
   width: 100%;
 }
 
+/* ================= VIEW MODE ================= */
 .viewBox {
-  background: #f9f9f9;
+  background: var(--bg-light);
   padding: 25px;
   border-radius: 20px;
   display: flex;
   justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
 .viewBox label {
-  font-size: 14px;
-  color: #999;
+  font-size: var(--fs-sm);
+  color: var(--tx-placeholder);
 }
 
 .viewBox p {
-  font-size: 17px;
-  font-weight: 700;
+  font-size: var(--fs-md);
+  font-weight: var(--fw-bold);
+  color: var(--tx-title);
 }
 
 .editIcon {
@@ -26,72 +32,92 @@
   cursor: pointer;
 }
 
+/* ================= EDIT MODE ================= */
 .editBox {
-  background: #f9f9f9;
+  background: var(--bg-light);
   padding: 25px;
   border-radius: 20px;
   display: flex;
-  justify-content: space-around;
+  gap: 40px;
+  flex-wrap: wrap;
 }
 
 .left {
-  width: 40%;
+  flex: 1;
+  min-width: 260px;
   display: flex;
   flex-direction: column;
   gap: 15px;
 }
 
+.left label {
+  font-size: var(--fs-sm);
+  color: var(--tx-sub-title);
+}
+
 .left input {
   padding: 12px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--bg-card);
   border-radius: 8px;
+  background: var(--bg-input);
 }
 
 .changePassword {
-  color: #7a12ff;
-  font-weight: 700;
+  color: var(--primary-color);
+  font-weight: var(--fw-bold);
   cursor: pointer;
 }
 
+/* ================= UPLOAD ================= */
 .uploadBox {
-  border: 2px dashed #ccc;
+  border: 2px dashed var(--bg-card);
   border-radius: 12px;
   padding: 30px;
   text-align: center;
+  background: var(--bg-input);
+  color: var(--tx-sub-title);
 }
 
+/* ================= BUTTONS ================= */
 .btnRow {
   display: flex;
-  gap: 50px;
+  gap: 30px;
   margin-top: 20px;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 .cancelBtn {
-  padding: 5px 47px;
+  padding: 8px 40px;
   border-radius: 25px;
-  border: 1px solid #000;
-  background: #fff;
+  border: 1px solid var(--text-dark);
+  background: var(--white);
+  font-weight: var(--fw-medium);
 }
 
 .saveBtn {
-  padding: 11px 36px;
+  padding: 10px 36px;
   border-radius: 25px;
   border: none;
-  background: #7a12ff;
-  color: #fff;
-  font-weight: 600;
+  background: var(--btn-primary);
+  color: var(--white);
+  font-weight: var(--fw-semibold);
 }
 
+.saveBtn:hover {
+  background: var(--btn-primary-hover);
+}
+
+/* ================= OTP ================= */
 .otpBox {
-  background: #f9f9f9;
+  background: var(--bg-light);
   padding: 25px;
   border-radius: 20px;
   text-align: center;
 }
 
 .otpInputs {
-  margin: 40px 0;
+  margin: 30px 0;
   display: flex;
   gap: 12px;
   justify-content: center;
@@ -101,51 +127,34 @@
   width: 50px;
   height: 55px;
   border-radius: 12px;
-  border: 2px solid #ccc;
-  font-size: 24px;
+  border: 2px solid var(--bg-card);
+  font-size: var(--fs-lg);
   text-align: center;
 }
 
 .resend span {
-  color: #7a12ff;
+  color: var(--primary-color);
   cursor: pointer;
 }
 
+/* ================= PASSWORD ================= */
 .passwordBox {
-  background: #f9f9f9;
-  padding-top: 20px;
+  background: var(--bg-light);
+  padding: 25px;
   border-radius: 20px;
   text-align: center;
-}
-
-.passwordBox input {
-width: 40%;
-    margin: 32px auto;
-    display: block;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-}
-
-.successBox {
-  background: #f9f9f9;
-  padding: 40px;
-  border-radius: 20px;
-  text-align: center;
-  font-size: 20px;
-  font-weight: 700;
 }
 
 .inputWrapper {
   position: relative;
-  width: 45%;
-  margin: 15px auto;
+  max-width: 420px;
+  margin: 20px auto;
 }
 
 .inputWrapper input {
   width: 100%;
   padding: 12px 45px 12px 12px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--bg-card);
   border-radius: 10px;
 }
 
@@ -154,8 +163,29 @@ width: 40%;
   right: 12px;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 20px;
-  color: #777;
+  font-size: 18px;
+  color: var(--tx-placeholder);
   cursor: pointer;
 }
 
+/* ================= SUCCESS ================= */
+.successBox {
+  background: var(--bg-light);
+  padding: 40px;
+  border-radius: 20px;
+  text-align: center;
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
+  color: var(--primary-color);
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 768px) {
+  .editBox {
+    gap: 20px;
+  }
+
+  .btnRow {
+    gap: 15px;
+  }
+}

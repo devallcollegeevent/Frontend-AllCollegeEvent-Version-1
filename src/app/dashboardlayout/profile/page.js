@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import styles from "./Profile.module.css";
-import { IMAGEICON, LOCKICON } from "@/const/const";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { IMAGEICON , LOCKICON} from "@/const-value/config-icons/page";
 
 export default function ProfilePage() {
   const [mode, setMode] = useState("view");

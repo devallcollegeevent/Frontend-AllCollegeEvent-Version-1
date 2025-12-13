@@ -30,3 +30,7 @@ export const landingPage = "/dashboard";
 export const organizerEventCreatePage = "/organizer/event/create";
 export const organizerEventListPage = "/organizer/event/list";
 export const organizerEventDetailsPage = "/organizer/event";
+
+// ====================================profile router =========================
+
+export const dashboardlayoutProfile = '/dashboardlayout/profile'

@@ -1,0 +1,99 @@
+.wrapper {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 0px 0px 20px 20px;
+}
+
+.heading {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.card {
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid #f0f0f0;
+  border-radius: 14px;
+  padding: 18px 20px;
+  margin-bottom: 15px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.left h4 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.left p {
+  font-size: 14px;
+  margin-top: 5px;
+  color: #777;
+}
+
+.icon {
+  font-size: 28px;
+  color: #000;
+}
+
+.switch {
+  position: relative;
+  width: 45px;
+  height: 24px;
+  display: inline-block;
+}
+
+.switch input {
+  display: none;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  background: #ccc;
+  border-radius: 34px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transition: 0.3s;
+}
+
+.slider:before {
+  content: "";
+  height: 18px;
+  width: 18px;
+  background: white;
+  border-radius: 50%;
+  position: absolute;
+  left: 3px;
+  bottom: 3px;
+  transition: 0.3s;
+}
+
+input:checked + .slider {
+  background: #8a00ff;
+}
+
+input:checked + .slider:before {
+  transform: translateX(20px);
+}
+
+@media (max-width: 600px) {
+  .left {
+    gap: 12px;
+  }
+  .icon {
+    font-size: 22px;
+  }
+}

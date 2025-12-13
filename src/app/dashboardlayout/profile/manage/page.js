@@ -2,15 +2,7 @@
 
 import { useState } from "react";
 import styles from "./ManagePage.module.css";
-import {
-  FACEBOOKICON,
-  IMAGEICON,
-  INSTAGRAMICON,
-  LINKEDINICON,
-  TELEGRAMICON,
-  XICON,
-  YOUTUBEICON,
-} from "@/const/const";
+
 
 export default function ManagePage() {
   const [mode, setMode] = useState("view");
@@ -40,42 +32,42 @@ export default function ManagePage() {
         <div className={styles.viewBox}>
           <div className={styles.item}>
             <div>
-              <h4>{LINKEDINICON} LinkedIn</h4>
+              <h4> LinkedIn</h4>
               <p>https://www.linkedin.com/in/nandhini007</p>
             </div>
           </div>
 
           <div className={styles.item}>
             <div>
-              <h4>{INSTAGRAMICON} Instagram</h4>
+              <h4> Instagram</h4>
               <p>https://www.linkedin.com/in/nandhini007</p>
             </div>
           </div>
 
           <div className={styles.item}>
             <div>
-              <h4>{FACEBOOKICON} Facebook</h4>
+              <h4> Facebook</h4>
               <p>https://www.linkedin.com/in/nandhini007</p>
             </div>
           </div>
 
           <div className={styles.item}>
             <div>
-              <h4>{XICON} X (Twitter)</h4>
+              <h4> X (Twitter)</h4>
               <p>https://www.linkedin.com/in/nandhini007</p>
             </div>
           </div>
 
           <div className={styles.item}>
             <div>
-              <h4>{YOUTUBEICON} YouTube</h4>
+              <h4> YouTube</h4>
               <p>https://www.linkedin.com/in/nandhini007</p>
             </div>
           </div>
 
           <div className={styles.item}>
             <div>
-              <h4>{TELEGRAMICON} Telegram</h4>
+              <h4>Telegram</h4>
               <p>https://www.linkedin.com/in/nandhini007</p>
             </div>
           </div>
@@ -91,7 +83,7 @@ export default function ManagePage() {
           >
             {!coverImage && (
               <>
-                <div style={{ paddingBottom: "10px" }}>{IMAGEICON}</div>
+                <div style={{ paddingBottom: "10px" }}></div>
                 <p>Upload Cover Image</p>
               </>
             )}

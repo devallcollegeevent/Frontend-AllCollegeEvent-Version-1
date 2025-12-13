@@ -1,0 +1,85 @@
+.wrapper {
+  padding: 20px;
+  border-radius: 0px 0px 20px 20px;
+  background-color: #f9f9f9;
+}
+
+.heading {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 18px;
+}
+
+.card {
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid #f1f1f1;
+  border-radius: 14px;
+  padding: 18px 20px;
+  margin-bottom: 14px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card h4 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.card p {
+  margin-top: 5px;
+  font-size: 14px;
+  color: #777;
+}
+
+.switch {
+  position: relative;
+  width: 45px;
+  height: 24px;
+  display: inline-block;
+}
+
+.switch input {
+  display: none;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  background: #ccc;
+  border-radius: 34px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transition: 0.3s;
+}
+
+.slider:before {
+  content: "";
+  height: 18px;
+  width: 18px;
+  background: white;
+  border-radius: 50%;
+  position: absolute;
+  left: 3px;
+  bottom: 3px;
+  transition: 0.3s;
+}
+
+input:checked + .slider {
+  background: #8a00ff;
+}
+
+input:checked + .slider:before {
+  transform: translateX(20px);
+}
+
+@media (max-width: 600px) {
+  .card {
+    padding: 16px;
+  }
+}
